@@ -1,26 +1,6 @@
-.row {
-	font-size: 0px;
-}
-
-.dot {
-	display: inline-block;
-	border-width: 0 1px 1px 0;
-	border-style: solid;
-	border-color: rgb(224,224,224);
-	height: 5px;
-	width: 5px;
-}
-
-.row:first-child .dot {
-	border-top: 1px solid silver;
-}
-
-.dot:first-child {
-	border-left: 1px solid silver;
-}
-
-.dot.active {
-	background-color: black;
+#canvas {
+	border: 1px solid silver;
+	margin-top: 22px;
 }
 
 #start {

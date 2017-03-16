@@ -2,49 +2,50 @@ function $(id) {
 	return document.getElementById(id);
 }
 
-function Grid(gridWidth, gridHeight, intervalTime) {
+function Grid(canvas, gridWidth, gridHeight, intervalTime) {
+	this.canvas = canvas;
+	this.context2D = canvas.getContext('2d');
+
 	this.gridWidth = gridWidth;
 	this.gridHeight = gridHeight;
 	this.intervalTime = intervalTime;
 
 	this.dotArray = [];
+	this.dotArrayFlat = [];
+
 	this.toggleDots = [];
 	this.interval = null;
+
+	this.context2D.fillStyle = '#000000';
 
 	this.get = function (y, x) {
 		return this.dotArray[y][x];
 	};
 
 	this.init = function () {
-		$('foo').innerHTML = '';
+		this.dotArray = [];
+		this.dotArrayFlat = [];
+
+		this.canvas.setAttribute('height', this.gridHeight*5);
+		this.canvas.setAttribute('width', this.gridWidth*5);
+
 		$('gridHeight').value = this.gridHeight;
 		$('gridWidth').value = this.gridWidth;
+
 		for (let y = 0; y < this.gridHeight; y++) {
 			this.dotArray[y] = [];
 			for (let x = 0; x < this.gridWidth; x++) {
 				this.dotArray[y][x] = new Dot(x, y, this);
 			}
 		}
-		this.draw();
-		//this.exportJson();
-	};
 
-	this.draw = function () {
+		// second loop is necessary, cause neighbors can only be fetched AFTER all dots were created
 		for (let y = 0; y < this.gridHeight; y++) {
-			let row = document.createElement('div');
-			row.setAttribute('class', 'row');
-
 			for (let x = 0; x < this.gridWidth; x++) {
-				let dot = document.createElement('div');
-				dot.setAttribute('id', 'x' + x + 'y' + y);
-				dot.setAttribute('class', (this.get(y, x).alive ? 'dot active' : 'dot'));
-				dot.setAttribute('onclick', "grid.get(" + y + "," + x + ").toggle();grid.exportJson();");
-				dot.setAttribute('title', x + ',' + y);
-				row.appendChild(dot);
-				this.get(y, x).element = dot;
+				this.dotArrayFlat.push(this.dotArray[y][x]);
+				this.dotArray[y][x].getNeighbors();
+				this.dotArray[y][x].draw();
 			}
-
-			$('foo').appendChild(row);
 		}
 	};
 
@@ -52,43 +53,35 @@ function Grid(gridWidth, gridHeight, intervalTime) {
 		for (let y = 0; y < this.gridHeight; y++) {
 			for (let x = 0; x < this.gridWidth; x++) {
 				this.get(y, x).alive = Math.round(Math.random());
+				this.get(y, x).draw();
 			}
 		}
-		this.refresh();
 	};
 
 	this.doStep = function () {
-		let row, dot;
-		let gridTmp = this.dotArray.slice();
+		//let dot;
+		//let gridTmp = this.dotArray.slice();
 
-		while (row = gridTmp.pop()) {
-			row = row.slice();
-			while (dot = row.pop()) {
-				let livingNeighborCount = dot.getLivingNeighborCount();
+		let dotsNew = [];
+		//let dots = this.dotArrayFlat.slice();
 
-				if (!dot.alive) {
-					if (livingNeighborCount == 3) {
-						this.toggleDots.push(dot);
-					}
-				} else if (livingNeighborCount < 2 || livingNeighborCount > 3) {
+		while (dot = this.dotArrayFlat.pop()) {
+			let livingNeighborCount = dot.getLivingNeighborCount();
+
+			if (!dot.alive) {
+				if (livingNeighborCount == 3) {
 					this.toggleDots.push(dot);
 				}
+			} else if (livingNeighborCount < 2 || livingNeighborCount > 3) {
+				this.toggleDots.push(dot);
 			}
+			dotsNew.push(dot);
 		}
+
+		this.dotArrayFlat = dotsNew;
 
 		while (dot = this.toggleDots.pop()) {
 			dot.toggle();
-		}
-	};
-
-	this.refresh = function () {
-		let gridTmp = this.dotArray.slice();
-		let row, dot;
-		while (row = gridTmp.pop()) {
-			row = row.slice();
-			while (dot = row.pop()) {
-				dot.element.setAttribute('class', ((dot.alive) ? 'dot active' : 'dot'));
-			}
 		}
 	};
 
@@ -101,7 +94,7 @@ function Grid(gridWidth, gridHeight, intervalTime) {
 			for (x = 0; x < xMax; x++) {
 				let dot = this.get(y, x);
 				dot.alive = gridTmp[y][x];
-				dot.element.setAttribute('class', ((dot.alive) ? 'dot active' : 'dot'));
+				dot.draw();
 			}
 		}
 		//this.refresh();
@@ -135,14 +128,14 @@ function Grid(gridWidth, gridHeight, intervalTime) {
 	};
 
 	this.changeWidth = function (newWidth) {
-		this.exportJson();
+		//this.exportJson();
 		this.gridWidth = newWidth;
 		this.init();
 		this.importJson();
 	};
 
 	this.changeHeight = function (newHeight) {
-		this.exportJson();
+		//this.exportJson();
 		this.gridHeight = newHeight;
 		this.init();
 		this.importJson();
@@ -164,17 +157,23 @@ function Grid(gridWidth, gridHeight, intervalTime) {
 		$('start').style.visibility = 'visible';
 		$('stop').style.visibility = 'hidden';
 		window.clearInterval(this.interval);
-		this.exportJson();
+		//this.exportJson();
 	}
 }
 
 
 function Dot(x, y, grid) {
+
+	// x + y in grid
 	this.x = x;
 	this.y = y;
+
+	// x + y on screen
+	this.xPos = x*5;
+	this.yPos = y*5;
+
 	this.grid = grid;
-	this.alive = 0;
-	this.element = null;
+	this.alive = false;
 
 	this.getLivingNeighborCount = function () {
 		let count = 0, neighbor;
@@ -215,7 +214,13 @@ function Dot(x, y, grid) {
 
 	this.toggle = function () {
 		this.alive = !this.alive;
-		this.element.setAttribute('class', ((this.alive) ? 'dot active' : 'dot'));
+		this.draw();
 	};
+
+	this.draw = function () {
+		this.alive ?
+			this.grid.context2D.fillRect(this.xPos, this.yPos, 4, 4) :
+			this.grid.context2D.clearRect(this.xPos, this.yPos, 4, 4);
+	}
 
 }
