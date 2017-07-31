@@ -43,6 +43,7 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 			for (let x = 0; x < this.gridWidth; x++) {
 				this.dotArrayFlat.push(this.dotArray[y][x]);
 				this.dotArray[y][x].draw();
+				this.dotArray[y][x].initNeighbors();
 			}
 		}
 	};
@@ -164,23 +165,6 @@ function Dot(x, y, grid) {
 	this.alive = false;
 
 	this.getLivingNeighborCount = function () {
-		if (!this.neighbors) {
-			this.neighbors = [];
-			if (this.y > 0) {
-				if (this.x > 0) this.neighbors.push(this.grid.get(this.y - 1, this.x - 1));
-				this.neighbors.push(this.grid.get(this.y - 1, this.x));
-				if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y - 1, this.x + 1));
-			}
-
-			if (this.x > 0) this.neighbors.push(this.grid.get(this.y, this.x - 1));
-			if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y, this.x + 1));
-
-			if ((this.y + 1) < this.grid.gridHeight) {
-				if (this.x > 0) this.neighbors.push(this.grid.get(this.y + 1, this.x - 1));
-				this.neighbors.push(this.grid.get(this.y + 1, this.x));
-				if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y + 1, this.x + 1));
-			}
-		}
 		let count = 0, neighborsNew = [], neighbor;
 		while (neighbor = this.neighbors.pop()) {
 			if (neighbor.alive) {
@@ -191,6 +175,24 @@ function Dot(x, y, grid) {
 		this.neighbors = neighborsNew;
 
 		return count;
+	};
+
+	this.initNeighbors = function () {
+		this.neighbors = [];
+		if (this.y > 0) {
+			if (this.x > 0) this.neighbors.push(this.grid.get(this.y - 1, this.x - 1));
+			this.neighbors.push(this.grid.get(this.y - 1, this.x));
+			if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y - 1, this.x + 1));
+		}
+
+		if (this.x > 0) this.neighbors.push(this.grid.get(this.y, this.x - 1));
+		if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y, this.x + 1));
+
+		if ((this.y + 1) < this.grid.gridHeight) {
+			if (this.x > 0) this.neighbors.push(this.grid.get(this.y + 1, this.x - 1));
+			this.neighbors.push(this.grid.get(this.y + 1, this.x));
+			if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y + 1, this.x + 1));
+		}
 	};
 
 	this.draw = function () {
