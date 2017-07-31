@@ -65,7 +65,7 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 			let livingNeighborCount = dot.getLivingNeighborCount();
 
 			if (!dot.alive) {
-				if (livingNeighborCount == 3) {
+				if (livingNeighborCount === 3) {
 					toggleDots.push(dot);
 				}
 			} else if (livingNeighborCount < 2 || livingNeighborCount > 3) {
@@ -83,13 +83,16 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	};
 
 	this.setJson = function (jsonString) {
-		let gridTmp = JSON.parse(jsonString);
-		let yMax = gridTmp.length > this.gridHeight ? this.gridHeight : gridTmp.length;
+		this.setData(JSON.parse(jsonString));
+	};
+
+	this.setData = function (data) {
+		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length;
 
 		for (y = 0; y < yMax; y++) {
-			let xMax = (gridTmp[y].length > this.gridWidth) ? this.gridWidth : gridTmp[y].length;
+			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length;
 			for (x = 0; x < xMax; x++) {
-				this.dotArray[y][x].alive = gridTmp[y][x];
+				this.dotArray[y][x].alive = data[y][x];
 				this.dotArray[y][x].draw();
 			}
 		}
