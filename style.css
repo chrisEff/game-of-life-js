@@ -4,9 +4,14 @@
 }
 
 #start {
-	color: lime;
+	color: limegreen;
 }
 
 #stop {
 	color: red;
+}
+
+#importExport {
+	height: 250px;
+	width: 700px;
 }

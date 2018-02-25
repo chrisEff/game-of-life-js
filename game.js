@@ -156,14 +156,14 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	};
 
 	this.start = function () {
-		$('start').style.visibility = 'hidden';
-		$('stop').style.visibility = 'visible';
+		$('start').style.display = 'none';
+		$('stop').style.display = 'initial';
 		this.interval = window.setInterval(() => this.doStep(), this.intervalTime);
 	};
 
 	this.stop = function () {
-		$('start').style.visibility = 'visible';
-		$('stop').style.visibility = 'hidden';
+		$('start').style.display = 'initial';
+		$('stop').style.display = 'none';
 		window.clearInterval(this.interval);
 	}
 }
