@@ -59,28 +59,20 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	};
 
 	this.doStep = function () {
-		let toggleDots = [];
-		let dotsNew = [];
-
-		while (dot = this.dotArrayFlat.pop()) {
-			let livingNeighborCount = dot.getLivingNeighborCount();
-
-			if (!dot.alive) {
-				if (livingNeighborCount === 3) {
-					toggleDots.push(dot);
+		this.dotArrayFlat
+			// collect dots that need to be toggled
+			.filter(dot => {
+				let livingNeighborCount = dot.neighbors.filter(neighbor => neighbor.alive).length;
+				if (!dot.alive) {
+					return livingNeighborCount === 3;
 				}
-			} else if (livingNeighborCount < 2 || livingNeighborCount > 3) {
-				toggleDots.push(dot);
-			}
-			dotsNew.push(dot);
-		}
-
-		this.dotArrayFlat = dotsNew;
-
-		while (dot = toggleDots.pop()) {
-			dot.alive = !dot.alive;
-			dot.draw();
-		}
+				return (livingNeighborCount < 2 || livingNeighborCount > 3);
+			})
+			// toggle them
+			.forEach(dot => {
+				dot.alive = !dot.alive;
+				dot.draw();
+			})
 	};
 
 	this.setJson = function (jsonString) {
@@ -122,13 +114,11 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	this.changeWidth = function (newWidth) {
 		this.gridWidth = newWidth;
 		this.init();
-		this.importJson();
 	};
 
 	this.changeHeight = function (newHeight) {
 		this.gridHeight = newHeight;
 		this.init();
-		this.importJson();
 	};
 
 	this.changeInterval = function (intervalTime) {
@@ -140,7 +130,7 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	this.start = function () {
 		$('start').style.visibility = 'hidden';
 		$('stop').style.visibility = 'visible';
-		this.interval = window.setInterval("grid.doStep()", this.intervalTime);
+		this.interval = window.setInterval(() => { grid.doStep() }, this.intervalTime);
 	};
 
 	this.stop = function () {
@@ -163,19 +153,6 @@ function Dot(x, y, grid) {
 
 	this.grid = grid;
 	this.alive = false;
-
-	this.getLivingNeighborCount = function () {
-		let count = 0, neighborsNew = [], neighbor;
-		while (neighbor = this.neighbors.pop()) {
-			if (neighbor.alive) {
-				count++;
-			}
-			neighborsNew.push(neighbor);
-		}
-		this.neighbors = neighborsNew;
-
-		return count;
-	};
 
 	this.initNeighbors = function () {
 		this.neighbors = [];
