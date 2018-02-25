@@ -6,48 +6,31 @@
 	<link rel="stylesheet" href="style.css" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="game.js"></script>
-	<script type="text/javascript">
-		jQuery.noConflict();
-		function loadPattern(name) {
-			jQuery.getJSON("patterns/" + name + ".json", function (json) {
-				console.log(json);
-				grid.setData(json);
-			});
-		}
-
-		let grid;
-		document.addEventListener("DOMContentLoaded", function(event) {
-			grid = new Grid($('canvas'), 300, 200, 3, 1);
-			grid.init();
-		});
-	</script>
 </head>
 <body>
 	<div>
-		<button id="start" onclick="grid.start();">start</button>
-		<button id="stop" onclick="grid.stop();" style="visibility: hidden;">stop</button>
+		<button id="start">start</button>
+		<button id="stop" style="visibility: hidden;">stop</button>
 
-		<button id="step" value="step" onclick="grid.doStep();">step</button>
-		<button onclick="loadPattern('glider-gun');">glider gun</button>
+		<button id="step">step</button>
+		<button id="gliderGun">glider gun</button>
 
-		<button onclick="grid.randomize();">randomize</button>
-		<button onclick="grid.init();">reset</button>
+		<button id="randomize">randomize</button>
+		<button id="reset">reset</button>
 
 		size:
-		<input type="number" min="4" max="10000" id="gridWidth" name="gridWidth" onchange="grid.changeWidth(this.value);"/> x
-		<input type="number" min="4" max="10000" id="gridHeight" name="gridHeight" onchange="grid.changeHeight(this.value);"/>
+		<input id="gridWidth" type="number" min="4" max="10000" /> x
+		<input id="gridHeight" type="number" min="4" max="10000" />
 
 		interval (ms):
-		<input type="number" min="1" max="500" value="1" name="intervalTime" onchange="grid.changeInterval(this.value);"
-			   onkeyup="this.onchange()"/>
+		<input id="intervalTime" type="number" min="1" max="500" value="1" />
 	</div>
 	<canvas id="canvas"></canvas>
 
 	<br/><br/>
-	<textarea id="importExport" onkeyup="grid.importJson();" style="width: 700px; height: 250px;"></textarea>
+	<textarea id="importExport" style="width: 700px; height: 250px;"></textarea>
 	<br/>
-	<button onclick="grid.importJson($('importExport'))">import</button>
-	<button onclick="grid.exportJson($('importExport'))">export</button>
-	<pre id="debug"> </pre>
+	<button id="import">import</button>
+	<button id="export">export</button>
 </body>
 </html>

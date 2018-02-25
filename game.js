@@ -1,6 +1,28 @@
+jQuery.noConflict();
+
 function $(id) {
 	return document.getElementById(id);
 }
+
+let grid;
+document.addEventListener("DOMContentLoaded", function(event) {
+    grid = new Grid($('canvas'), 300, 200, 3, 1);
+    grid.init();
+
+	$('start').onclick     = () => grid.start();
+	$('stop').onclick      = () => grid.stop();
+	$('step').onclick      = () => grid.doStep();
+	$('gliderGun').onclick = () => grid.loadPattern('glider-gun');
+	$('randomize').onclick = () => grid.randomize();
+	$('reset').onclick     = () => grid.init();
+
+	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value);
+	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value);
+	$('intervalTime').onchange = (event) => grid.changeInterval(event.srcElement.value);
+
+	$('import').onclick = () => grid.importJson($('importExport'));
+	$('export').onclick = () => grid.exportJson($('importExport'));
+});
 
 function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	this.canvas = canvas;
@@ -79,6 +101,12 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 		this.setData(JSON.parse(jsonString));
 	};
 
+	this.loadPattern = function (name) {
+		jQuery.getJSON("patterns/" + name + ".json", function (json) {
+			this.setData(json);
+		});
+	};
+
 	this.setData = function (data) {
 		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length;
 
@@ -130,7 +158,7 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	this.start = function () {
 		$('start').style.visibility = 'hidden';
 		$('stop').style.visibility = 'visible';
-		this.interval = window.setInterval(() => { grid.doStep() }, this.intervalTime);
+		this.interval = window.setInterval(() => grid.doStep(), this.intervalTime);
 	};
 
 	this.stop = function () {
