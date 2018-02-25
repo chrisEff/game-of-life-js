@@ -4,9 +4,8 @@ function $(id) {
 	return document.getElementById(id);
 }
 
-let grid;
 document.addEventListener("DOMContentLoaded", function(event) {
-    grid = new Grid($('canvas'), 300, 200, 3, 1);
+	const grid = new Grid($('canvas'), 400, 300, 2, 1);
     grid.init();
 
 	$('start').onclick     = () => grid.start();
@@ -159,7 +158,7 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	this.start = function () {
 		$('start').style.visibility = 'hidden';
 		$('stop').style.visibility = 'visible';
-		this.interval = window.setInterval(() => grid.doStep(), this.intervalTime);
+		this.interval = window.setInterval(() => this.doStep(), this.intervalTime);
 	};
 
 	this.stop = function () {
