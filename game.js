@@ -102,8 +102,9 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 	};
 
 	this.loadPattern = function (name) {
+		let that = this;
 		jQuery.getJSON("patterns/" + name + ".json", function (json) {
-			this.setData(json);
+			that.setData(json);
 		});
 	};
 
