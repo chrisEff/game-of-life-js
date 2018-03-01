@@ -17,7 +17,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value);
 	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value);
-	$('intervalTime').onchange = (event) => grid.changeInterval(event.srcElement.value);
+	$('cellSize').onchange     = (event) => grid.changeCellSize(event.srcElement.value);
+	$('intervalTime').onchange = (event) => grid.changeIntervalTime(event.srcElement.value);
 
 	$('import').onclick = () => grid.importJson($('importExport'));
 	$('export').onclick = () => grid.exportJson($('importExport'));
@@ -47,6 +48,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize+1));
 		$('gridHeight').value = this.gridHeight;
 		$('gridWidth').value = this.gridWidth;
+		$('cellSize').value = this.cellSize;
 
 		this.cellArray = [];
 		this.cellArrayFlat = [];
@@ -126,18 +128,23 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	};
 
 	this.changeWidth = function (newWidth) {
-		this.gridWidth = newWidth;
+		this.gridWidth = parseInt(newWidth);
 		this.init();
 	};
 
 	this.changeHeight = function (newHeight) {
-		this.gridHeight = newHeight;
+		this.gridHeight = parseInt(newHeight);
 		this.init();
 	};
 
-	this.changeInterval = function (intervalTime) {
+	this.changeCellSize = function (newCellSize) {
+		this.cellSize = parseInt(newCellSize);
+		this.init();
+	};
+
+	this.changeIntervalTime = function (intervalTime) {
 		this.stop();
-		this.intervalTime = intervalTime;
+		this.intervalTime = parseInt(intervalTime);
 		this.start();
 	};
 
