@@ -23,76 +23,76 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	$('export').onclick = () => grid.exportJson($('importExport'));
 });
 
-function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
+function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	this.canvas = canvas;
 	this.context2D = canvas.getContext('2d');
 
 	this.gridWidth    = gridWidth;
 	this.gridHeight   = gridHeight;
-	this.dotSize      = dotSize;
+	this.cellSize     = cellSize;
 	this.intervalTime = intervalTime;
 
-	this.dotArray = [];
-	this.dotArrayFlat = [];
+	this.cellArray = [];
+	this.cellArrayFlat = [];
 	this.interval = null;
 
 	this.context2D.fillStyle = '#000000';
 
 	this.get = function (y, x) {
-		return this.dotArray[y][x];
+		return this.cellArray[y][x];
 	};
 
 	this.init = function () {
-		this.dotArray = [];
-		this.dotArrayFlat = [];
+		this.cellArray = [];
+		this.cellArrayFlat = [];
 
-		this.canvas.setAttribute('height', this.gridHeight * (this.dotSize+1));
-		this.canvas.setAttribute('width', this.gridWidth * (this.dotSize+1));
+		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize+1));
+		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize+1));
 
 		$('gridHeight').value = this.gridHeight;
 		$('gridWidth').value = this.gridWidth;
 
 		for (let y = 0; y < this.gridHeight; y++) {
-			this.dotArray[y] = [];
+			this.cellArray[y] = [];
 			for (let x = 0; x < this.gridWidth; x++) {
-				this.dotArray[y][x] = new Dot(x, y, this);
+				this.cellArray[y][x] = new Cell(x, y, this);
 			}
 		}
 
-		// second loop is necessary, cause neighbors can only be fetched AFTER all dots were created
+		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
 		for (let y = 0; y < this.gridHeight; y++) {
 			for (let x = 0; x < this.gridWidth; x++) {
-				this.dotArrayFlat.push(this.dotArray[y][x]);
-				this.dotArray[y][x].draw();
-				this.dotArray[y][x].initNeighbors();
+				this.cellArrayFlat.push(this.cellArray[y][x]);
+				this.cellArray[y][x].draw();
+				this.cellArray[y][x].initNeighbors();
 			}
 		}
 	};
 
 	this.randomize = function () {
-		let dot, dotsNew = [];
-		while (dot = this.dotArrayFlat.pop()) {
-			dot.alive = Math.round(Math.random());
-			dot.draw();
-			dotsNew.push(dot);
+		let cell, cellsNew = [];
+		while (cell = this.cellArrayFlat.pop()) {
+			cell.alive = Math.round(Math.random());
+			cell.draw();
+			cellsNew.push(cell);
 		}
-		this.dotArrayFlat = dotsNew;
+		this.cellArrayFlat = cellsNew;
 	};
 
 	this.doStep = function () {
-		this.dotArrayFlat
-			// collect dots that need to be toggled
-			.filter(dot => {
-				let livingNeighborCount = dot.neighbors.filter(neighbor => neighbor.alive).length;
-				if (!dot.alive) {
+		this.cellArrayFlat
+			// collect cells that need to be toggled
+			.filter(cell => {
+				let livingNeighborCount = cell.neighbors.filter(neighbor => neighbor.alive).length;
+				if (!cell.alive) {
 					return livingNeighborCount === 3;
 				}
 				return (livingNeighborCount < 2 || livingNeighborCount > 3);
 			})
 			// toggle them
-			.forEach(dot => {
-				dot.alive = !dot.alive;
-				dot.draw();
+			.forEach(cell => {
+				cell.alive = !cell.alive;
+				cell.draw();
 			})
 	};
 
@@ -113,8 +113,8 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 		for (y = 0; y < yMax; y++) {
 			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length;
 			for (x = 0; x < xMax; x++) {
-				this.dotArray[y][x].alive = data[y][x];
-				this.dotArray[y][x].draw();
+				this.cellArray[y][x].alive = data[y][x];
+				this.cellArray[y][x].draw();
 			}
 		}
 	};
@@ -125,14 +125,14 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 
 	this.exportJson = function (element) {
 		let simpleGrid = [];
-		let dot, row, gridTmp = this.dotArray.slice();
+		let cell, row, gridTmp = this.cellArray.slice();
 		while (row = gridTmp.pop()) {
 			row = row.slice();
-			while (dot = row.pop()) {
-				if (!simpleGrid[dot.y]) {
-					simpleGrid[dot.y] = [];
+			while (cell = row.pop()) {
+				if (!simpleGrid[cell.y]) {
+					simpleGrid[cell.y] = [];
 				}
-				simpleGrid[dot.y][dot.x] = dot.alive ? 1 : 0;
+				simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0;
 			}
 		}
 
@@ -169,15 +169,15 @@ function Grid(canvas, gridWidth, gridHeight, dotSize, intervalTime) {
 }
 
 
-function Dot(x, y, grid) {
+function Cell(x, y, grid) {
 
 	// x + y in grid
 	this.x = x;
 	this.y = y;
 
 	// x + y on screen
-	this.xPos = x * (grid.dotSize+1);
-	this.yPos = y * (grid.dotSize+1);
+	this.xPos = x * (grid.cellSize+1);
+	this.yPos = y * (grid.cellSize+1);
 
 	this.grid = grid;
 	this.alive = false;
@@ -202,8 +202,8 @@ function Dot(x, y, grid) {
 
 	this.draw = function () {
 		this.alive ?
-			this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.dotSize, this.grid.dotSize) :
-			this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.dotSize, this.grid.dotSize);
+			this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize) :
+			this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize);
 	}
 
 }
