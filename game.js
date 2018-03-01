@@ -4,17 +4,17 @@ function $(id) {
 	return document.getElementById(id);
 }
 
-document.addEventListener("DOMContentLoaded", function(event) {
-	const grid = new Grid($('canvas'), 400, 300, 2, 1);
+document.addEventListener("DOMContentLoaded", (event) => {
+	const grid = new Grid($('canvas'), 64, 64, 10, 1);
     grid.init();
 
 	$('start').onclick     = () => grid.start();
 	$('stop').onclick      = () => grid.stop();
 	$('step').onclick      = () => grid.doStep();
-	$('gliderGun').onclick = () => grid.loadPattern('glider-gun');
 	$('randomize').onclick = () => grid.randomize();
 	$('reset').onclick     = () => grid.init();
 
+	$('pattern').onchange      = (event) => grid.loadPattern(event.srcElement.value);
 	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value);
 	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value);
 	$('cellSize').onchange     = (event) => grid.changeCellSize(event.srcElement.value);
@@ -92,7 +92,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	};
 
 	this.loadPattern = function (name) {
-		jQuery.getJSON(`patterns/${name}.json`, (json) => {
+		if (name) jQuery.getJSON(`patterns/${name}.json`, (json) => {
 			this.setData(json);
 		});
 	};
