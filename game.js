@@ -43,40 +43,33 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	};
 
 	this.init = function () {
-		this.cellArray = [];
-		this.cellArrayFlat = [];
-
 		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize+1));
 		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize+1));
-
 		$('gridHeight').value = this.gridHeight;
 		$('gridWidth').value = this.gridWidth;
+
+		this.cellArray = [];
+		this.cellArrayFlat = [];
 
 		for (let y = 0; y < this.gridHeight; y++) {
 			this.cellArray[y] = [];
 			for (let x = 0; x < this.gridWidth; x++) {
-				this.cellArray[y][x] = new Cell(x, y, this);
+				let cell = new Cell(x, y, this);
+				this.cellArray[y][x] = cell;
+				this.cellArrayFlat.push(cell);
+				cell.draw();
 			}
 		}
 
 		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
-		for (let y = 0; y < this.gridHeight; y++) {
-			for (let x = 0; x < this.gridWidth; x++) {
-				this.cellArrayFlat.push(this.cellArray[y][x]);
-				this.cellArray[y][x].draw();
-				this.cellArray[y][x].initNeighbors();
-			}
-		}
+		this.cellArrayFlat.forEach(cell => cell.initNeighbors());
 	};
 
 	this.randomize = function () {
-		let cell, cellsNew = [];
-		while (cell = this.cellArrayFlat.pop()) {
+		this.cellArrayFlat.forEach(cell => {
 			cell.alive = Math.round(Math.random());
 			cell.draw();
-			cellsNew.push(cell);
-		}
-		this.cellArrayFlat = cellsNew;
+		});
 	};
 
 	this.doStep = function () {
@@ -96,20 +89,14 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			})
 	};
 
-	this.setJson = function (jsonString) {
-		this.setData(JSON.parse(jsonString));
-	};
-
 	this.loadPattern = function (name) {
-		let that = this;
-		jQuery.getJSON("patterns/" + name + ".json", function (json) {
-			that.setData(json);
+		jQuery.getJSON(`patterns/${name}.json`, (json) => {
+			this.setData(json);
 		});
 	};
 
 	this.setData = function (data) {
 		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length;
-
 		for (y = 0; y < yMax; y++) {
 			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length;
 			for (x = 0; x < xMax; x++) {
@@ -120,7 +107,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	};
 
 	this.importJson = function (element) {
-		this.setJson(element.value);
+		this.setData(JSON.parse(element.value));
 	};
 
 	this.exportJson = function (element) {
@@ -135,7 +122,6 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 				simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0;
 			}
 		}
-
 		element.value = JSON.stringify(simpleGrid);
 	};
 
@@ -167,7 +153,6 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		window.clearInterval(this.interval);
 	}
 }
-
 
 function Cell(x, y, grid) {
 
@@ -205,5 +190,4 @@ function Cell(x, y, grid) {
 			this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize) :
 			this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize);
 	}
-
 }
