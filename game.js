@@ -11,8 +11,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	$('start').onclick     = () => grid.start();
 	$('stop').onclick      = () => grid.stop();
 	$('step').onclick      = () => grid.doStep();
-	$('randomize').onclick = () => grid.randomize();
 	$('reset').onclick     = () => grid.init();
+	$('randomize').onclick = () => grid.randomize();
 
 	$('pattern').onchange      = (event) => grid.loadPattern(event.srcElement.value);
 	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value);
@@ -22,6 +22,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 	$('import').onclick = () => grid.importJson($('importExport'));
 	$('export').onclick = () => grid.exportJson($('importExport'));
+
+	document.addEventListener("keydown", (event) => {
+		switch (event.key) {
+			case "s": grid.startStop(); break;
+			case "t": grid.doStep(); break;
+			case "r": grid.init(); break;
+			case "a": grid.randomize(); break;
+		}
+	});
 });
 
 function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
@@ -49,6 +58,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		$('gridHeight').value = this.gridHeight;
 		$('gridWidth').value = this.gridWidth;
 		$('cellSize').value = this.cellSize;
+		$('intervalTime').value = this.intervalTime;
 
 		this.cellArray = [];
 		this.cellArrayFlat = [];
@@ -124,7 +134,10 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 				simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0;
 			}
 		}
-		element.value = JSON.stringify(simpleGrid);
+		element.value = JSON.stringify(simpleGrid)
+			.replace(/],/g, '],\n')
+			.replace('[[', '[\n[')
+			.replace(']]', ']\n]');
 	};
 
 	this.changeWidth = function (newWidth) {
@@ -148,6 +161,10 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.start();
 	};
 
+	this.startStop = function () {
+		this.interval ? this.stop() : this.start();
+	};
+
 	this.start = function () {
 		$('start').style.display = 'none';
 		$('stop').style.display = 'initial';
@@ -158,6 +175,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		$('start').style.display = 'initial';
 		$('stop').style.display = 'none';
 		window.clearInterval(this.interval);
+		delete this.interval;
 	}
 }
 
