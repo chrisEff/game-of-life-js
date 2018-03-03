@@ -48,6 +48,12 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.context2D.fillStyle = '#000000';
 
+	this.canvas.onclick = (event) => {
+		const cell = this.get(Math.floor(event.offsetY / (cellSize+1)), Math.floor(event.offsetX / (cellSize+1)));
+		cell.alive = !cell.alive;
+		cell.draw();
+	};
+
 	this.get = function (y, x) {
 		return this.cellArray[y][x];
 	};
