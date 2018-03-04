@@ -174,18 +174,24 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	};
 
 	this.changeWidth = function (newWidth) {
+		let exported = this.exportGrid();
 		this.gridWidth = parseInt(newWidth);
 		this.init();
+		this.importGrid(exported);
 	};
 
 	this.changeHeight = function (newHeight) {
+		let exported = this.exportGrid();
 		this.gridHeight = parseInt(newHeight);
 		this.init();
+		this.importGrid(exported);
 	};
 
 	this.changeCellSize = function (newCellSize) {
+		let exported = this.exportGrid();
 		this.cellSize = parseInt(newCellSize);
 		this.init();
+		this.importGrid(exported);
 	};
 
 	this.changeIntervalTime = function (intervalTime) {
