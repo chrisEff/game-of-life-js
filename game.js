@@ -73,15 +73,25 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.cellArray = [];
 		this.cellArrayFlat = [];
 
+		this.context2D.strokeStyle = "#EEEEEE";
 		for (let y = 0; y < this.gridHeight; y++) {
+			if (y % 5 === 0) {
+				this.context2D.moveTo(0, y * (this.cellSize+1));
+				this.context2D.lineTo(this.gridWidth * (this.cellSize+1), y * (this.cellSize+1));
+			}
 			this.cellArray[y] = [];
 			for (let x = 0; x < this.gridWidth; x++) {
+				if (y === 0 && x % 5 === 0) {
+					this.context2D.moveTo(x * (this.cellSize+1), 0);
+					this.context2D.lineTo(x * (this.cellSize+1), this.gridHeight * (this.cellSize+1));
+				}
 				let cell = new Cell(x, y, this);
 				this.cellArray[y][x] = cell;
 				this.cellArrayFlat.push(cell);
 				cell.draw();
 			}
 		}
+		this.context2D.stroke();
 
 		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors());
