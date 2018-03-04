@@ -126,11 +126,11 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.loadPattern = function (name) {
 		if (name) jQuery.getJSON(`patterns/${name}.json`, (json) => {
-			this.importObject(json);
+			this.importGrid(json);
 		});
 	};
 
-	this.importObject = function (data) {
+	this.importGrid = function (data) {
 		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length;
 		for (y = 0; y < yMax; y++) {
 			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length;
@@ -141,40 +141,36 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 	};
 
-	this.exportObject = function () {
+	this.exportGrid = function () {
 		let simpleGrid = [];
-		let cell, row, gridTmp = this.cellArray.slice();
-		while (row = gridTmp.pop()) {
-			row = row.slice();
-			while (cell = row.pop()) {
-				if (!simpleGrid[cell.y]) {
-					simpleGrid[cell.y] = [];
-				}
-				simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0;
+		this.cellArrayFlat.forEach(cell => {
+			if (!simpleGrid[cell.y]) {
+				simpleGrid[cell.y] = [];
 			}
-		}
+			simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0;
+		});
 		return simpleGrid;
 	};
 
 	this.importJson = function (element) {
-		this.importObject(JSON.parse(element.value));
+		this.importGrid(JSON.parse(element.value));
 	};
 
 	this.exportJson = function (element) {
-		element.value = JSON.stringify(this.exportObject())
+		element.value = JSON.stringify(this.exportGrid())
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]');
 	};
 
 	this.hflip = function () {
-		let exported = this.exportObject();
+		let exported = this.exportGrid();
 		exported.forEach(e => e.reverse());
-		this.importObject(exported);
+		this.importGrid(exported);
 	};
 
 	this.vflip = function () {
-		this.importObject(this.exportObject().reverse());
+		this.importGrid(this.exportGrid().reverse());
 	};
 
 	this.changeWidth = function (newWidth) {
