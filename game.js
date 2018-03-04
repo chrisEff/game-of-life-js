@@ -16,7 +16,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	$('reset').onclick     = () => grid.init();
 	$('randomize').onclick = () => grid.randomize();
 
-	$('pattern').onchange      = (event) => grid.loadPattern(event.srcElement.value);
+	Array.from(document.getElementsByClassName('pattern')).forEach(
+		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
+	);
+
 	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value);
 	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value);
 	$('cellSize').onchange     = (event) => grid.changeCellSize(event.srcElement.value);
