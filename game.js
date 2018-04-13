@@ -131,9 +131,9 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.importGrid = (data) => {
 		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length
-		for (y = 0; y < yMax; y++) {
+		for (let y = 0; y < yMax; y++) {
 			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length
-			for (x = 0; x < xMax; x++) {
+			for (let x = 0; x < xMax; x++) {
 				this.cellArray[y][x].alive = data[y][x]
 				this.cellArray[y][x].draw()
 			}
