@@ -1,8 +1,6 @@
 jQuery.noConflict();
 
-function $(id) {
-	return document.getElementById(id);
-}
+const $ = (id) => document.getElementById(id);
 
 document.addEventListener("DOMContentLoaded", (event) => {
 	const grid = new Grid($('canvas'), 64, 64, 10, 1);
@@ -62,11 +60,11 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		cell.draw();
 	};
 
-	this.get = function (y, x) {
+	this.get = (y, x) => {
 		return this.cellArray[y][x];
 	};
 
-	this.init = function () {
+	this.init = () => {
 		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize+1));
 		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize+1));
 		$('gridHeight').value = this.gridHeight;
@@ -101,14 +99,14 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors());
 	};
 
-	this.randomize = function () {
+	this.randomize = () => {
 		this.cellArrayFlat.forEach(cell => {
 			cell.alive = Math.round(Math.random());
 			cell.draw();
 		});
 	};
 
-	this.doStep = function () {
+	this.doStep = () => {
 		this.cellArrayFlat
 			// collect cells that need to be toggled
 			.filter(cell => {
@@ -125,13 +123,13 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			})
 	};
 
-	this.loadPattern = function (name) {
+	this.loadPattern = (name) => {
 		if (name) jQuery.getJSON(`patterns/${name}.json`, (json) => {
 			this.importGrid(json);
 		});
 	};
 
-	this.importGrid = function (data) {
+	this.importGrid = (data) => {
 		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length;
 		for (y = 0; y < yMax; y++) {
 			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length;
@@ -142,7 +140,7 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 	};
 
-	this.exportGrid = function () {
+	this.exportGrid = () => {
 		let simpleGrid = [];
 		this.cellArrayFlat.forEach(cell => {
 			if (!simpleGrid[cell.y]) {
@@ -153,28 +151,28 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		return simpleGrid;
 	};
 
-	this.importJson = function (element) {
+	this.importJson = (element) => {
 		this.importGrid(JSON.parse(element.value));
 	};
 
-	this.exportJson = function (element) {
+	this.exportJson = (element) => {
 		element.value = JSON.stringify(this.exportGrid())
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]');
 	};
 
-	this.hflip = function () {
+	this.hflip = () => {
 		let exported = this.exportGrid();
 		exported.forEach(e => e.reverse());
 		this.importGrid(exported);
 	};
 
-	this.vflip = function () {
+	this.vflip = () => {
 		this.importGrid(this.exportGrid().reverse());
 	};
 
-	this.rotate = function () {
+	this.rotate = () => {
 		let eported = this.exportGrid();
 		this.importGrid(
 			eported[0].map((column, index) => (
@@ -183,44 +181,44 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		);
 	};
 
-	this.changeWidth = function (newWidth) {
+	this.changeWidth = (newWidth) => {
 		let exported = this.exportGrid();
 		this.gridWidth = parseInt(newWidth);
 		this.init();
 		this.importGrid(exported);
 	};
 
-	this.changeHeight = function (newHeight) {
+	this.changeHeight = (newHeight) => {
 		let exported = this.exportGrid();
 		this.gridHeight = parseInt(newHeight);
 		this.init();
 		this.importGrid(exported);
 	};
 
-	this.changeCellSize = function (newCellSize) {
+	this.changeCellSize = (newCellSize) => {
 		let exported = this.exportGrid();
 		this.cellSize = parseInt(newCellSize);
 		this.init();
 		this.importGrid(exported);
 	};
 
-	this.changeIntervalTime = function (intervalTime) {
+	this.changeIntervalTime = (intervalTime) => {
 		this.stop();
 		this.intervalTime = parseInt(intervalTime);
 		this.start();
 	};
 
-	this.startStop = function () {
+	this.startStop = () => {
 		this.interval ? this.stop() : this.start();
 	};
 
-	this.start = function () {
+	this.start = () => {
 		$('start').style.display = 'none';
 		$('stop').style.display = 'initial';
 		this.interval = window.setInterval(() => this.doStep(), this.intervalTime);
 	};
 
-	this.stop = function () {
+	this.stop = () => {
 		$('start').style.display = 'initial';
 		$('stop').style.display = 'none';
 		window.clearInterval(this.interval);
@@ -241,7 +239,7 @@ function Cell(x, y, grid) {
 	this.grid = grid;
 	this.alive = false;
 
-	this.initNeighbors = function () {
+	this.initNeighbors = () => {
 		this.neighbors = [];
 		if (this.y > 0) {
 			if (this.x > 0) this.neighbors.push(this.grid.get(this.y - 1, this.x - 1));
@@ -259,7 +257,7 @@ function Cell(x, y, grid) {
 		}
 	};
 
-	this.draw = function () {
+	this.draw = () => {
 		this.alive ?
 			this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize) :
 			this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize);
