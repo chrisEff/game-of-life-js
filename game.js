@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 	$('step').onclick      = () => grid.doStep();
 	$('hflip').onclick     = () => grid.hflip();
 	$('vflip').onclick     = () => grid.vflip();
+	$('rotate').onclick    = () => grid.rotate();
 	$('reset').onclick     = () => grid.init();
 	$('randomize').onclick = () => grid.randomize();
 
@@ -171,6 +172,15 @@ function Grid(canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.vflip = function () {
 		this.importGrid(this.exportGrid().reverse());
+	};
+
+	this.rotate = function () {
+		let eported = this.exportGrid();
+		this.importGrid(
+			eported[0].map((column, index) => (
+				eported.map(row => row[index])
+			))
+		);
 	};
 
 	this.changeWidth = function (newWidth) {
