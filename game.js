@@ -247,7 +247,10 @@ function Cell (x, y, grid) {
 			{x: x + 1, y: y},
 			{x: x + 1, y: y + 1},
 		].forEach(coords => {
-			try { this.neighbors.push(this.grid.get(coords.y, coords.x)) } catch (ignore) {}
+			try {
+				let neighbor = this.grid.get(coords.y, coords.x)
+				if (neighbor) this.neighbors.push(neighbor)
+			} catch (ignore) {}
 		})
 	}
 
