@@ -49,6 +49,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	this.intervalTime = intervalTime
 
 	this.cellArray = []
+	/** @var {Cell[]} */
 	this.cellArrayFlat = []
 	this.interval = null
 
@@ -229,10 +230,9 @@ function Cell (x, y, grid) {
 	this.y = y
 
 	// x + y on screen
-	this.xPos = x * (grid.cellSize + 1)
-	this.yPos = y * (grid.cellSize + 1)
-
-	this.grid = grid
+	const xPos = x * (grid.cellSize + 1)
+	const yPos = y * (grid.cellSize + 1)
+	
 	this.alive = false
 
 	this.initNeighbors = () => {
@@ -248,7 +248,7 @@ function Cell (x, y, grid) {
 			{x: x + 1, y: y + 1},
 		].forEach(coords => {
 			try {
-				let neighbor = this.grid.get(coords.y, coords.x)
+				let neighbor = grid.get(coords.y, coords.x)
 				if (neighbor) this.neighbors.push(neighbor)
 			} catch (ignore) {}
 		})
@@ -256,7 +256,7 @@ function Cell (x, y, grid) {
 
 	this.draw = () => {
 		this.alive
-			? this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
-			: this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
+			? grid.context2D.fillRect(xPos, yPos, grid.cellSize, grid.cellSize)
+			: grid.context2D.clearRect(xPos, yPos, grid.cellSize, grid.cellSize)
 	}
 }
