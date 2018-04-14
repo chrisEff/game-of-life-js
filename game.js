@@ -236,21 +236,19 @@ function Cell (x, y, grid) {
 	this.alive = false
 
 	this.initNeighbors = () => {
-		this.neighbors = []
-		if (this.y > 0) {
-			if (this.x > 0) this.neighbors.push(this.grid.get(this.y - 1, this.x - 1))
-			this.neighbors.push(this.grid.get(this.y - 1, this.x))
-			if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y - 1, this.x + 1))
-		}
-
-		if (this.x > 0) this.neighbors.push(this.grid.get(this.y, this.x - 1))
-		if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y, this.x + 1))
-
-		if ((this.y + 1) < this.grid.gridHeight) {
-			if (this.x > 0) this.neighbors.push(this.grid.get(this.y + 1, this.x - 1))
-			this.neighbors.push(this.grid.get(this.y + 1, this.x))
-			if ((this.x + 1) < this.grid.gridWidth) this.neighbors.push(this.grid.get(this.y + 1, this.x + 1))
-		}
+		this.neighbors = [];
+		[
+			{x: x - 1, y: y - 1},
+			{x: x - 1, y: y},
+			{x: x - 1, y: y + 1},
+			{x: x, y: y - 1},
+			{x: x, y: y + 1},
+			{x: x + 1, y: y - 1},
+			{x: x + 1, y: y},
+			{x: x + 1, y: y + 1},
+		].forEach(coords => {
+			try { this.neighbors.push(this.grid.get(coords.y, coords.x)) } catch (ignore) {}
+		})
 	}
 
 	this.draw = () => {
