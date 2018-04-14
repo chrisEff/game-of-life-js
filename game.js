@@ -3,7 +3,7 @@ jQuery.noConflict()
 const $ = (id) => document.getElementById(id)
 
 document.addEventListener('DOMContentLoaded', (event) => {
-	const grid = new Grid($('canvas'), 64, 64, 10, 1)
+	const grid = new Grid($('canvas'), 64, 64, 5, 1)
 	grid.init()
 
 	$('start').onclick     = () => grid.start()
@@ -111,10 +111,9 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			// collect cells that need to be toggled
 			.filter(cell => {
 				let livingNeighborCount = cell.neighbors.filter(neighbor => neighbor.alive).length
-				if (!cell.alive) {
-					return livingNeighborCount === 3
-				}
-				return (livingNeighborCount < 2 || livingNeighborCount > 3)
+				return (!cell.alive)
+					? livingNeighborCount === 3
+					: (livingNeighborCount < 2 || livingNeighborCount > 3)
 			})
 			// toggle them
 			.forEach(cell => {
@@ -130,12 +129,10 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	}
 
 	this.importGrid = (data) => {
-		let yMax = data.length > this.gridHeight ? this.gridHeight : data.length
-		for (let y = 0; y < yMax; y++) {
-			let xMax = (data[y].length > this.gridWidth) ? this.gridWidth : data[y].length
-			for (let x = 0; x < xMax; x++) {
-				this.cellArray[y][x].alive = data[y][x]
-				this.cellArray[y][x].draw()
+		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
+			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
+				this.get(y, x).alive = data[y][x]
+				this.get(y, x).draw()
 			}
 		}
 	}
