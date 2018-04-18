@@ -1,5 +1,3 @@
-jQuery.noConflict()
-
 const $ = (id) => document.getElementById(id)
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -133,10 +131,11 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			})
 	}
 
-	this.loadPattern = (name) => {
-		if (name) jQuery.getJSON(`patterns/${name}.json`, (json) => {
-			this.importGrid(json)
-		})
+	this.loadPattern = async (name) => {
+		if (name) {
+			const response = await fetch(`patterns/${name}.json`)
+			this.importGrid(await response.json())
+		}
 	}
 
 	this.importGrid = (data) => {
