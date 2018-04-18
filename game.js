@@ -6,14 +6,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const grid = new Grid($('canvas'), 64, 64, 5, 1)
 	grid.init()
 
-	$('start').onclick     = () => grid.start()
-	$('stop').onclick      = () => grid.stop()
-	$('step').onclick      = () => grid.doStep()
-	$('hflip').onclick     = () => grid.hflip()
-	$('vflip').onclick     = () => grid.vflip()
-	$('rotate').onclick    = () => grid.rotate()
-	$('reset').onclick     = () => grid.init()
-	$('randomize').onclick = () => grid.randomize()
+	const keymap = {
+		s: grid.startStop,
+		t: grid.doStep,
+		h: grid.hflip,
+		v: grid.vflip,
+		o: grid.rotate,
+		r: grid.init,
+		a: grid.randomize,
+		ArrowDown:  grid.shiftDown,
+		ArrowUp:    grid.shiftUp,
+		ArrowLeft:  grid.shiftLeft,
+		ArrowRight: grid.shiftRight,
+	}
+
+	$('start').onclick     = grid.start
+	$('stop').onclick      = grid.stop
+	$('step').onclick      = grid.doStep
+	$('hflip').onclick     = grid.hflip
+	$('vflip').onclick     = grid.vflip
+	$('rotate').onclick    = grid.rotate
+	$('reset').onclick     = grid.init
+	$('randomize').onclick = grid.randomize
 
 	Array.from(document.getElementsByClassName('pattern')).forEach(
 		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
@@ -28,13 +42,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('export').onclick = () => grid.exportJson($('importExport'))
 
 	document.addEventListener('keydown', (event) => {
-		switch (event.key) {
-			case 's': grid.startStop(); break
-			case 't': grid.doStep(); break
-			case 'r': grid.init(); break
-			case 'a': grid.randomize(); break
-			case 'h': grid.hflip(); break
-			case 'v': grid.vflip(); break
+		if (event.srcElement.tagName.toLowerCase() === 'body' && keymap.hasOwnProperty(event.key)) {
+			keymap[event.key]()
+			event.preventDefault()
 		}
 	})
 })
@@ -168,6 +178,34 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.vflip = () => {
 		this.importGrid(this.exportGrid().reverse())
+	}
+	
+	this.shiftUp = () => {
+		let exported = this.exportGrid()
+		exported.shift()
+		exported.push(new Array(this.gridWidth).fill(0))
+		this.importGrid(exported)
+	}
+	
+	this.shiftDown = () => {
+		let exported = this.exportGrid()
+		exported.unshift(new Array(this.gridWidth).fill(0))
+		this.importGrid(exported)
+	}
+
+	this.shiftLeft = () => {
+		let exported = this.exportGrid()
+		exported.forEach(row => {
+			row.shift()
+			row.push(0)
+		})
+		this.importGrid(exported)
+	}
+
+	this.shiftRight = () => {
+		let exported = this.exportGrid()
+		exported.forEach(row => row.unshift(0))
+		this.importGrid(exported)
 	}
 
 	this.rotate = () => {
