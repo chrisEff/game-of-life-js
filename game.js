@@ -1,7 +1,7 @@
 const $ = (id) => document.getElementById(id)
 
 document.addEventListener('DOMContentLoaded', (event) => {
-	const grid = new Grid($('canvas'), 64, 64, 5, 1)
+	const grid = new Grid($('canvas'), 128, 128, 4, 1)
 	grid.init()
 
 	const keymap = {
@@ -139,6 +139,10 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	}
 
 	this.importGrid = (data) => {
+		if ((data.length > this.gridHeight || data[0].length > this.gridWidth) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
+			if (data.length > this.gridHeight) this.changeHeight(data.length)
+			if (data[0].length > this.gridWidth) this.changeWidth(data[0].length)
+		}
 		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
 			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
 				this.get(y, x).alive = data[y][x]
