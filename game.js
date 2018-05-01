@@ -145,7 +145,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
 			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
-				this.get(y, x).alive = data[y][x]
+				this.get(y, x).alive = Boolean(data[y][x])
 				this.get(y, x).draw()
 			}
 		}
@@ -250,7 +250,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	this.start = () => {
 		$('start').style.display = 'none'
 		$('stop').style.display = 'initial'
-		this.interval = window.setInterval(() => this.doStep(), this.intervalTime)
+		this.interval = window.setInterval(this.doStep, this.intervalTime)
 	}
 
 	this.stop = () => {
