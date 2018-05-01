@@ -152,13 +152,8 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	}
 
 	this.exportGrid = () => {
-		let simpleGrid = []
-		this.cellArrayFlat.forEach(cell => {
-			if (!simpleGrid[cell.y]) {
-				simpleGrid[cell.y] = []
-			}
-			simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0
-		})
+		let simpleGrid = new Array(this.gridHeight).fill().map(() => new Array(this.gridWidth).fill(0))
+		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
 		return simpleGrid
 	}
 
