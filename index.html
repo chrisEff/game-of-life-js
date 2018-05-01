@@ -7,7 +7,7 @@
 	<script src="game.js"></script>
 </head>
 <body>
-	<div>
+	<div id="controls">
 		<button id="start">Start</button>
 		<button id="stop" style="display: none;">Stop</button>
 		<button id="step">sTep</button>
@@ -28,7 +28,9 @@
 		interval (ms):
 		<input id="intervalTime" type="number" min="1" max="500" value="1" />
 		<br/>
-
+	</div>
+	<br/>
+	<div id="patterns">
 		load pattern:
 		<button class="pattern">101</button>
 		<button class="pattern">acorn</button>
@@ -38,6 +40,14 @@
 		<button class="pattern">pentadecathlon-synthesis</button>
 		<button class="pattern">pulsar</button>
 	</div>
+	<br/>
+	<div id="benchmark">
+		Benchmark:
+		<button id="runBenchmark">run</button>
+		<input id="benchmarkSteps" type="number" min="1" value="1000" />
+		steps and take the time
+	</div>
+
 	<canvas id="canvas"></canvas>
 
 	<br/><br/>

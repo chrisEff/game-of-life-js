@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('reset').onclick     = grid.init
 	$('randomize').onclick = grid.randomize
 
+	$('runBenchmark').onclick = () => {
+		const steps = $('benchmarkSteps').value
+		const startTime = performance.now()
+		for (let i = 0; i < steps; i++) {
+			grid.doStep()
+		}
+		console.log(`Executing ${steps} steps took ${performance.now() - startTime}ms.`)
+	}
+
 	Array.from(document.getElementsByClassName('pattern')).forEach(
 		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
 	)
