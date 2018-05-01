@@ -138,8 +138,8 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 	}
 
-	this.importGrid = (data) => {
-		if ((data.length > this.gridHeight || data[0].length > this.gridWidth) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
+	this.importGrid = (data, allowResize = true) => {
+		if (allowResize && (data.length > this.gridHeight || data[0].length > this.gridWidth) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
 			if (data.length > this.gridHeight) this.changeHeight(data.length)
 			if (data[0].length > this.gridWidth) this.changeWidth(data[0].length)
 		}
@@ -176,24 +176,24 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 	this.hflip = () => {
 		let exported = this.exportGrid()
 		exported.forEach(e => e.reverse())
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.vflip = () => {
-		this.importGrid(this.exportGrid().reverse())
+		this.importGrid(this.exportGrid().reverse(), false)
 	}
 	
 	this.shiftUp = () => {
 		let exported = this.exportGrid()
 		exported.shift()
 		exported.push(new Array(this.gridWidth).fill(0))
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 	
 	this.shiftDown = () => {
 		let exported = this.exportGrid()
 		exported.unshift(new Array(this.gridWidth).fill(0))
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.shiftLeft = () => {
@@ -202,13 +202,13 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			row.shift()
 			row.push(0)
 		})
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.shiftRight = () => {
 		let exported = this.exportGrid()
 		exported.forEach(row => row.unshift(0))
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.rotate = () => {
@@ -216,7 +216,8 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.importGrid(
 			eported[0].map((column, index) => (
 				eported.map(row => row[index])
-			))
+			)),
+			false
 		)
 	}
 
@@ -224,21 +225,21 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		let exported = this.exportGrid()
 		this.gridWidth = parseInt(newWidth)
 		this.init()
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.changeHeight = (newHeight) => {
 		let exported = this.exportGrid()
 		this.gridHeight = parseInt(newHeight)
 		this.init()
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.changeCellSize = (newCellSize) => {
 		let exported = this.exportGrid()
 		this.cellSize = parseInt(newCellSize)
 		this.init()
-		this.importGrid(exported)
+		this.importGrid(exported, false)
 	}
 
 	this.changeIntervalTime = (intervalTime) => {
