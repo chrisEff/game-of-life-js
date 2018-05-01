@@ -74,7 +74,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.canvas.onclick = (event) => {
 		const cell = this.get(Math.floor(event.offsetY / (this.cellSize + 1)), Math.floor(event.offsetX / (this.cellSize + 1)))
-		cell.alive = !cell.alive
+		cell.setAlive(!cell.alive)
 		cell.draw()
 	}
 
@@ -119,7 +119,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 
 	this.randomize = () => {
 		this.cellArrayFlat.forEach(cell => {
-			cell.alive = Math.round(Math.random())
+			cell.setAlive(Boolean(Math.round(Math.random())))
 			cell.draw()
 		})
 	}
@@ -128,14 +128,13 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.cellArrayFlat
 			// collect cells that need to be toggled
 			.filter(cell => {
-				let livingNeighborCount = cell.neighbors.filter(neighbor => neighbor.alive).length
 				return (!cell.alive)
-					? livingNeighborCount === 3
-					: (livingNeighborCount < 2 || livingNeighborCount > 3)
+					? cell.livingNeighborCount === 3
+					: (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
 			})
 			// toggle them
 			.forEach(cell => {
-				cell.alive = !cell.alive
+				cell.setAlive(!cell.alive)
 				cell.draw()
 			})
 	}
@@ -154,7 +153,7 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
 			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
-				this.get(y, x).alive = Boolean(data[y][x])
+				this.get(y, x).setAlive(Boolean(data[y][x]))
 				this.get(y, x).draw()
 			}
 		}
@@ -280,6 +279,7 @@ function Cell (x, y, grid) {
 	const yPos = y * (grid.cellSize + 1)
 	
 	this.alive = false
+	this.livingNeighborCount = 0
 
 	this.initNeighbors = () => {
 		this.neighbors = [];
@@ -298,6 +298,18 @@ function Cell (x, y, grid) {
 				if (neighbor) this.neighbors.push(neighbor)
 			} catch (ignore) {}
 		})
+	}
+
+	this.setAlive = (value) => {
+		if (this.alive === value) {
+			return
+		}
+		this.alive = value
+		if (value) {
+			this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
+		} else {
+			this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
+		}
 	}
 
 	this.draw = () => {
