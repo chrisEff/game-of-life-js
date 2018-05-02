@@ -300,16 +300,14 @@ function Cell (x, y, grid) {
 		})
 	}
 
-	this.setAlive = (value) => {
-		if (this.alive === value) {
+	this.setAlive = (alive) => {
+		if (this.alive === alive) {
 			return
 		}
-		this.alive = value
-		if (value) {
-			this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
-		} else {
-			this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
-		}
+		this.alive = alive
+		this.alive
+			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
+			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
 	}
 
 	this.draw = () => {
