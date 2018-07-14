@@ -142,13 +142,13 @@ class Grid {
 		this.cellArrayFlat
 			// collect cells that need to be toggled
 			.filter(cell => {
-				return (!cell.alive)
-					? cell.livingNeighborCount === 3
-					: (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
+				return cell.alive
+					? (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
+					: cell.livingNeighborCount === 3
 			})
 			// toggle them
 			.forEach(cell => {
-				cell.setAlive(!cell.alive)
+				cell.toggle()
 				cell.draw()
 			})
 	}
@@ -327,6 +327,13 @@ class Cell {
 			return
 		}
 		this.alive = alive
+		this.alive
+			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
+			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
+	}
+
+	toggle () {
+		this.alive = !this.alive
 		this.alive
 			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
 			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
