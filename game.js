@@ -1,5 +1,14 @@
 const $ = (id) => document.getElementById(id)
 
+/**
+ * simplified version of auto-bind: https://www.npmjs.com/package/auto-bind
+ */
+const autoBind = (self) => {
+	Object.getOwnPropertyNames(self.constructor.prototype)
+		.filter(key => key !== 'constructor' && typeof self[key] === 'function')
+		.forEach(key => self[key] = self[key].bind(self))
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
 	const grid = new Grid($('canvas'), 128, 128, 4, 1)
 	grid.init()
@@ -56,33 +65,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	})
 })
 
-function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
-	this.canvas = canvas
-	this.context2D = canvas.getContext('2d')
+class Grid {
 
-	this.gridWidth    = gridWidth
-	this.gridHeight   = gridHeight
-	this.cellSize     = cellSize
-	this.intervalTime = intervalTime
+	constructor (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
+		this.canvas    = canvas
+		this.context2D = canvas.getContext('2d')
 
-	this.cellArray = []
-	/** @var {Cell[]} */
-	this.cellArrayFlat = []
-	this.interval = null
+		this.gridWidth    = gridWidth
+		this.gridHeight   = gridHeight
+		this.cellSize     = cellSize
+		this.intervalTime = intervalTime
 
-	this.context2D.fillStyle = '#000000'
+		this.cellArray = []
+		/** @var {Cell[]} */
+		this.cellArrayFlat = []
+		this.interval = null
 
-	this.canvas.onclick = (event) => {
-		const cell = this.get(Math.floor(event.offsetY / (this.cellSize + 1)), Math.floor(event.offsetX / (this.cellSize + 1)))
-		cell.setAlive(!cell.alive)
-		cell.draw()
+		this.context2D.fillStyle = '#000000'
+
+		this.canvas.onclick = (event) => {
+			const cell = this.get(Math.floor(event.offsetY / (this.cellSize + 1)), Math.floor(event.offsetX / (this.cellSize + 1)))
+			cell.setAlive(!cell.alive)
+			cell.draw()
+		}
+
+		autoBind(this)
 	}
 
-	this.get = (y, x) => {
+	get (y, x) {
 		return this.cellArray[y][x]
 	}
 
-	this.init = () => {
+	init () {
 		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize + 1))
 		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize + 1))
 		$('gridHeight').value = this.gridHeight
@@ -117,14 +131,14 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
 	}
 
-	this.randomize = () => {
+	randomize () {
 		this.cellArrayFlat.forEach(cell => {
 			cell.setAlive(Boolean(Math.round(Math.random())))
 			cell.draw()
 		})
 	}
 
-	this.doStep = () => {
+	doStep () {
 		this.cellArrayFlat
 			// collect cells that need to be toggled
 			.filter(cell => {
@@ -139,14 +153,14 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 			})
 	}
 
-	this.loadPattern = async (name) => {
+	async loadPattern (name) {
 		if (name) {
 			const response = await fetch(`patterns/${name}.json`)
 			this.importGrid(await response.json())
 		}
 	}
 
-	this.importGrid = (data, allowResize = true) => {
+	importGrid (data, allowResize = true) {
 		if (allowResize && (data.length > this.gridHeight || data[0].length > this.gridWidth) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
 			if (data.length > this.gridHeight) this.changeHeight(data.length)
 			if (data[0].length > this.gridWidth) this.changeWidth(data[0].length)
@@ -159,47 +173,47 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		}
 	}
 
-	this.exportGrid = () => {
+	exportGrid () {
 		let simpleGrid = new Array(this.gridHeight).fill().map(() => new Array(this.gridWidth).fill(0))
 		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
 		return simpleGrid
 	}
 
-	this.importJson = (element) => {
+	importJson (element) {
 		this.importGrid(JSON.parse(element.value))
 	}
 
-	this.exportJson = (element) => {
+	exportJson (element) {
 		element.value = JSON.stringify(this.exportGrid())
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]')
 	}
 
-	this.hflip = () => {
+	hflip () {
 		let exported = this.exportGrid()
 		exported.forEach(e => e.reverse())
 		this.importGrid(exported, false)
 	}
 
-	this.vflip = () => {
+	vflip () {
 		this.importGrid(this.exportGrid().reverse(), false)
 	}
 	
-	this.shiftUp = () => {
+	shiftUp () {
 		let exported = this.exportGrid()
 		exported.shift()
 		exported.push(new Array(this.gridWidth).fill(0))
 		this.importGrid(exported, false)
 	}
 	
-	this.shiftDown = () => {
+	shiftDown () {
 		let exported = this.exportGrid()
 		exported.unshift(new Array(this.gridWidth).fill(0))
 		this.importGrid(exported, false)
 	}
 
-	this.shiftLeft = () => {
+	shiftLeft () {
 		let exported = this.exportGrid()
 		exported.forEach(row => {
 			row.shift()
@@ -208,13 +222,13 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.importGrid(exported, false)
 	}
 
-	this.shiftRight = () => {
+	shiftRight () {
 		let exported = this.exportGrid()
 		exported.forEach(row => row.unshift(0))
 		this.importGrid(exported, false)
 	}
 
-	this.rotate = () => {
+	rotate () {
 		let eported = this.exportGrid()
 		this.importGrid(
 			eported[0].map((column, index) => (
@@ -224,83 +238,91 @@ function Grid (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		)
 	}
 
-	this.changeWidth = (newWidth) => {
+	changeWidth (newWidth) {
 		let exported = this.exportGrid()
 		this.gridWidth = parseInt(newWidth)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
-	this.changeHeight = (newHeight) => {
+	changeHeight (newHeight) {
 		let exported = this.exportGrid()
 		this.gridHeight = parseInt(newHeight)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
-	this.changeCellSize = (newCellSize) => {
+	changeCellSize (newCellSize) {
 		let exported = this.exportGrid()
 		this.cellSize = parseInt(newCellSize)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
-	this.changeIntervalTime = (intervalTime) => {
+	changeIntervalTime (intervalTime) {
 		this.stop()
 		this.intervalTime = parseInt(intervalTime)
 		this.start()
 	}
 
-	this.startStop = () => {
+	startStop () {
 		this.interval ? this.stop() : this.start()
 	}
 
-	this.start = () => {
+	start () {
 		$('start').style.display = 'none'
 		$('stop').style.display = 'initial'
 		this.interval = window.setInterval(this.doStep, this.intervalTime)
 	}
 
-	this.stop = () => {
+	stop () {
 		$('start').style.display = 'initial'
 		$('stop').style.display = 'none'
 		window.clearInterval(this.interval)
 		delete this.interval
 	}
+
 }
 
-function Cell (x, y, grid) {
-	// x + y in grid
-	this.x = x
-	this.y = y
+class Cell {
 
-	// x + y on screen
-	const xPos = x * (grid.cellSize + 1)
-	const yPos = y * (grid.cellSize + 1)
-	
-	this.alive = false
-	this.livingNeighborCount = 0
+	constructor (x, y, grid) {
+		this.grid = grid
 
-	this.initNeighbors = () => {
+		// x + y in grid
+		this.x = x
+		this.y = y
+
+		// x + y on screen
+		this.xPos = x * (grid.cellSize + 1)
+		this.yPos = y * (grid.cellSize + 1)
+
+		this.alive = false
+		this.livingNeighborCount = 0
+
+		autoBind(this)
+	}
+
+	initNeighbors () {
 		this.neighbors = [];
 		[
-			{x: x - 1, y: y - 1},
-			{x: x - 1, y: y},
-			{x: x - 1, y: y + 1},
-			{x: x, y: y - 1},
-			{x: x, y: y + 1},
-			{x: x + 1, y: y - 1},
-			{x: x + 1, y: y},
-			{x: x + 1, y: y + 1},
+			{x: this.x - 1, y: this.y - 1},
+			{x: this.x - 1, y: this.y},
+			{x: this.x - 1, y: this.y + 1},
+			{x: this.x,     y: this.y - 1},
+			{x: this.x,     y: this.y + 1},
+			{x: this.x + 1, y: this.y - 1},
+			{x: this.x + 1, y: this.y},
+			{x: this.x + 1, y: this.y + 1},
 		].forEach(coords => {
 			try {
-				let neighbor = grid.get(coords.y, coords.x)
+				let neighbor = this.grid.get(coords.y, coords.x)
 				if (neighbor) this.neighbors.push(neighbor)
 			} catch (ignore) {}
 		})
 	}
 
-	this.setAlive = (alive) => {
+	setAlive (alive) {
 		if (this.alive === alive) {
 			return
 		}
@@ -310,9 +332,10 @@ function Cell (x, y, grid) {
 			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
 	}
 
-	this.draw = () => {
+	draw () {
 		this.alive
-			? grid.context2D.fillRect(xPos, yPos, grid.cellSize, grid.cellSize)
-			: grid.context2D.clearRect(xPos, yPos, grid.cellSize, grid.cellSize)
+			? this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
+			: this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
 	}
+
 }
