@@ -10,7 +10,13 @@ const autoBind = (self) => {
 }
 
 document.addEventListener('DOMContentLoaded', (event) => {
-	const grid = new Grid($('canvas'), 128, 128, 4, 1)
+	const grid = new Grid(
+		$('canvas'),
+		window.localStorage.gridWidth || 128,
+		window.localStorage.gridHeight || 128,
+		window.localStorage.cellSize || 4,
+		window.localStorage.intervalTime || 1
+	)
 	grid.init()
 
 	const keymap = {
@@ -240,28 +246,28 @@ class Grid {
 
 	changeWidth (newWidth) {
 		let exported = this.exportGrid()
-		this.gridWidth = parseInt(newWidth)
+		window.localStorage.gridWidth = this.gridWidth = parseInt(newWidth)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
 	changeHeight (newHeight) {
 		let exported = this.exportGrid()
-		this.gridHeight = parseInt(newHeight)
+		window.localStorage.gridHeight = this.gridHeight = parseInt(newHeight)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
 	changeCellSize (newCellSize) {
 		let exported = this.exportGrid()
-		this.cellSize = parseInt(newCellSize)
+		window.localStorage.cellSize = this.cellSize = parseInt(newCellSize)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
 	changeIntervalTime (intervalTime) {
 		this.stop()
-		this.intervalTime = parseInt(intervalTime)
+		window.localStorage.intervalTime = this.intervalTime = parseInt(intervalTime)
 		this.start()
 	}
 
