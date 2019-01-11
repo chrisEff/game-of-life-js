@@ -1,44 +1,6 @@
 {
-	"extends": "standard",
+	"extends": "@chriseff",
 	"env": {
 		"browser": true
-	},
-	"rules": {
-		"indent": [
-			"error",
-			"tab",
-			{ "SwitchCase": 1 }
-		],
-		"no-tabs": "off",
-		"no-multiple-empty-lines": "off",
-		"no-trailing-spaces": [
-			"error",
-			{
-				"skipBlankLines": true
-			}
-		],
-		"prefer-arrow-callback": "error",
-		"no-multi-spaces": "off",
-		"key-spacing": [
-			"error",
-			{
-				"beforeColon": false,
-				"afterColon": true,
-				"mode": "minimum"
-			}
-		],
-		"comma-dangle": [
-			"error",
-			"always-multiline"
-		],
-		"padded-blocks": [
-			"error",
-			{
-				"classes": "always",
-				"blocks": "never",
-				"switches": "never"
-			}
-		],
-		"no-return-assign": "off"
 	}
 }

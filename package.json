@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/chrisEff/game-of-life-js#readme",
   "devDependencies": {
+    "@chriseff/eslint-config": "^1.0.2",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-plugin-import": "^2.11.0",
