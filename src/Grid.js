@@ -198,10 +198,6 @@ export default class Grid {
 		this.start()
 	}
 
-	startStop () {
-		this.interval ? this.stop() : this.start()
-	}
-
 	start () {
 		this.interval = window.setInterval(this.doStep, this.intervalTime)
 	}

@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('intervalTime').value = grid.intervalTime
 
 	const keymap = {
-		s: grid.startStop,
+		s: () => grid.interval ? $('stop').onclick() : $('start').onclick(),
 		t: grid.doStep,
 		h: grid.hflip,
 		v: grid.vflip,
