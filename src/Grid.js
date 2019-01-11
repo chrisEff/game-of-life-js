@@ -1,77 +1,8 @@
-const $ = (id) => document.getElementById(id)
+'use strict'
+import autoBind from './autoBind.js'
+import Cell from './Cell.js'
 
-/**
- * simplified version of auto-bind: https://www.npmjs.com/package/auto-bind
- */
-const autoBind = (self) => {
-	Object.getOwnPropertyNames(self.constructor.prototype)
-		.filter(key => key !== 'constructor' && typeof self[key] === 'function')
-		.forEach(key => self[key] = self[key].bind(self))
-}
-
-document.addEventListener('DOMContentLoaded', (event) => {
-	const grid = new Grid(
-		$('canvas'),
-		window.localStorage.gridWidth || 128,
-		window.localStorage.gridHeight || 128,
-		window.localStorage.cellSize || 4,
-		window.localStorage.intervalTime || 1
-	)
-	grid.init()
-
-	const keymap = {
-		s: grid.startStop,
-		t: grid.doStep,
-		h: grid.hflip,
-		v: grid.vflip,
-		o: grid.rotate,
-		r: grid.init,
-		a: grid.randomize,
-		ArrowDown:  grid.shiftDown,
-		ArrowUp:    grid.shiftUp,
-		ArrowLeft:  grid.shiftLeft,
-		ArrowRight: grid.shiftRight,
-	}
-
-	$('start').onclick     = grid.start
-	$('stop').onclick      = grid.stop
-	$('step').onclick      = grid.doStep
-	$('hflip').onclick     = grid.hflip
-	$('vflip').onclick     = grid.vflip
-	$('rotate').onclick    = grid.rotate
-	$('reset').onclick     = grid.init
-	$('randomize').onclick = grid.randomize
-
-	$('runBenchmark').onclick = () => {
-		const steps = $('benchmarkSteps').value
-		const startTime = performance.now()
-		for (let i = 0; i < steps; i++) {
-			grid.doStep()
-		}
-		console.log(`Executing ${steps} steps took ${performance.now() - startTime}ms.`)
-	}
-
-	Array.from(document.getElementsByClassName('pattern')).forEach(
-		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
-	)
-
-	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value)
-	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value)
-	$('cellSize').onchange     = (event) => grid.changeCellSize(event.srcElement.value)
-	$('intervalTime').onchange = (event) => grid.changeIntervalTime(event.srcElement.value)
-
-	$('import').onclick = () => grid.importJson($('importExport'))
-	$('export').onclick = () => grid.exportJson($('importExport'))
-
-	document.addEventListener('keydown', (event) => {
-		if (event.srcElement.tagName.toLowerCase() === 'body' && keymap.hasOwnProperty(event.key)) {
-			keymap[event.key]()
-			event.preventDefault()
-		}
-	})
-})
-
-class Grid {
+export default class Grid {
 
 	constructor (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.canvas    = canvas
@@ -105,10 +36,6 @@ class Grid {
 	init () {
 		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize + 1))
 		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize + 1))
-		$('gridHeight').value = this.gridHeight
-		$('gridWidth').value = this.gridWidth
-		$('cellSize').value = this.cellSize
-		$('intervalTime').value = this.intervalTime
 
 		this.cellArray = []
 		this.cellArrayFlat = []
@@ -146,7 +73,7 @@ class Grid {
 
 	doStep () {
 		this.cellArrayFlat
-			// collect cells that need to be toggled
+		// collect cells that need to be toggled
 			.filter(cell => {
 				return cell.alive
 					? (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
@@ -205,14 +132,14 @@ class Grid {
 	vflip () {
 		this.importGrid(this.exportGrid().reverse(), false)
 	}
-	
+
 	shiftUp () {
 		let exported = this.exportGrid()
 		exported.shift()
 		exported.push(new Array(this.gridWidth).fill(0))
 		this.importGrid(exported, false)
 	}
-	
+
 	shiftDown () {
 		let exported = this.exportGrid()
 		exported.unshift(new Array(this.gridWidth).fill(0))
@@ -276,79 +203,12 @@ class Grid {
 	}
 
 	start () {
-		$('start').style.display = 'none'
-		$('stop').style.display = 'initial'
 		this.interval = window.setInterval(this.doStep, this.intervalTime)
 	}
 
 	stop () {
-		$('start').style.display = 'initial'
-		$('stop').style.display = 'none'
 		window.clearInterval(this.interval)
 		delete this.interval
-	}
-
-}
-
-class Cell {
-
-	constructor (x, y, grid) {
-		this.grid = grid
-
-		// x + y in grid
-		this.x = x
-		this.y = y
-
-		// x + y on screen
-		this.xPos = x * (grid.cellSize + 1)
-		this.yPos = y * (grid.cellSize + 1)
-
-		this.alive = false
-		this.livingNeighborCount = 0
-
-		autoBind(this)
-	}
-
-	initNeighbors () {
-		this.neighbors = [];
-		[
-			{x: this.x - 1, y: this.y - 1},
-			{x: this.x - 1, y: this.y},
-			{x: this.x - 1, y: this.y + 1},
-			{x: this.x,     y: this.y - 1},
-			{x: this.x,     y: this.y + 1},
-			{x: this.x + 1, y: this.y - 1},
-			{x: this.x + 1, y: this.y},
-			{x: this.x + 1, y: this.y + 1},
-		].forEach(coords => {
-			try {
-				let neighbor = this.grid.get(coords.y, coords.x)
-				if (neighbor) this.neighbors.push(neighbor)
-			} catch (ignore) {}
-		})
-	}
-
-	setAlive (alive) {
-		if (this.alive === alive) {
-			return
-		}
-		this.alive = alive
-		this.alive
-			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
-			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
-	}
-
-	toggle () {
-		this.alive = !this.alive
-		this.alive
-			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
-			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
-	}
-
-	draw () {
-		this.alive
-			? this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
-			: this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
 	}
 
 }

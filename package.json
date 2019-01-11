@@ -2,7 +2,7 @@
   "name": "game-of-life-js",
   "version": "1.0.0",
   "description": "Conway's Game of Life in Javascript",
-  "main": "game.js",
+  "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
