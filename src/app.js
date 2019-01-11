@@ -7,10 +7,10 @@ const $ = (id) => document.getElementById(id)
 document.addEventListener('DOMContentLoaded', (event) => {
 	const grid = new Grid(
 		$('canvas'),
-		window.localStorage.gridWidth || 128,
-		window.localStorage.gridHeight || 128,
-		window.localStorage.cellSize || 4,
-		window.localStorage.intervalTime || 1
+		parseInt(window.localStorage.gridWidth) || 128,
+		parseInt(window.localStorage.gridHeight) || 128,
+		parseInt(window.localStorage.cellSize) || 4,
+		parseInt(window.localStorage.intervalTime) || 1
 	)
 	grid.init()
 
