@@ -35,7 +35,7 @@ export default class Grid {
 		for (let y = 0; y < this.gridHeight; y++) {
 			this.cellArray[y] = []
 			for (let x = 0; x < this.gridWidth; x++) {
-				let cell = new Cell(x, y, this)
+				const cell = new Cell(x, y, this)
 				this.cellArray[y][x] = cell
 				this.cellArrayFlat.push(cell)
 				this.drawCell(cell)
@@ -110,7 +110,7 @@ export default class Grid {
 	}
 
 	exportGrid () {
-		let simpleGrid = new Array(this.gridHeight).fill().map(() => new Array(this.gridWidth).fill(0))
+		const simpleGrid = new Array(this.gridHeight).fill().map(() => new Array(this.gridWidth).fill(0))
 		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
 		return simpleGrid
 	}
@@ -127,7 +127,7 @@ export default class Grid {
 	}
 
 	hflip () {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		exported.forEach(e => e.reverse())
 		this.importGrid(exported, false)
 	}
@@ -137,20 +137,20 @@ export default class Grid {
 	}
 
 	shiftUp () {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		exported.shift()
 		exported.push(new Array(this.gridWidth).fill(0))
 		this.importGrid(exported, false)
 	}
 
 	shiftDown () {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		exported.unshift(new Array(this.gridWidth).fill(0))
 		this.importGrid(exported, false)
 	}
 
 	shiftLeft () {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		exported.forEach(row => {
 			row.shift()
 			row.push(0)
@@ -159,13 +159,13 @@ export default class Grid {
 	}
 
 	shiftRight () {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		exported.forEach(row => row.unshift(0))
 		this.importGrid(exported, false)
 	}
 
 	rotate () {
-		let eported = this.exportGrid()
+		const eported = this.exportGrid()
 		this.importGrid(
 			eported[0].map((column, index) => (
 				eported.map(row => row[index])
@@ -175,21 +175,21 @@ export default class Grid {
 	}
 
 	changeWidth (newWidth) {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		window.localStorage.gridWidth = this.gridWidth = parseInt(newWidth)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
 	changeHeight (newHeight) {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		window.localStorage.gridHeight = this.gridHeight = parseInt(newHeight)
 		this.init()
 		this.importGrid(exported, false)
 	}
 
 	changeCellSize (newCellSize) {
-		let exported = this.exportGrid()
+		const exported = this.exportGrid()
 		window.localStorage.cellSize = this.cellSize = parseInt(newCellSize)
 		this.init()
 		this.importGrid(exported, false)

@@ -33,7 +33,7 @@ export default class Cell {
 			{x: this.x + 1, y: this.y + 1},
 		].forEach(coords => {
 			try {
-				let neighbor = this.grid.get(coords.y, coords.x)
+				const neighbor = this.grid.get(coords.y, coords.x)
 				if (neighbor) this.neighbors.push(neighbor)
 			} catch (ignore) {}
 		})
