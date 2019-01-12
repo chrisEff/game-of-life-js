@@ -5,8 +5,11 @@ import Grid from './Grid.js'
 const $ = (id) => document.getElementById(id)
 
 document.addEventListener('DOMContentLoaded', (event) => {
+	const canvas = $('canvas')
+	canvas.getContext('2d').fillStyle = '#000000'
+
 	const grid = new Grid(
-		$('canvas'),
+		canvas,
 		parseInt(window.localStorage.gridWidth) || 128,
 		parseInt(window.localStorage.gridHeight) || 128,
 		parseInt(window.localStorage.cellSize) || 4,
@@ -77,6 +80,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			event.preventDefault()
 		}
 	})
+
+	canvas.onclick = (event) => {
+		const cell = grid.get(Math.floor(event.offsetY / (grid.cellSize + 1)), Math.floor(event.offsetX / (grid.cellSize + 1)))
+		cell.setAlive(!cell.alive)
+		cell.draw()
+	}
 })
 
 

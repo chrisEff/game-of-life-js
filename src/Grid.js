@@ -18,14 +18,6 @@ export default class Grid {
 		this.cellArrayFlat = []
 		this.interval = null
 
-		this.context2D.fillStyle = '#000000'
-
-		this.canvas.onclick = (event) => {
-			const cell = this.get(Math.floor(event.offsetY / (this.cellSize + 1)), Math.floor(event.offsetX / (this.cellSize + 1)))
-			cell.setAlive(!cell.alive)
-			cell.draw()
-		}
-
 		autoBind(this)
 	}
 
@@ -41,24 +33,25 @@ export default class Grid {
 		this.cellArrayFlat = []
 
 		this.context2D.strokeStyle = '#EEEEEE'
+		for (let y = 0; y < this.gridHeight; y += 5) {
+			this.context2D.moveTo(0, y * (this.cellSize + 1))
+			this.context2D.lineTo(this.gridWidth * (this.cellSize + 1), y * (this.cellSize + 1))
+		}
+		for (let x = 0; x < this.gridWidth; x += 5) {
+			this.context2D.moveTo(x * (this.cellSize + 1), 0)
+			this.context2D.lineTo(x * (this.cellSize + 1), this.gridHeight * (this.cellSize + 1))
+		}
+		this.context2D.stroke()
+
 		for (let y = 0; y < this.gridHeight; y++) {
-			if (y % 5 === 0) {
-				this.context2D.moveTo(0, y * (this.cellSize + 1))
-				this.context2D.lineTo(this.gridWidth * (this.cellSize + 1), y * (this.cellSize + 1))
-			}
 			this.cellArray[y] = []
 			for (let x = 0; x < this.gridWidth; x++) {
-				if (y === 0 && x % 5 === 0) {
-					this.context2D.moveTo(x * (this.cellSize + 1), 0)
-					this.context2D.lineTo(x * (this.cellSize + 1), this.gridHeight * (this.cellSize + 1))
-				}
 				let cell = new Cell(x, y, this)
 				this.cellArray[y][x] = cell
 				this.cellArrayFlat.push(cell)
 				cell.draw()
 			}
 		}
-		this.context2D.stroke()
 
 		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
