@@ -84,8 +84,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	canvas.onclick = (event) => {
 		const cell = grid.get(Math.floor(event.offsetY / (grid.cellSize + 1)), Math.floor(event.offsetX / (grid.cellSize + 1)))
 		cell.setAlive(!cell.alive)
-		cell.draw()
+		grid.drawCell(cell)
 	}
 })
-
-

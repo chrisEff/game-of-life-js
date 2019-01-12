@@ -56,10 +56,4 @@ export default class Cell {
 			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
 	}
 
-	draw () {
-		this.alive
-			? this.grid.context2D.fillRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
-			: this.grid.context2D.clearRect(this.xPos, this.yPos, this.grid.cellSize, this.grid.cellSize)
-	}
-
 }

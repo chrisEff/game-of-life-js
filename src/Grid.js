@@ -32,6 +32,23 @@ export default class Grid {
 		this.cellArray = []
 		this.cellArrayFlat = []
 
+		for (let y = 0; y < this.gridHeight; y++) {
+			this.cellArray[y] = []
+			for (let x = 0; x < this.gridWidth; x++) {
+				let cell = new Cell(x, y, this)
+				this.cellArray[y][x] = cell
+				this.cellArrayFlat.push(cell)
+				this.drawCell(cell)
+			}
+		}
+
+		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
+		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
+
+		this.drawGuides()
+	}
+
+	drawGuides () {
 		this.context2D.strokeStyle = '#EEEEEE'
 		for (let y = 0; y < this.gridHeight; y += 5) {
 			this.context2D.moveTo(0, y * (this.cellSize + 1))
@@ -42,25 +59,18 @@ export default class Grid {
 			this.context2D.lineTo(x * (this.cellSize + 1), this.gridHeight * (this.cellSize + 1))
 		}
 		this.context2D.stroke()
+	}
 
-		for (let y = 0; y < this.gridHeight; y++) {
-			this.cellArray[y] = []
-			for (let x = 0; x < this.gridWidth; x++) {
-				let cell = new Cell(x, y, this)
-				this.cellArray[y][x] = cell
-				this.cellArrayFlat.push(cell)
-				cell.draw()
-			}
-		}
-
-		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
-		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
+	drawCell (cell) {
+		cell.alive
+			? this.context2D.fillRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
+			: this.context2D.clearRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 	}
 
 	randomize () {
 		this.cellArrayFlat.forEach(cell => {
 			cell.setAlive(Boolean(Math.round(Math.random())))
-			cell.draw()
+			this.drawCell(cell)
 		})
 	}
 
@@ -75,7 +85,7 @@ export default class Grid {
 			// toggle them
 			.forEach(cell => {
 				cell.toggle()
-				cell.draw()
+				this.drawCell(cell)
 			})
 	}
 
@@ -94,7 +104,7 @@ export default class Grid {
 		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
 			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
 				this.get(y, x).setAlive(Boolean(data[y][x]))
-				this.get(y, x).draw()
+				this.drawCell(this.get(y, x))
 			}
 		}
 	}
