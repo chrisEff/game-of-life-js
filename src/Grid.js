@@ -165,10 +165,10 @@ export default class Grid {
 	}
 
 	rotate () {
-		const eported = this.exportGrid()
+		const exported = this.exportGrid()
 		this.importGrid(
-			eported[0].map((column, index) => (
-				eported.map(row => row[index])
+			exported[0].map((column, index) => (
+				exported.map(row => row[index])
 			)),
 			false
 		)
