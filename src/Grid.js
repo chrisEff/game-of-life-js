@@ -4,6 +4,13 @@ import Cell from './Cell.js'
 
 export default class Grid {
 
+	/**
+	 * @param {HTMLCanvasElement} canvas
+	 * @param {int} gridWidth
+	 * @param {int} gridHeight
+	 * @param {int} cellSize
+	 * @param {int} intervalTime
+	 */
 	constructor (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
 		this.canvas    = canvas
 		this.context2D = canvas.getContext('2d')
@@ -13,9 +20,9 @@ export default class Grid {
 		this.cellSize     = cellSize
 		this.intervalTime = intervalTime
 
-		this.cellArray = []
-		/** @var {Cell[]} */
-		this.cellArrayFlat = []
+		/** @var {Cell[][]} */ this.cellArray = []
+		/** @var {Cell[]} */   this.cellArrayFlat = []
+
 		this.interval = null
 
 		autoBind(this)

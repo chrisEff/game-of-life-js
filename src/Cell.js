@@ -3,6 +3,11 @@ import autoBind from './autoBind.js'
 
 export default class Cell {
 
+	/**
+	 * @param {int} x
+	 * @param {int} y
+	 * @param {Grid} grid
+	 */
 	constructor (x, y, grid) {
 		this.grid = grid
 
