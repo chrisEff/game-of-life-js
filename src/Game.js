@@ -72,15 +72,15 @@ export default class Game {
 
 	doStep () {
 		const cells = this.grid.doStep()
-		this.drawCells(cells)
-	}
-
-	drawCells (cells) {
-		cells.forEach(this.drawCell)
+		cells.forEach(cell => {
+			cell.toggle()
+			this.drawCell(cell)
+		})
 	}
 
 	drawFullFrame () {
-		this.drawCells(this.grid.cellArrayFlat)
+		const cells = this.grid.cellArrayFlat
+		cells.forEach(this.drawCell)
 	}
 
 	drawCell (cell) {

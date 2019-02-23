@@ -39,20 +39,12 @@ export default class Grid {
 	}
 
 	doStep () {
-		const cells = this.cellArrayFlat
-			// collect cells that need to be toggled
+		return this.cellArrayFlat
 			.filter(cell => {
 				return cell.alive
 					? (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
 					: cell.livingNeighborCount === 3
 			})
-
-		// toggle them
-		cells.forEach(cell => {
-			cell.toggle()
-		})
-
-		return cells
 	}
 
 	importGrid (data) {
