@@ -4,16 +4,7 @@ import Cell from './Cell.js'
 
 export default class Grid {
 
-	/**
-	 * @param {int} width
-	 * @param {int} height
-	 * @param {int} cellSize
-	 */
-	constructor (width, height, cellSize) {
-		this.width    = width
-		this.height   = height
-		this.cellSize = cellSize
-
+	constructor () {
 		/** @var {Cell[][]} */ this.cellArray = []
 		/** @var {Cell[]} */   this.cellArrayFlat = []
 
@@ -24,14 +15,14 @@ export default class Grid {
 		return this.cellArray[y][x]
 	}
 
-	init () {
+	init (width, height, cellSize) {
 		this.cellArray = []
 		this.cellArrayFlat = []
 
-		for (let y = 0; y < this.height; y++) {
+		for (let y = 0; y < height; y++) {
 			this.cellArray[y] = []
-			for (let x = 0; x < this.width; x++) {
-				const cell = new Cell(x, y, this)
+			for (let x = 0; x < width; x++) {
+				const cell = new Cell(x, y, this, cellSize)
 				this.cellArray[y][x] = cell
 				this.cellArrayFlat.push(cell)
 			}
@@ -65,15 +56,15 @@ export default class Grid {
 	}
 
 	importGrid (data) {
-		for (let y = 0; y < Math.min(data.length, this.height); y++) {
-			for (let x = 0; x < Math.min(data[y].length, this.width); x++) {
+		for (let y = 0; y < Math.min(data.length, this.cellArray.length); y++) {
+			for (let x = 0; x < Math.min(data[y].length, this.cellArray[0].length); x++) {
 				this.get(y, x).setAlive(Boolean(data[y][x]))
 			}
 		}
 	}
 
 	exportGrid () {
-		const simpleGrid = new Array(this.height).fill().map(() => new Array(this.width).fill(0))
+		const simpleGrid = new Array(this.cellArray.length).fill().map(() => new Array(this.cellArray[0].length).fill(0))
 		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
 		return simpleGrid
 	}
@@ -102,13 +93,13 @@ export default class Grid {
 	shiftUp () {
 		const exported = this.exportGrid()
 		exported.shift()
-		exported.push(new Array(this.width).fill(0))
+		exported.push(new Array(this.cellArray[0].length).fill(0))
 		this.importGrid(exported)
 	}
 
 	shiftDown () {
 		const exported = this.exportGrid()
-		exported.unshift(new Array(this.width).fill(0))
+		exported.unshift(new Array(this.cellArray[0].length).fill(0))
 		this.importGrid(exported)
 	}
 

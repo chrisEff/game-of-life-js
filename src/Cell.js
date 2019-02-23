@@ -7,8 +7,9 @@ export default class Cell {
 	 * @param {int} x
 	 * @param {int} y
 	 * @param {Grid} grid
+	 * @param {int} cellSize
 	 */
-	constructor (x, y, grid) {
+	constructor (x, y, grid, cellSize) {
 		this.grid = grid
 
 		// x + y in grid
@@ -16,8 +17,8 @@ export default class Cell {
 		this.y = y
 
 		// x + y on screen
-		this.xPos = x * (grid.cellSize + 1)
-		this.yPos = y * (grid.cellSize + 1)
+		this.xPos = x * (cellSize + 1)
+		this.yPos = y * (cellSize + 1)
 
 		this.alive = false
 		this.livingNeighborCount = 0

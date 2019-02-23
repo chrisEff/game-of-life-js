@@ -6,25 +6,21 @@ import Grid from './Grid.js'
 const $ = (id) => document.getElementById(id)
 
 document.addEventListener('DOMContentLoaded', (event) => {
-	const canvas = $('canvas')
-	canvas.getContext('2d').fillStyle = '#000000'
-
-	const grid = new Grid(
-		parseInt(window.localStorage.gridWidth) || 128,
-		parseInt(window.localStorage.gridHeight) || 128,
-		parseInt(window.localStorage.cellSize) || 4
-	)
+	const grid = new Grid()
 
 	const game = new Game(
 		grid,
-		canvas,
-		parseInt(window.localStorage.intervalTime) || 1
+		$('canvas'),
+		parseInt(window.localStorage.gridWidth) || 128,
+		parseInt(window.localStorage.gridHeight) || 128,
+		parseInt(window.localStorage.intervalTime) || 1,
+		parseInt(window.localStorage.cellSize) || 4
 	)
 	game.init()
 
-	$('gridHeight').value = grid.height
-	$('gridWidth').value = grid.width
-	$('cellSize').value = grid.cellSize
+	$('gridHeight').value = game.height
+	$('gridWidth').value = game.width
+	$('cellSize').value = game.cellSize
 	$('intervalTime').value = game.intervalTime
 
 	const keymap = {
@@ -66,7 +62,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		grid.importJson($('importExport').value)
 		game.drawFullFrame()
 	}
-	$('export').onclick = () => $('importExport').value = grid.exportJson($('importExport'))
+	$('export').onclick = () => $('importExport').value = grid.exportJson()
 
 	document.addEventListener('keydown', (event) => {
 		if (event.srcElement.tagName.toLowerCase() === 'body' && keymap.hasOwnProperty(event.key)) {
@@ -74,10 +70,4 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			event.preventDefault()
 		}
 	})
-
-	canvas.onclick = (event) => {
-		const cell = grid.get(Math.floor(event.offsetY / (grid.cellSize + 1)), Math.floor(event.offsetX / (grid.cellSize + 1)))
-		cell.setAlive(!cell.alive)
-		game.drawCell(cell)
-	}
 })
