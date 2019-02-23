@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		const steps = $('benchmarkSteps').value
 		const startTime = performance.now()
 		for (let i = 0; i < steps; i++) {
-			grid.doStep()
+			game.doStep()
 		}
 		console.log(`Executing ${steps} steps took ${performance.now() - startTime}ms.`)
 	}
