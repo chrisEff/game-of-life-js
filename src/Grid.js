@@ -6,24 +6,20 @@ export default class Grid {
 
 	/**
 	 * @param {HTMLCanvasElement} canvas
-	 * @param {int} gridWidth
-	 * @param {int} gridHeight
+	 * @param {int} width
+	 * @param {int} height
 	 * @param {int} cellSize
-	 * @param {int} intervalTime
 	 */
-	constructor (canvas, gridWidth, gridHeight, cellSize, intervalTime) {
+	constructor (canvas, width, height, cellSize) {
 		this.canvas    = canvas
 		this.context2D = canvas.getContext('2d')
 
-		this.gridWidth    = gridWidth
-		this.gridHeight   = gridHeight
-		this.cellSize     = cellSize
-		this.intervalTime = intervalTime
+		this.width    = width
+		this.height   = height
+		this.cellSize = cellSize
 
 		/** @var {Cell[][]} */ this.cellArray = []
 		/** @var {Cell[]} */   this.cellArrayFlat = []
-
-		this.interval = null
 
 		autoBind(this)
 	}
@@ -33,15 +29,15 @@ export default class Grid {
 	}
 
 	init () {
-		this.canvas.setAttribute('height', this.gridHeight * (this.cellSize + 1))
-		this.canvas.setAttribute('width', this.gridWidth * (this.cellSize + 1))
+		this.canvas.setAttribute('height', this.height * (this.cellSize + 1))
+		this.canvas.setAttribute('width', this.width * (this.cellSize + 1))
 
 		this.cellArray = []
 		this.cellArrayFlat = []
 
-		for (let y = 0; y < this.gridHeight; y++) {
+		for (let y = 0; y < this.height; y++) {
 			this.cellArray[y] = []
-			for (let x = 0; x < this.gridWidth; x++) {
+			for (let x = 0; x < this.width; x++) {
 				const cell = new Cell(x, y, this)
 				this.cellArray[y][x] = cell
 				this.cellArrayFlat.push(cell)
@@ -57,13 +53,13 @@ export default class Grid {
 
 	drawGuides () {
 		this.context2D.strokeStyle = '#EEEEEE'
-		for (let y = 0; y < this.gridHeight; y += 5) {
+		for (let y = 0; y < this.height; y += 5) {
 			this.context2D.moveTo(0, y * (this.cellSize + 1))
-			this.context2D.lineTo(this.gridWidth * (this.cellSize + 1), y * (this.cellSize + 1))
+			this.context2D.lineTo(this.width * (this.cellSize + 1), y * (this.cellSize + 1))
 		}
-		for (let x = 0; x < this.gridWidth; x += 5) {
+		for (let x = 0; x < this.width; x += 5) {
 			this.context2D.moveTo(x * (this.cellSize + 1), 0)
-			this.context2D.lineTo(x * (this.cellSize + 1), this.gridHeight * (this.cellSize + 1))
+			this.context2D.lineTo(x * (this.cellSize + 1), this.height * (this.cellSize + 1))
 		}
 		this.context2D.stroke()
 	}
@@ -99,17 +95,17 @@ export default class Grid {
 	async loadPattern (name) {
 		if (name) {
 			const response = await fetch(`patterns/${name}.json`)
-			this.importGrid(await response.json())
+			this.importGrid(await response.json(), true)
 		}
 	}
 
-	importGrid (data, allowResize = true) {
-		if (allowResize && (data.length > this.gridHeight || data[0].length > this.gridWidth) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
-			if (data.length > this.gridHeight) this.changeHeight(data.length)
-			if (data[0].length > this.gridWidth) this.changeWidth(data[0].length)
+	importGrid(data, allowResize = false) {
+		if (allowResize && (data.length > this.height || data[0].length > this.width) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
+			if (data.length > this.height) this.setHeight(data.length)
+			if (data[0].length > this.width) this.setWidth(data[0].length)
 		}
-		for (let y = 0; y < Math.min(data.length, this.gridHeight); y++) {
-			for (let x = 0; x < Math.min(data[y].length, this.gridWidth); x++) {
+		for (let y = 0; y < Math.min(data.length, this.height); y++) {
+			for (let x = 0; x < Math.min(data[y].length, this.width); x++) {
 				this.get(y, x).setAlive(Boolean(data[y][x]))
 				this.drawCell(this.get(y, x))
 			}
@@ -117,17 +113,17 @@ export default class Grid {
 	}
 
 	exportGrid () {
-		const simpleGrid = new Array(this.gridHeight).fill().map(() => new Array(this.gridWidth).fill(0))
+		const simpleGrid = new Array(this.height).fill().map(() => new Array(this.width).fill(0))
 		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
 		return simpleGrid
 	}
 
-	importJson (element) {
-		this.importGrid(JSON.parse(element.value))
+	importJson (value) {
+		this.importGrid(JSON.parse(value), true)
 	}
 
-	exportJson (element) {
-		element.value = JSON.stringify(this.exportGrid())
+	exportJson () {
+		return JSON.stringify(this.exportGrid())
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]')
@@ -136,24 +132,24 @@ export default class Grid {
 	hflip () {
 		const exported = this.exportGrid()
 		exported.forEach(e => e.reverse())
-		this.importGrid(exported, false)
+		this.importGrid(exported)
 	}
 
 	vflip () {
-		this.importGrid(this.exportGrid().reverse(), false)
+		this.importGrid(this.exportGrid().reverse())
 	}
 
 	shiftUp () {
 		const exported = this.exportGrid()
 		exported.shift()
-		exported.push(new Array(this.gridWidth).fill(0))
-		this.importGrid(exported, false)
+		exported.push(new Array(this.width).fill(0))
+		this.importGrid(exported)
 	}
 
 	shiftDown () {
 		const exported = this.exportGrid()
-		exported.unshift(new Array(this.gridWidth).fill(0))
-		this.importGrid(exported, false)
+		exported.unshift(new Array(this.width).fill(0))
+		this.importGrid(exported)
 	}
 
 	shiftLeft () {
@@ -162,59 +158,41 @@ export default class Grid {
 			row.shift()
 			row.push(0)
 		})
-		this.importGrid(exported, false)
+		this.importGrid(exported)
 	}
 
 	shiftRight () {
 		const exported = this.exportGrid()
 		exported.forEach(row => row.unshift(0))
-		this.importGrid(exported, false)
+		this.importGrid(exported)
 	}
 
 	rotate () {
 		const exported = this.exportGrid()
-		this.importGrid(
-			exported[0].map((column, index) => (
-				exported.map(row => row[index])
-			)),
-			false
-		)
+		this.importGrid(exported[0].map((column, index) => (
+			exported.map(row => row[index])
+		)))
 	}
 
-	changeWidth (newWidth) {
+	setWidth (newWidth) {
 		const exported = this.exportGrid()
-		window.localStorage.gridWidth = this.gridWidth = parseInt(newWidth)
+		this.width = parseInt(newWidth)
 		this.init()
-		this.importGrid(exported, false)
+		this.importGrid(exported)
 	}
 
-	changeHeight (newHeight) {
+	setHeight (newHeight) {
 		const exported = this.exportGrid()
-		window.localStorage.gridHeight = this.gridHeight = parseInt(newHeight)
+		this.height = parseInt(newHeight)
 		this.init()
-		this.importGrid(exported, false)
+		this.importGrid(exported)
 	}
 
-	changeCellSize (newCellSize) {
+	setCellSize (newCellSize) {
 		const exported = this.exportGrid()
-		window.localStorage.cellSize = this.cellSize = parseInt(newCellSize)
+		this.cellSize = parseInt(newCellSize)
 		this.init()
-		this.importGrid(exported, false)
-	}
-
-	changeIntervalTime (intervalTime) {
-		this.stop()
-		window.localStorage.intervalTime = this.intervalTime = parseInt(intervalTime)
-		this.start()
-	}
-
-	start () {
-		this.interval = window.setInterval(this.doStep, this.intervalTime)
-	}
-
-	stop () {
-		window.clearInterval(this.interval)
-		delete this.interval
+		this.importGrid(exported)
 	}
 
 }

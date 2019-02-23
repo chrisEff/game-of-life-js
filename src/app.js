@@ -1,5 +1,6 @@
 'use strict'
 
+import Game from './Game.js'
 import Grid from './Grid.js'
 
 const $ = (id) => document.getElementById(id)
@@ -12,18 +13,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		canvas,
 		parseInt(window.localStorage.gridWidth) || 128,
 		parseInt(window.localStorage.gridHeight) || 128,
-		parseInt(window.localStorage.cellSize) || 4,
-		parseInt(window.localStorage.intervalTime) || 1
+		parseInt(window.localStorage.cellSize) || 4
 	)
 	grid.init()
 
-	$('gridHeight').value = grid.gridHeight
-	$('gridWidth').value = grid.gridWidth
+	const game = new Game(
+		grid,
+		canvas,
+		parseInt(window.localStorage.intervalTime) || 1
+	)
+
+	$('gridHeight').value = grid.height
+	$('gridWidth').value = grid.width
 	$('cellSize').value = grid.cellSize
-	$('intervalTime').value = grid.intervalTime
+	$('intervalTime').value = game.intervalTime
 
 	const keymap = {
-		s: () => grid.interval ? $('stop').onclick() : $('start').onclick(),
+		s: () => game.interval ? game.stop() : game.start(),
 		t: grid.doStep,
 		h: grid.hflip,
 		v: grid.vflip,
@@ -36,16 +42,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		ArrowRight: grid.shiftRight,
 	}
 
-	$('start').onclick = () => {
-		$('start').style.display = 'none'
-		$('stop').style.display = 'initial'
-		grid.start()
-	}
-	$('stop').onclick = () => {
-		$('start').style.display = 'initial'
-		$('stop').style.display = 'none'
-		grid.stop()
-	}
+	$('start').onclick     = game.start
+	$('stop').onclick      = game.stop
 	$('step').onclick      = grid.doStep
 	$('hflip').onclick     = grid.hflip
 	$('vflip').onclick     = grid.vflip
@@ -66,13 +64,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
 	)
 
-	$('gridWidth').onchange    = (event) => grid.changeWidth(event.srcElement.value)
-	$('gridHeight').onchange   = (event) => grid.changeHeight(event.srcElement.value)
-	$('cellSize').onchange     = (event) => grid.changeCellSize(event.srcElement.value)
-	$('intervalTime').onchange = (event) => grid.changeIntervalTime(event.srcElement.value)
+	$('gridWidth').onchange    = (event) => game.setWidth(event.srcElement.value)
+	$('gridHeight').onchange   = (event) => game.setHeight(event.srcElement.value)
+	$('cellSize').onchange     = (event) => game.setCellSize(event.srcElement.value)
+	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.srcElement.value)
 
-	$('import').onclick = () => grid.importJson($('importExport'))
-	$('export').onclick = () => grid.exportJson($('importExport'))
+	$('import').onclick = () => grid.importJson($('importExport').value)
+	$('export').onclick = () => $('importExport').value = grid.exportJson($('importExport'))
 
 	document.addEventListener('keydown', (event) => {
 		if (event.srcElement.tagName.toLowerCase() === 'body' && keymap.hasOwnProperty(event.key)) {
