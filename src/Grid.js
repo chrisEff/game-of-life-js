@@ -95,15 +95,11 @@ export default class Grid {
 	async loadPattern (name) {
 		if (name) {
 			const response = await fetch(`patterns/${name}.json`)
-			this.importGrid(await response.json(), true)
+			this.importGrid(await response.json())
 		}
 	}
 
-	importGrid(data, allowResize = false) {
-		if (allowResize && (data.length > this.height || data[0].length > this.width) && confirm('Pattern is bigger than current grid. Adjust grid size?')) {
-			if (data.length > this.height) this.setHeight(data.length)
-			if (data[0].length > this.width) this.setWidth(data[0].length)
-		}
+	importGrid (data) {
 		for (let y = 0; y < Math.min(data.length, this.height); y++) {
 			for (let x = 0; x < Math.min(data[y].length, this.width); x++) {
 				this.get(y, x).setAlive(Boolean(data[y][x]))
@@ -119,7 +115,7 @@ export default class Grid {
 	}
 
 	importJson (value) {
-		this.importGrid(JSON.parse(value), true)
+		this.importGrid(JSON.parse(value))
 	}
 
 	exportJson () {
