@@ -10,18 +10,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	canvas.getContext('2d').fillStyle = '#000000'
 
 	const grid = new Grid(
-		canvas,
 		parseInt(window.localStorage.gridWidth) || 128,
 		parseInt(window.localStorage.gridHeight) || 128,
 		parseInt(window.localStorage.cellSize) || 4
 	)
-	grid.init()
 
 	const game = new Game(
 		grid,
 		canvas,
 		parseInt(window.localStorage.intervalTime) || 1
 	)
+	game.init()
 
 	$('gridHeight').value = grid.height
 	$('gridWidth').value = grid.width
@@ -29,27 +28,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('intervalTime').value = game.intervalTime
 
 	const keymap = {
-		s: () => game.interval ? game.stop() : game.start(),
-		t: grid.doStep,
-		h: grid.hflip,
-		v: grid.vflip,
-		o: grid.rotate,
-		r: grid.init,
-		a: grid.randomize,
-		ArrowDown:  grid.shiftDown,
-		ArrowUp:    grid.shiftUp,
-		ArrowLeft:  grid.shiftLeft,
-		ArrowRight: grid.shiftRight,
+		s:          () => game.interval ? game.stop() : game.start(),
+		t:          $('step').onclick      = game.doStep,
+		r:          $('reset').onclick     = game.init,
+		h:          $('hflip').onclick     = () => { grid.hflip(); game.drawFullFrame() },
+		v:          $('vflip').onclick     = () => { grid.vflip(); game.drawFullFrame() },
+		o:          $('rotate').onclick    = () => { grid.rotate(); game.drawFullFrame() },
+		a:          $('randomize').onclick = () => { grid.randomize(); game.drawFullFrame() },
+		ArrowDown:  $('down').onclick      = () => { grid.shiftDown(); game.drawFullFrame() },
+		ArrowUp:    $('up').onclick        = () => { grid.shiftUp(); game.drawFullFrame() },
+		ArrowLeft:  $('left').onclick      = () => { grid.shiftLeft(); game.drawFullFrame() },
+		ArrowRight: $('right').onclick     = () => { grid.shiftRight(); game.drawFullFrame() },
 	}
 
 	$('start').onclick     = game.start
 	$('stop').onclick      = game.stop
-	$('step').onclick      = grid.doStep
-	$('hflip').onclick     = grid.hflip
-	$('vflip').onclick     = grid.vflip
-	$('rotate').onclick    = grid.rotate
-	$('reset').onclick     = grid.init
-	$('randomize').onclick = grid.randomize
 
 	$('runBenchmark').onclick = () => {
 		const steps = $('benchmarkSteps').value
@@ -61,7 +54,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	Array.from(document.getElementsByClassName('pattern')).forEach(
-		el => el.onclick = event => grid.loadPattern(event.srcElement.innerHTML)
+		el => el.onclick = event => game.loadPattern(event.srcElement.innerHTML)
 	)
 
 	$('gridWidth').onchange    = (event) => game.setWidth(event.srcElement.value)
@@ -69,7 +62,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('cellSize').onchange     = (event) => game.setCellSize(event.srcElement.value)
 	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.srcElement.value)
 
-	$('import').onclick = () => grid.importJson($('importExport').value)
+	$('import').onclick = () => {
+		grid.importJson($('importExport').value)
+		game.drawFullFrame()
+	}
 	$('export').onclick = () => $('importExport').value = grid.exportJson($('importExport'))
 
 	document.addEventListener('keydown', (event) => {
@@ -82,6 +78,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	canvas.onclick = (event) => {
 		const cell = grid.get(Math.floor(event.offsetY / (grid.cellSize + 1)), Math.floor(event.offsetX / (grid.cellSize + 1)))
 		cell.setAlive(!cell.alive)
-		grid.drawCell(cell)
+		game.drawCell(cell)
 	}
 })
