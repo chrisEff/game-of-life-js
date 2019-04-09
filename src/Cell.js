@@ -1,5 +1,4 @@
 'use strict'
-import autoBind from './autoBind.js'
 
 export default class Cell {
 
@@ -22,8 +21,6 @@ export default class Cell {
 
 		this.alive = false
 		this.livingNeighborCount = 0
-
-		autoBind(this)
 	}
 
 	initNeighbors () {

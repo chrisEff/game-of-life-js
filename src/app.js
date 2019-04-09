@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	const keymap = {
 		s:          () => game.interval ? game.stop() : game.start(),
 		t:          $('step').onclick      = game.doStep,
-		r:          $('reset').onclick     = game.init,
+		r:          $('reset').onclick     = game.reset,
 		h:          $('hflip').onclick     = () => { grid.hflip(); game.drawFullFrame() },
 		v:          $('vflip').onclick     = () => { grid.vflip(); game.drawFullFrame() },
 		o:          $('rotate').onclick    = () => { grid.rotate(); game.drawFullFrame() },

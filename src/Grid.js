@@ -20,16 +20,21 @@ export default class Grid {
 		this.cellArrayFlat = []
 
 		for (let y = 0; y < height; y++) {
-			this.cellArray[y] = []
+			const row = []
 			for (let x = 0; x < width; x++) {
 				const cell = new Cell(x, y, this, cellSize)
-				this.cellArray[y][x] = cell
+				row.push(cell)
 				this.cellArrayFlat.push(cell)
 			}
+			this.cellArray.push(row)
 		}
 
 		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
+	}
+
+	reset () {
+		this.cellArrayFlat.forEach(cell => cell.setAlive(false))
 	}
 
 	randomize () {
@@ -48,17 +53,17 @@ export default class Grid {
 	}
 
 	importGrid (data) {
-		for (let y = 0; y < Math.min(data.length, this.cellArray.length); y++) {
-			for (let x = 0; x < Math.min(data[y].length, this.cellArray[0].length); x++) {
-				this.get(y, x).setAlive(Boolean(data[y][x]))
+		const height = Math.min(data.length, this.cellArray.length)
+		const width = Math.min(data[0].length, this.cellArray[0].length)
+		for (let y = 0; y < height; y++) {
+			for (let x = 0; x < width; x++) {
+				this.cellArray[y][x].setAlive(Boolean(data[y][x]))
 			}
 		}
 	}
 
 	exportGrid () {
-		const simpleGrid = new Array(this.cellArray.length).fill().map(() => new Array(this.cellArray[0].length).fill(0))
-		this.cellArrayFlat.forEach(cell => simpleGrid[cell.y][cell.x] = cell.alive ? 1 : 0)
-		return simpleGrid
+		return this.cellArray.map(row => row.map(cell => cell.alive ? 1 : 0))
 	}
 
 	importJson (value) {

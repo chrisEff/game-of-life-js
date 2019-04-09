@@ -41,19 +41,28 @@ export default class Game {
 		this.canvas.setAttribute('width', this.width * (this.cellSize + 1))
 		this.grid.init(this.width, this.height, this.cellSize)
 		this.drawGuides()
+	}
+
+	reset () {
+		this.grid.reset()
 		this.drawFullFrame()
 	}
 
 	drawGuides () {
+		const multiplier = this.cellSize + 1
+		const xMax = this.width * multiplier
+		const yMax = this.height * multiplier
 		this.context2D.strokeStyle = '#EEEEEE'
+
 		for (let y = 0; y < this.height; y += 5) {
-			this.context2D.moveTo(0, y * (this.cellSize + 1))
-			this.context2D.lineTo(this.width * (this.cellSize + 1), y * (this.cellSize + 1))
+			this.context2D.moveTo(0, y * multiplier)
+			this.context2D.lineTo(xMax, y * multiplier)
 		}
 		for (let x = 0; x < this.width; x += 5) {
-			this.context2D.moveTo(x * (this.cellSize + 1), 0)
-			this.context2D.lineTo(x * (this.cellSize + 1), this.height * (this.cellSize + 1))
+			this.context2D.moveTo(x * multiplier, 0)
+			this.context2D.lineTo(x * multiplier, yMax)
 		}
+
 		this.context2D.stroke()
 	}
 
