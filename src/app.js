@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('export').onclick = () => $('importExport').value = grid.exportJson()
 
 	document.addEventListener('keydown', (event) => {
-		if (event.srcElement.tagName.toLowerCase() === 'body' && keymap.hasOwnProperty(event.key)) {
+		if (event.target.tagName.toLowerCase() === 'body' && Object.prototype.hasOwnProperty.call(keymap, event.key)) {
 			keymap[event.key]()
 			event.preventDefault()
 		}
