@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		parseInt(window.localStorage.gridWidth) || 128,
 		parseInt(window.localStorage.gridHeight) || 128,
 		parseInt(window.localStorage.intervalTime) || 1,
-		parseInt(window.localStorage.cellSize) || 4
+		parseInt(window.localStorage.cellSize) || 4,
 	)
 	game.init()
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	Array.from(document.getElementsByClassName('pattern')).forEach(
-		el => el.onclick = event => game.loadPattern(event.srcElement.innerHTML)
+		el => el.onclick = event => game.loadPattern(event.srcElement.innerHTML),
 	)
 
 	$('gridWidth').onchange    = (event) => game.setWidth(event.srcElement.value)
