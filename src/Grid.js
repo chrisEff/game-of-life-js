@@ -63,7 +63,19 @@ export default class Grid {
 	}
 
 	exportGrid () {
-		return this.cellArray.map(row => row.map(cell => cell.alive ? 1 : 0))
+		const result = this.cellArray.map(row => row.map(cell => cell.alive ? 1 : 0))
+
+		// Remove empty rows at the end...
+		while (result.length) {
+			const lastRow = result.pop()
+			if (lastRow.filter(v => v === 1).length > 0) {
+				// ...until we find the first non-empty one.
+				result.push(lastRow)
+				break
+			}
+		}
+
+		return result
 	}
 
 	importJson (value) {
