@@ -151,8 +151,8 @@ export default class Game {
 			this.reset()
 		}
 		if (name) {
-			const response = await fetch(`patterns/${name}.json`)
-			this.grid.importGrid(await response.json())
+			const response = await fetch(`patterns/${name}.rle`)
+			this.grid.importRLE(await response.text())
 		}
 		this.drawFullFrame()
 	}
