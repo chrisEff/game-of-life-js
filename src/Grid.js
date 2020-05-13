@@ -131,7 +131,7 @@ export default class Grid {
 
 	exportRLE () {
 		let result = ''
-		let emptyRowCount = 0
+		let emptyRowCount = -1
 
 		const data = this.exportGrid()
 		data.forEach(row => {
@@ -139,12 +139,12 @@ export default class Grid {
 				emptyRowCount++
 				return
 			} else {
-				if (emptyRowCount) {
-					result += `${emptyRowCount}$`
-					emptyRowCount = 0
-				} else {
-					if (result !== '') result += '$'
+				if (emptyRowCount > 0) {
+					result += `${emptyRowCount + 1}$`
+				} else if (emptyRowCount === 0) {
+					result += '$'
 				}
+				emptyRowCount = 0
 			}
 
 			let count = 1
