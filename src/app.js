@@ -5,6 +5,15 @@ import Grid from './Grid.js'
 
 const $ = (id) => document.getElementById(id)
 
+const isJSON = (string) => {
+	try {
+		JSON.parse(string)
+		return true
+	} catch (e) {
+		return false
+	}
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
 	const grid = new Grid()
 
@@ -59,10 +68,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.target.value)
 
 	$('import').onclick = () => {
-		grid.importJson($('importExport').value)
+		const data = $('importExport').value
+		if (isJSON(data)) {
+			grid.importJson(data)
+		} else {
+			grid.importRLE(data)
+		}
 		game.drawFullFrame()
 	}
-	$('export').onclick = () => $('importExport').value = grid.exportJson()
+	$('exportJSON').onclick = () => $('importExport').value = grid.exportJson()
+	$('exportRLE').onclick = () => $('importExport').value = grid.exportRLE()
 
 	document.addEventListener('keydown', (event) => {
 		if (event.target.tagName.toLowerCase() === 'body' && Object.prototype.hasOwnProperty.call(keymap, event.key)) {
