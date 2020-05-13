@@ -50,13 +50,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	Array.from(document.getElementsByClassName('pattern')).forEach(
-		el => el.onclick = event => game.loadPattern(event.srcElement.innerHTML),
+		el => el.onclick = event => game.loadPattern(event.target.innerHTML, $('resetBeforeLoad').checked),
 	)
 
-	$('gridWidth').onchange    = (event) => game.setWidth(event.srcElement.value)
-	$('gridHeight').onchange   = (event) => game.setHeight(event.srcElement.value)
-	$('cellSize').onchange     = (event) => game.setCellSize(event.srcElement.value)
-	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.srcElement.value)
+	$('gridWidth').onchange    = (event) => game.setWidth(event.target.value)
+	$('gridHeight').onchange   = (event) => game.setHeight(event.target.value)
+	$('cellSize').onchange     = (event) => game.setCellSize(event.target.value)
+	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.target.value)
 
 	$('import').onclick = () => {
 		grid.importJson($('importExport').value)

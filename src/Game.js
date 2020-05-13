@@ -146,7 +146,10 @@ export default class Game {
 		this.drawFullFrame()
 	}
 
-	async loadPattern (name) {
+	async loadPattern (name, reset = false) {
+		if (reset) {
+			this.reset()
+		}
 		if (name) {
 			const response = await fetch(`patterns/${name}.json`)
 			this.grid.importGrid(await response.json())
