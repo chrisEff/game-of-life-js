@@ -92,33 +92,36 @@ export default class Grid {
 	importRLE (input) {
 		let width = 0
 		let result = []
-		input.replace(/\n/g, '').split('$').forEach(line => {
-			const chars = line.split('')
-			let num = ''
-			const row = []
+		input
+			.replace(/\n/g, '')
+			.split('$')
+			.forEach(line => {
+				const chars = line.split('')
+				let num = ''
+				const row = []
 
-			while (chars.length) {
-				const char = chars.shift()
-				if (char === 'b' || char === 'o') {
-					if (num === '') num = 1
-					for (let i = 0; i < parseInt(num); i++) {
-						row.push(char === 'o' ? 1 : 0)
+				while (chars.length) {
+					const char = chars.shift()
+					if (char === 'b' || char === 'o') {
+						if (num === '') num = 1
+						for (let i = 0; i < parseInt(num); i++) {
+							row.push(char === 'o' ? 1 : 0)
+						}
+						num = ''
+					} else {
+						num += char
 					}
-					num = ''
-				} else {
-					num += char
 				}
-			}
-			result.push(row)
+				result.push(row)
 
-			if (num !== '') {
-				for (let i = 1; i < parseInt(num); i++) {
-					result.push([0])
+				if (num !== '') {
+					for (let i = 1; i < parseInt(num); i++) {
+						result.push([0])
+					}
 				}
-			}
 
-			width = Math.max(width, row.length)
-		})
+				width = Math.max(width, row.length)
+			})
 
 		result = result.map(l => {
 			const oldLength = l.length
