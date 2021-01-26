@@ -92,7 +92,7 @@ export default class Grid {
 	importRLE (input) {
 		let width = 0
 		let result = []
-		input.replace('\n', '').split('$').forEach(line => {
+		input.replace(/\n/g, '').split('$').forEach(line => {
 			const chars = line.split('')
 			let num = ''
 			const row = []
