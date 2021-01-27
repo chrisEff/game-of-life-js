@@ -62,17 +62,21 @@ export default class Grid {
 		}
 	}
 
-	exportGrid () {
+	exportGrid (crop = false) {
 		const result = this.cellArray.map(row => row.map(cell => cell.alive ? 1 : 0))
 
-		// Remove empty rows at the end...
-		while (result.length) {
-			const lastRow = result.pop()
-			if (lastRow.filter(v => v === 1).length > 0) {
-				// ...until we find the first non-empty one.
-				result.push(lastRow)
-				break
+		if (crop) {
+			// Remove empty rows at the end...
+			while (result.length) {
+				const lastRow = result.pop()
+				if (lastRow.filter(v => v === 1).length > 0) {
+					// ...until we find the first non-empty one.
+					result.push(lastRow)
+					break
+				}
 			}
+
+			// TODO crop other sides as well...
 		}
 
 		return result
@@ -83,7 +87,7 @@ export default class Grid {
 	}
 
 	exportJson () {
-		return JSON.stringify(this.exportGrid())
+		return JSON.stringify(this.exportGrid(true))
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]')
@@ -136,7 +140,7 @@ export default class Grid {
 		let result = ''
 		let emptyRowCount = -1
 
-		const data = this.exportGrid()
+		const data = this.exportGrid(true)
 		data.forEach(row => {
 			if (row.filter(cell => cell).length < 1) {
 				emptyRowCount++
