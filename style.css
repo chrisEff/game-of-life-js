@@ -1,6 +1,30 @@
+#controls {
+	display: flex;
+	flex-direction: column;
+	width: 160px;
+}
+
+#controls #arrows {
+	text-align: center;
+}
+
+#main {
+	position: absolute;
+	top: 10px;
+	left: 180px;
+}
+
 #canvas {
 	border: 1px solid silver;
-	margin-top: 10px;
+}
+
+button {
+	margin: 2px;
+	padding-inline: 0;
+}
+
+.arrowButton {
+	width: 22px;
 }
 
 #start {
@@ -9,6 +33,10 @@
 
 #stop {
 	color: red;
+}
+
+#gridWidth, #gridHeight, #cellSize, #intervalTime, #offsetX, #offsetY, #benchmarkSteps {
+	width: 50px;
 }
 
 #importExport {

@@ -1,78 +1,102 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Game of Life</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="style.css" type="text/css">
-	<script type="module" src="src/app.js"></script>
-</head>
-<body>
-	<div id="controls">
-		<button id="start">Start</button>
-		<button id="stop" style="display: none;">Stop</button>
-		<button id="step">sTep</button>
-		<button id="reset">Reset</button>
-		<button id="hflip">H-flip</button>
-		<button id="vflip">V-Flip</button>
-		<button id="rotate">rOtate</button>
-		<button id="randomize">rAndomize</button>
+	<head>
+		<title>Game of Life</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="style.css" type="text/css">
+		<script type="module" src="src/app.js"></script>
+	</head>
+	<body>
+		<div id="controls">
+			<button id="start">Start</button>
+			<button id="stop" style="display: none;">Stop</button>
+			<button id="step">sTep</button>
+			<button id="reset">Reset</button>
+			<button id="hflip">H-flip</button>
+			<button id="vflip">V-Flip</button>
+			<button id="rotate">rOtate</button>
+			<button id="randomize">rAndomize</button>
+			<br/>
 
-		<button id="up">↑</button>
-		<button id="down">↓</button>
-		<button id="left">←</button>
-		<button id="right">→</button>
+			<div id="arrows">
+				<button id="up" class="arrowButton">↑</button>
+				<br/>
+				<button id="left" class="arrowButton">←</button>
+				<button id="down" class="arrowButton">↓</button>
+				<button id="right" class="arrowButton">→</button>
+			</div>
+			<br/>
 
-		grid size:
-		<input id="gridWidth" type="number" min="4" max="10000" /> x
-		<input id="gridHeight" type="number" min="4" max="10000" />
+			grid size:
+			<span>
+				<input id="gridWidth" type="number" min="4" max="10000"/> x
+				<input id="gridHeight" type="number" min="4" max="10000"/>
+			</span>
+			<br/>
 
-		cell size:
-		<input id="cellSize" type="number" min="1" max="100" />
+			<span>
+				<label for="cellSize">cell size:</label>
+				<input id="cellSize" type="number" min="1" max="100"/>
+			</span>
+			<br/>
 
-		interval (ms):
-		<input id="intervalTime" type="number" min="1" max="500" value="1" />
+			<span>
+				<label for="intervalTime">interval:</label>
+				<span><input id="intervalTime" type="number" min="1" max="500" value="1"/> ms</span>
+			</span>
+			<br/>
+
+			<label for="benchmarkSteps">Benchmark:</label>
+			<span>
+				<button id="runBenchmark">run</button>
+				<input id="benchmarkSteps" type="number" min="1" value="1000"/>
+				steps
+			</span>
+			<span>and take the time</span>
+			<br/>
+
+			<span>load pattern:</span>
+			<button class="pattern">000-my-pattern</button>
+			<button class="pattern">001-all-guns</button>
+			<button class="pattern">002-test</button>
+			<button class="pattern">101</button>
+			<button class="pattern">2-engine-cordership</button>
+			<button class="pattern">acorn</button>
+			<button class="pattern">big-glider</button>
+			<button class="pattern">buckaroo</button>
+			<button class="pattern">canada-goose</button>
+			<button class="pattern">copperhead</button>
+			<button class="pattern">fireship</button>
+			<button class="pattern">glider-gun</button>
+			<button class="pattern">new-gun</button>
+			<button class="pattern">new-gun-2</button>
+			<button class="pattern">pentadecathlon-synthesis</button>
+			<button class="pattern">period-50-glidergun</button>
+			<button class="pattern">period-90-glidergun</button>
+			<button class="pattern">period-92-glidergun</button>
+			<button class="pattern">period-256-glidergun</button>
+			<button class="pattern">period-690-glidergun</button>
+			<button class="pattern">pulsar</button>
+			<button class="pattern">vacuum-gun</button>
+			<br/>
+
+			<span>
+				<input type="checkbox" id="resetBeforeLoad"/>
+				<label for="resetBeforeLoad">reset</label>
+			</span>
+		</div>
 		<br/>
-	</div>
-	<br/>
-	<div id="patterns">
-		load pattern:
-		<button class="pattern">101</button>
-		<button class="pattern">2-engine-cordership</button>
-		<button class="pattern">acorn</button>
-		<button class="pattern">big-glider</button>
-		<button class="pattern">buckaroo</button>
-		<button class="pattern">canada-goose</button>
-		<button class="pattern">copperhead</button>
-		<button class="pattern">fireship</button>
-		<button class="pattern">glider-gun</button>
-		<button class="pattern">new-gun</button>
-		<button class="pattern">new-gun-2</button>
-		<button class="pattern">pentadecathlon-synthesis</button>
-		<button class="pattern">period-50-glidergun</button>
-		<button class="pattern">period-90-glidergun</button>
-		<button class="pattern">period-92-glidergun</button>
-		<button class="pattern">period-256-glidergun</button>
-		<button class="pattern">period-690-glidergun</button>
-		<button class="pattern">pulsar</button>
-		<button class="pattern">vacuum-gun</button>
-		<input type="checkbox" id="resetBeforeLoad" />reset
-	</div>
-	<br/>
-	<div id="benchmark">
-		Benchmark:
-		<button id="runBenchmark">run</button>
-		<input id="benchmarkSteps" type="number" min="1" value="1000" />
-		steps and take the time
-	</div>
 
-	<canvas id="canvas"></canvas>
+		<div id="main">
+			<canvas id="canvas"></canvas>
 
-	<br/><br/>
-	<textarea id="importExport"></textarea>
-	<br/>
-	<button id="import">import</button>
-	<button id="exportJSON">export JSON</button>
-	<button id="exportRLE">export RLE</button>
-</body>
+			<br/><br/>
+			<button id="import">import</button>
+			<button id="exportJSON">export JSON</button>
+			<button id="exportRLE">export RLE</button>
+			<br/>
+			<textarea id="importExport"></textarea>
+		</div>
+	</body>
 </html>
