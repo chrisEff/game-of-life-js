@@ -74,10 +74,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 	$('import').onclick = () => {
 		const data = $('importExport').value
+		const offsetX = parseInt($('offsetX').value)
+		const offsetY = parseInt($('offsetY').value)
+
 		if (isJSON(data)) {
-			grid.importJson(data)
+			grid.importJson(data, offsetX, offsetY)
 		} else {
-			grid.importRLE(data)
+			grid.importRLE(data, offsetX, offsetY)
 		}
 		game.drawFullFrame()
 	}
