@@ -59,7 +59,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	}
 
 	Array.from(document.getElementsByClassName('pattern')).forEach(
-		el => el.onclick = event => game.loadPattern(event.target.innerHTML, $('resetBeforeLoad').checked),
+		el => el.onclick = event => game.loadPattern(
+			event.target.innerHTML,
+			$('resetBeforeLoad').checked,
+			parseInt($('offsetX').value),
+			parseInt($('offsetY').value),
+		),
 	)
 
 	$('gridWidth').onchange    = (event) => game.setWidth(event.target.value)

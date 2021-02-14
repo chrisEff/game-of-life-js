@@ -146,13 +146,13 @@ export default class Game {
 		this.drawFullFrame()
 	}
 
-	async loadPattern (name, reset = false) {
+	async loadPattern (name, reset = false, offsetX = 0, offsetY = 0) {
 		if (reset) {
 			this.reset()
 		}
 		if (name) {
 			const response = await fetch(`patterns/${name}.rle`)
-			this.grid.importRLE(await response.text())
+			this.grid.importRLE(await response.text(), offsetX, offsetY)
 		}
 		this.drawFullFrame()
 	}

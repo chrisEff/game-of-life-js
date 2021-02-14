@@ -52,12 +52,12 @@ export default class Grid {
 			})
 	}
 
-	importGrid (data) {
-		const height = Math.min(data.length, this.cellArray.length)
-		const width = Math.min(data[0].length, this.cellArray[0].length)
-		for (let y = 0; y < height; y++) {
-			for (let x = 0; x < width; x++) {
-				this.cellArray[y][x].setAlive(Boolean(data[y][x]))
+	importGrid (data, offsetX = 0, offsetY = 0) {
+		const height = Math.min(data.length + offsetY, this.cellArray.length)
+		const width = Math.min(data[0].length + offsetX, this.cellArray[0].length)
+		for (let y = offsetY; y < height; y++) {
+			for (let x = offsetX; x < width; x++) {
+				this.cellArray[y][x].setAlive(Boolean(data[y - offsetY][x - offsetX]))
 			}
 		}
 	}
@@ -82,8 +82,8 @@ export default class Grid {
 		return result
 	}
 
-	importJson (value) {
-		this.importGrid(JSON.parse(value))
+	importJson (value, offsetX = 0, offsetY = 0) {
+		this.importGrid(JSON.parse(value), offsetX, offsetY)
 	}
 
 	exportJson () {
@@ -93,7 +93,7 @@ export default class Grid {
 			.replace(']]', ']\n]')
 	}
 
-	importRLE (input) {
+	importRLE (input, offsetX = 0, offsetY = 0) {
 		let width = 0
 		let result = []
 		input
@@ -133,7 +133,7 @@ export default class Grid {
 			return l.fill(0, oldLength)
 		})
 
-		this.importGrid(result)
+		this.importGrid(result, offsetX, offsetY)
 	}
 
 	exportRLE () {

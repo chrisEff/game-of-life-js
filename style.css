@@ -36,7 +36,7 @@ button {
 }
 
 #gridWidth, #gridHeight, #cellSize, #intervalTime, #offsetX, #offsetY, #benchmarkSteps {
-	width: 50px;
+	width: 45px;
 }
 
 #importExport {
