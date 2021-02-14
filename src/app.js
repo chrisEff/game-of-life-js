@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	$('exportRLE').onclick = () => $('importExport').value = grid.exportRLE()
 
 	document.addEventListener('keydown', (event) => {
-		if (event.target.tagName.toLowerCase() === 'body' && Object.prototype.hasOwnProperty.call(keymap, event.key)) {
+		if (!event.metaKey && !event.ctrlKey && event.target.tagName.toLowerCase() === 'body' && Object.prototype.hasOwnProperty.call(keymap, event.key)) {
 			keymap[event.key]()
 			event.preventDefault()
 		}
