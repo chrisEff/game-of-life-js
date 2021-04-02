@@ -30,8 +30,9 @@
 				<br/>
 
 				<span>
-					grid:
-					<input id="gridWidth" type="number" min="4" max="10000"/> x
+					<label for="gridWidth">grid:</label>
+					<input id="gridWidth" type="number" min="4" max="10000"/>
+					<label for="gridHeight">x</label>
 					<input id="gridHeight" type="number" min="4" max="10000"/>
 				</span>
 				<br/>
@@ -94,14 +95,18 @@
 				<br/>
 
 				<span>
-					<label for="offsetX">x:</label>
-					<input type="radio" name="offsetXcenter" value="0" checked /><input type="number" id="offsetX" value="0"/>
-					<input type="radio" name="offsetXcenter" value="1" />center
+					<label for="offsetXcenter0" onclick="document.getElementById('offsetXcenter0').checked = true">
+						<label for="offsetX">x:</label>
+						<input type="radio" name="offsetXcenter" id="offsetXcenter0" value="0" checked /><input type="number" id="offsetX" value="0"/>
+					</label>
+					<input type="radio" name="offsetXcenter" id="offsetXcenter1" value="1" /><label for="offsetXcenter1">center</label>
 				</span>
 				<span>
-					<label for="offsetY">y:</label>
-					<input type="radio" name="offsetYcenter" value="0" checked /><input type="number" id="offsetY" value="0"/>
-					<input type="radio" name="offsetYcenter" value="1" />center
+					<label for="offsetYcenter0" onclick="document.getElementById('offsetYcenter0').checked = true">
+						<label for="offsetY">y:</label>
+						<input type="radio" name="offsetYcenter" id="offsetYcenter0" value="0" checked /><input type="number" id="offsetY" value="0"/>
+					</label>
+					<input type="radio" name="offsetYcenter" id="offsetYcenter1" value="1" /><label for="offsetYcenter1">center</label>
 				</span>
 			</div>
 			<br/>
