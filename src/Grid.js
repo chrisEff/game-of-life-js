@@ -219,8 +219,13 @@ export default class Grid {
 
 	rotate () {
 		const exported = this.exportGrid()
-		this.importGrid(exported[0].map((column, index) => (
-			exported.map(row => row[index])
-		)))
+
+		const result = []
+		for (let i = 0; i < exported[0].length; i++) {
+			const row = exported.map(e => e[i]).reverse()
+			result.push(row)
+		}
+
+		this.importGrid(result)
 	}
 }
