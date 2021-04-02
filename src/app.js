@@ -62,8 +62,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		el => el.onclick = event => game.loadPattern(
 			event.target.innerHTML,
 			$('resetBeforeLoad').checked,
-			parseInt($('offsetX').value),
-			parseInt($('offsetY').value),
+			document.forms.settings.offsetXcenter.value ? -1 : parseInt($('offsetX').value),
+			document.forms.settings.offsetYcenter.value ? -1 : parseInt($('offsetY').value),
 		),
 	)
 

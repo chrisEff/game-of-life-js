@@ -53,6 +53,12 @@ export default class Grid {
 	}
 
 	importGrid (data, offsetX = 0, offsetY = 0) {
+		if (offsetX === -1) {
+			offsetX = Math.max(0, Math.floor((this.cellArray[0].length - data[0].length) / 2))
+		}
+		if (offsetY === -1) {
+			offsetY = Math.max(0, Math.floor((this.cellArray.length - data.length) / 2))
+		}
 		const height = Math.min(data.length + offsetY, this.cellArray.length)
 		const width = Math.min(data[0].length + offsetX, this.cellArray[0].length)
 		for (let y = offsetY; y < height; y++) {
