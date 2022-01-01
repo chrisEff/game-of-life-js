@@ -26,14 +26,14 @@ export default class Cell {
 	initNeighbors () {
 		this.neighbors = [];
 		[
-			{x: this.x - 1, y: this.y - 1},
-			{x: this.x - 1, y: this.y},
-			{x: this.x - 1, y: this.y + 1},
-			{x: this.x,     y: this.y - 1},
-			{x: this.x,     y: this.y + 1},
-			{x: this.x + 1, y: this.y - 1},
-			{x: this.x + 1, y: this.y},
-			{x: this.x + 1, y: this.y + 1},
+			{ x: this.x - 1, y: this.y - 1 },
+			{ x: this.x - 1, y: this.y },
+			{ x: this.x - 1, y: this.y + 1 },
+			{ x: this.x,     y: this.y - 1 },
+			{ x: this.x,     y: this.y + 1 },
+			{ x: this.x + 1, y: this.y - 1 },
+			{ x: this.x + 1, y: this.y },
+			{ x: this.x + 1, y: this.y + 1 },
 		].forEach(coords => {
 			try {
 				const neighbor = this.grid.get(coords.y, coords.x)
