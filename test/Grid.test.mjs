@@ -1,5 +1,5 @@
 import chai from 'chai'
-import Grid from '../src/Grid'
+import Grid from '../src/Grid.mjs'
 
 describe('Grid', () => {
 	/** @type Grid */
