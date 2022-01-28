@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	$('cellSize').value = game.cellSize
 	$('intervalTime').value = game.intervalTime
 
+	// prettier-ignore
 	const keymap = {
 		s:          () => game.interval ? game.stop() : game.start(),
 		t:          $('step').onclick      = game.doStep,
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		console.log(`Executing ${steps} steps took ${performance.now() - startTime}ms.`)
 	}
 
+	// prettier-ignore
 	Array.from(document.getElementsByClassName('pattern')).forEach(
 		el => el.onclick = event => game.loadPattern(
 			event.target.innerHTML,
@@ -67,10 +69,10 @@ document.addEventListener('DOMContentLoaded', event => {
 		),
 	)
 
-	$('gridWidth').onchange    = (event) => game.setWidth(event.target.value)
-	$('gridHeight').onchange   = (event) => game.setHeight(event.target.value)
-	$('cellSize').onchange     = (event) => game.setCellSize(event.target.value)
-	$('intervalTime').onchange = (event) => game.changeIntervalTime(event.target.value)
+	$('gridWidth').onchange = event => game.setWidth(event.target.value)
+	$('gridHeight').onchange = event => game.setHeight(event.target.value)
+	$('cellSize').onchange = event => game.setCellSize(event.target.value)
+	$('intervalTime').onchange = event => game.changeIntervalTime(event.target.value)
 
 	$('import').onclick = () => {
 		const data = $('importExport').value

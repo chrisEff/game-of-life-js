@@ -42,6 +42,7 @@ export default class Grid {
 		})
 	}
 
+	// prettier-ignore
 	doStep() {
 		return this.cellArrayFlat
 			.filter(cell => {
@@ -91,6 +92,7 @@ export default class Grid {
 		this.importGrid(JSON.parse(value), offsetX, offsetY)
 	}
 
+	// prettier-ignore
 	exportJson() {
 		return JSON.stringify(this.exportGrid(true))
 			.replace(/],/g, '],\n')

@@ -1,5 +1,5 @@
 {
-	"extends": "@chriseff",
+	"extends": ["@chriseff", "prettier"],
 	"env": {
 		"browser": true,
 		"mocha": true

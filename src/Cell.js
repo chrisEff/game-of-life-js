@@ -22,6 +22,7 @@ export default class Cell {
 		this.livingNeighborCount = 0
 	}
 
+	// prettier-ignore
 	initNeighbors() {
 		this.neighbors = [];
 		[
