@@ -1,7 +1,7 @@
 'use strict'
 
-import Game from './Game.mjs'
-import Grid from './Grid.mjs'
+import Game from './Game.js'
+import Grid from './Grid.js'
 
 const $ = (id) => document.getElementById(id)
 

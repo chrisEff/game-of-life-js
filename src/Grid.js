@@ -1,6 +1,6 @@
 'use strict'
-import autoBind from './autoBind.mjs'
-import Cell from './Cell.mjs'
+import autoBind from './autoBind.js'
+import Cell from './Cell.js'
 
 export default class Grid {
 
