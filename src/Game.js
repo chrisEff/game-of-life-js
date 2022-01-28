@@ -1,12 +1,11 @@
 import autoBind from './autoBind.js'
 
-const $ = (id) => document.getElementById(id)
+const $ = id => document.getElementById(id)
 
 /**
  * @property {Grid} grid
  */
 export default class Game {
-
 	/**
 	 * @param {Grid} grid
 	 * @param {HTMLCanvasElement} canvas
@@ -15,7 +14,7 @@ export default class Game {
 	 * @param {int} intervalTime
 	 * @param {int} cellSize
 	 */
-	constructor (grid, canvas, width, height, intervalTime, cellSize) {
+	constructor(grid, canvas, width, height, intervalTime, cellSize) {
 		this.grid = grid
 		this.canvas = canvas
 		this.context2D = canvas.getContext('2d')
@@ -27,8 +26,11 @@ export default class Game {
 
 		this.context2D.fillStyle = '#000000'
 
-		canvas.onclick = (event) => {
-			const cell = this.grid.get(Math.floor(event.offsetY / (this.cellSize + 1)), Math.floor(event.offsetX / (this.cellSize + 1)))
+		canvas.onclick = event => {
+			const cell = this.grid.get(
+				Math.floor(event.offsetY / (this.cellSize + 1)),
+				Math.floor(event.offsetX / (this.cellSize + 1))
+			)
 			cell.setAlive(!cell.alive)
 			this.drawCell(cell)
 		}
@@ -36,19 +38,19 @@ export default class Game {
 		autoBind(this)
 	}
 
-	init () {
+	init() {
 		this.canvas.setAttribute('height', this.height * (this.cellSize + 1))
 		this.canvas.setAttribute('width', this.width * (this.cellSize + 1))
 		this.grid.init(this.width, this.height, this.cellSize)
 		this.drawGuides()
 	}
 
-	reset () {
+	reset() {
 		this.grid.reset()
 		this.drawFullFrame()
 	}
 
-	drawGuides () {
+	drawGuides() {
 		const multiplier = this.cellSize + 1
 		const xMax = this.width * multiplier
 		const yMax = this.height * multiplier
@@ -66,20 +68,20 @@ export default class Game {
 		this.context2D.stroke()
 	}
 
-	start () {
+	start() {
 		$('start').style.display = 'none'
 		$('stop').style.display = 'initial'
 		this.interval = window.setInterval(this.doStep, this.intervalTime)
 	}
 
-	stop () {
+	stop() {
 		$('start').style.display = 'initial'
 		$('stop').style.display = 'none'
 		window.clearInterval(this.interval)
 		delete this.interval
 	}
 
-	doStep () {
+	doStep() {
 		const cells = this.grid.doStep()
 		cells.forEach(cell => {
 			cell.toggle()
@@ -87,12 +89,12 @@ export default class Game {
 		})
 	}
 
-	drawFullFrame () {
+	drawFullFrame() {
 		const cells = this.grid.cellArrayFlat
 		cells.forEach(this.drawCell)
 	}
 
-	drawCell (cell) {
+	drawCell(cell) {
 		cell.alive
 			? this.context2D.fillRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 			: this.context2D.clearRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
@@ -101,7 +103,7 @@ export default class Game {
 	/**
 	 * @param {int|string} intervalTime
 	 */
-	changeIntervalTime (intervalTime) {
+	changeIntervalTime(intervalTime) {
 		this.stop()
 		window.localStorage.intervalTime = this.intervalTime = parseInt(intervalTime)
 		this.start()
@@ -110,7 +112,7 @@ export default class Game {
 	/**
 	 * @param {int|string} newWidth
 	 */
-	setWidth (newWidth) {
+	setWidth(newWidth) {
 		newWidth = parseInt(newWidth)
 		window.localStorage.gridWidth = newWidth
 		const exported = this.grid.exportGrid()
@@ -123,7 +125,7 @@ export default class Game {
 	/**
 	 * @param {int|string} newHeight
 	 */
-	setHeight (newHeight) {
+	setHeight(newHeight) {
 		newHeight = parseInt(newHeight)
 		window.localStorage.gridHeight = newHeight
 		const exported = this.grid.exportGrid()
@@ -136,7 +138,7 @@ export default class Game {
 	/**
 	 * @param {int|string} newCellSize
 	 */
-	setCellSize (newCellSize) {
+	setCellSize(newCellSize) {
 		newCellSize = parseInt(newCellSize)
 		window.localStorage.cellSize = newCellSize
 		const exported = this.grid.exportGrid()
@@ -146,7 +148,7 @@ export default class Game {
 		this.drawFullFrame()
 	}
 
-	async loadPattern (name, reset = false, offsetX = 0, offsetY = 0) {
+	async loadPattern(name, reset = false, offsetX = 0, offsetY = 0) {
 		if (reset) {
 			this.reset()
 		}

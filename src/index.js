@@ -3,9 +3,9 @@
 import Game from './Game.js'
 import Grid from './Grid.js'
 
-const $ = (id) => document.getElementById(id)
+const $ = id => document.getElementById(id)
 
-const isJSON = (string) => {
+const isJSON = string => {
 	try {
 		JSON.parse(string)
 		return true
@@ -14,7 +14,7 @@ const isJSON = (string) => {
 	}
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', event => {
 	const grid = new Grid()
 
 	const game = new Game(
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		parseInt(window.localStorage.gridWidth) || 128,
 		parseInt(window.localStorage.gridHeight) || 128,
 		parseInt(window.localStorage.intervalTime) || 1,
-		parseInt(window.localStorage.cellSize) || 4,
+		parseInt(window.localStorage.cellSize) || 4
 	)
 	game.init()
 
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		ArrowRight: $('right').onclick     = () => { grid.shiftRight(); game.drawFullFrame() },
 	}
 
-	$('start').onclick     = game.start
-	$('stop').onclick      = game.stop
+	$('start').onclick = game.start
+	$('stop').onclick = game.stop
 
 	$('runBenchmark').onclick = () => {
 		const steps = $('benchmarkSteps').value
@@ -84,11 +84,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 		game.drawFullFrame()
 	}
-	$('exportJSON').onclick = () => $('importExport').value = grid.exportJson()
-	$('exportRLE').onclick = () => $('importExport').value = grid.exportRLE()
+	$('exportJSON').onclick = () => ($('importExport').value = grid.exportJson())
+	$('exportRLE').onclick = () => ($('importExport').value = grid.exportRLE())
 
-	document.addEventListener('keydown', (event) => {
-		if (!event.metaKey && !event.ctrlKey && event.target.tagName.toLowerCase() === 'body' && Object.prototype.hasOwnProperty.call(keymap, event.key)) {
+	document.addEventListener('keydown', event => {
+		if (
+			!event.metaKey &&
+			!event.ctrlKey &&
+			event.target.tagName.toLowerCase() === 'body' &&
+			Object.prototype.hasOwnProperty.call(keymap, event.key)
+		) {
 			keymap[event.key]()
 			event.preventDefault()
 		}

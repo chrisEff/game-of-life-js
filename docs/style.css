@@ -35,7 +35,13 @@ button {
 	color: red;
 }
 
-#gridWidth, #gridHeight, #cellSize, #intervalTime, #offsetX, #offsetY, #benchmarkSteps {
+#gridWidth,
+#gridHeight,
+#cellSize,
+#intervalTime,
+#offsetX,
+#offsetY,
+#benchmarkSteps {
 	width: 45px;
 }
 

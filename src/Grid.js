@@ -3,19 +3,18 @@ import autoBind from './autoBind.js'
 import Cell from './Cell.js'
 
 export default class Grid {
-
-	constructor () {
+	constructor() {
 		/** @var {Cell[][]} */ this.cellArray = []
-		/** @var {Cell[]} */   this.cellArrayFlat = []
+		/** @var {Cell[]} */ this.cellArrayFlat = []
 
 		autoBind(this)
 	}
 
-	get (y, x) {
+	get(y, x) {
 		return this.cellArray[y][x]
 	}
 
-	init (width, height, cellSize) {
+	init(width, height, cellSize) {
 		this.cellArray = []
 		this.cellArrayFlat = []
 
@@ -33,17 +32,17 @@ export default class Grid {
 		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
 	}
 
-	reset () {
+	reset() {
 		this.cellArrayFlat.forEach(cell => cell.setAlive(false))
 	}
 
-	randomize () {
+	randomize() {
 		this.cellArrayFlat.forEach(cell => {
 			cell.setAlive(Boolean(Math.round(Math.random())))
 		})
 	}
 
-	doStep () {
+	doStep() {
 		return this.cellArrayFlat
 			.filter(cell => {
 				return cell.alive
@@ -52,7 +51,7 @@ export default class Grid {
 			})
 	}
 
-	importGrid (data, offsetX = 0, offsetY = 0) {
+	importGrid(data, offsetX = 0, offsetY = 0) {
 		if (offsetX === -1) {
 			offsetX = Math.max(0, Math.floor((this.cellArray[0].length - data[0].length) / 2))
 		}
@@ -68,8 +67,8 @@ export default class Grid {
 		}
 	}
 
-	exportGrid (crop = false) {
-		const result = this.cellArray.map(row => row.map(cell => cell.alive ? 1 : 0))
+	exportGrid(crop = false) {
+		const result = this.cellArray.map(row => row.map(cell => (cell.alive ? 1 : 0)))
 
 		if (crop) {
 			// Remove empty rows at the end...
@@ -88,18 +87,18 @@ export default class Grid {
 		return result
 	}
 
-	importJson (value, offsetX = 0, offsetY = 0) {
+	importJson(value, offsetX = 0, offsetY = 0) {
 		this.importGrid(JSON.parse(value), offsetX, offsetY)
 	}
 
-	exportJson () {
+	exportJson() {
 		return JSON.stringify(this.exportGrid(true))
 			.replace(/],/g, '],\n')
 			.replace('[[', '[\n[')
 			.replace(']]', ']\n]')
 	}
 
-	importRLE (input, offsetX = 0, offsetY = 0) {
+	importRLE(input, offsetX = 0, offsetY = 0) {
 		let width = 0
 		let result = []
 		input
@@ -142,7 +141,7 @@ export default class Grid {
 		this.importGrid(result, offsetX, offsetY)
 	}
 
-	exportRLE () {
+	exportRLE() {
 		let result = ''
 		let emptyRowCount = -1
 
@@ -179,30 +178,30 @@ export default class Grid {
 		return result
 	}
 
-	hflip () {
+	hflip() {
 		const exported = this.exportGrid()
 		exported.forEach(e => e.reverse())
 		this.importGrid(exported)
 	}
 
-	vflip () {
+	vflip() {
 		this.importGrid(this.exportGrid().reverse())
 	}
 
-	shiftUp () {
+	shiftUp() {
 		const exported = this.exportGrid()
 		exported.shift()
 		exported.push(new Array(this.cellArray[0].length).fill(0))
 		this.importGrid(exported)
 	}
 
-	shiftDown () {
+	shiftDown() {
 		const exported = this.exportGrid()
 		exported.unshift(new Array(this.cellArray[0].length).fill(0))
 		this.importGrid(exported)
 	}
 
-	shiftLeft () {
+	shiftLeft() {
 		const exported = this.exportGrid()
 		exported.forEach(row => {
 			row.shift()
@@ -211,13 +210,13 @@ export default class Grid {
 		this.importGrid(exported)
 	}
 
-	shiftRight () {
+	shiftRight() {
 		const exported = this.exportGrid()
 		exported.forEach(row => row.unshift(0))
 		this.importGrid(exported)
 	}
 
-	rotate () {
+	rotate() {
 		const exported = this.exportGrid()
 
 		const result = []

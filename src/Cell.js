@@ -1,14 +1,13 @@
 'use strict'
 
 export default class Cell {
-
 	/**
 	 * @param {int} x
 	 * @param {int} y
 	 * @param {Grid} grid
 	 * @param {int} cellSize
 	 */
-	constructor (x, y, grid, cellSize) {
+	constructor(x, y, grid, cellSize) {
 		this.grid = grid
 
 		// x + y in grid
@@ -23,7 +22,7 @@ export default class Cell {
 		this.livingNeighborCount = 0
 	}
 
-	initNeighbors () {
+	initNeighbors() {
 		this.neighbors = [];
 		[
 			{ x: this.x - 1, y: this.y - 1 },
@@ -42,7 +41,7 @@ export default class Cell {
 		})
 	}
 
-	setAlive (alive) {
+	setAlive(alive) {
 		if (this.alive === alive) {
 			return
 		}
@@ -52,11 +51,10 @@ export default class Cell {
 			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
 	}
 
-	toggle () {
+	toggle() {
 		this.alive = !this.alive
 		this.alive
 			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
 			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
 	}
-
 }

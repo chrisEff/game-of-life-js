@@ -2,61 +2,61 @@
 <html>
 	<head>
 		<title>Game of Life</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="icon" href="favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="style.css" type="text/css">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="style.css" type="text/css" />
 		<script type="module" src="main.js"></script>
 	</head>
 	<body>
 		<form name="settings" action="javascript:void(0);">
 			<div id="controls">
 				<button id="start">Start</button>
-				<button id="stop" style="display: none;">Stop</button>
+				<button id="stop" style="display: none">Stop</button>
 				<button id="step">sTep</button>
 				<button id="reset">Reset</button>
 				<button id="hflip">H-flip</button>
 				<button id="vflip">V-Flip</button>
 				<button id="rotate">rOtate</button>
 				<button id="randomize">rAndomize</button>
-				<br/>
+				<br />
 
 				<div id="arrows">
 					<button id="up" class="arrowButton">↑</button>
-					<br/>
+					<br />
 					<button id="left" class="arrowButton">←</button>
 					<button id="down" class="arrowButton">↓</button>
 					<button id="right" class="arrowButton">→</button>
 				</div>
-				<br/>
+				<br />
 
 				<span>
 					<label for="gridWidth">grid:</label>
-					<input id="gridWidth" type="number" min="4" max="10000"/>
+					<input id="gridWidth" type="number" min="4" max="10000" />
 					<label for="gridHeight">x</label>
-					<input id="gridHeight" type="number" min="4" max="10000"/>
+					<input id="gridHeight" type="number" min="4" max="10000" />
 				</span>
-				<br/>
+				<br />
 
 				<span>
 					<label for="cellSize">cell size:</label>
-					<span><input id="cellSize" type="number" min="1" max="100"/> px</span>
+					<span><input id="cellSize" type="number" min="1" max="100" /> px</span>
 				</span>
-				<br/>
+				<br />
 
 				<span>
 					<label for="intervalTime">interval:</label>
-					<span><input id="intervalTime" type="number" min="1" max="500" value="1"/> ms</span>
+					<span><input id="intervalTime" type="number" min="1" max="500" value="1" /> ms</span>
 				</span>
-				<br/>
+				<br />
 
 				<label for="benchmarkSteps">Benchmark:</label>
 				<span>
 					<button id="runBenchmark">run</button>
-					<input id="benchmarkSteps" type="number" min="1" value="1000"/>
+					<input id="benchmarkSteps" type="number" min="1" value="1000" />
 					steps
 				</span>
 				<span>and take the time</span>
-				<br/>
+				<br />
 
 				<span>load pattern:</span>
 				<button class="pattern">101</button>
@@ -87,13 +87,13 @@
 				<button class="pattern">space-rake</button>
 				<button class="pattern">turtle</button>
 				<button class="pattern">vacuum-gun</button>
-				<br/>
+				<br />
 
 				<span>
-					<input type="checkbox" id="resetBeforeLoad"/>
+					<input type="checkbox" id="resetBeforeLoad" />
 					<label for="resetBeforeLoad">reset</label>
 				</span>
-				<br/>
+				<br />
 
 				<span>
 					<label for="offsetXcenter0" onclick="document.getElementById('offsetXcenter0').checked = true">
@@ -110,16 +110,16 @@
 					<input type="radio" name="offsetYcenter" id="offsetYcenter1" value="true" /><label for="offsetYcenter1">center</label>
 				</span>
 			</div>
-			<br/>
+			<br />
 
 			<div id="main">
 				<canvas id="canvas"></canvas>
 
-				<br/><br/>
+				<br /><br />
 				<button id="import">import</button>
 				<button id="exportJSON">export JSON</button>
 				<button id="exportRLE">export RLE</button>
-				<br/>
+				<br />
 				<textarea id="importExport"></textarea>
 			</div>
 		</form>
