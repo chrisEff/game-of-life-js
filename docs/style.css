@@ -23,6 +23,15 @@ button {
 	padding-inline: 0;
 }
 
+.digits {
+	display: flex;
+	flex-direction: row;
+}
+
+.digits button {
+	flex-grow: 1;
+}
+
 .arrowButton {
 	width: 22px;
 }

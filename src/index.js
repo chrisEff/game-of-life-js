@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	// prettier-ignore
 	Array.from(document.getElementsByClassName('pattern')).forEach(
 		el => el.onclick = event => game.loadPattern(
-			event.target.innerHTML,
+			event.target.value || event.target.innerHTML,
 			$('resetBeforeLoad').checked,
 			document.forms.settings.offsetXcenter.value ? -1 : parseInt($('offsetX').value),
 			document.forms.settings.offsetYcenter.value ? -1 : parseInt($('offsetY').value),
