@@ -104,6 +104,9 @@ export default class Grid {
 		let width = 0
 		let result = []
 		input
+			.split('\n')
+			.filter(line => !line.startsWith('#'))
+			.join('')
 			.replace(/\n/g, '')
 			.split('$')
 			.forEach(line => {
