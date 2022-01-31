@@ -6,30 +6,6 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="style.css" type="text/css" />
 		<script type="module" src="main.js"></script>
-		<script>
-			const $ = (id) => document.getElementById(id)
-
-			HTMLElement.prototype.toggle = function (defaultDisplay = 'block') {
-				console.log('this.style.display:', this.style.display )
-				this.style.display = ['', 'none'].includes(this.style.display) ? defaultDisplay : 'none'
-
-				let displayStates = localStorage.getItem('displayStates')
-				displayStates = displayStates ? JSON.parse(displayStates) : {}
-
-				displayStates[this.id] = this.style.display
-
-				localStorage.setItem('displayStates', JSON.stringify(displayStates))
-			}
-
-			document.addEventListener('DOMContentLoaded', () => {
-				let displayStates = localStorage.getItem('displayStates')
-				displayStates = displayStates ? JSON.parse(displayStates) : {}
-
-				Object.entries(displayStates).forEach(([id, state]) => {
-					$(id).style.display = state
-				})
-			})
-		</script>
 	</head>
 	<body>
 		<form name="settings" action="javascript:void(0);">
@@ -82,7 +58,7 @@
 				<span>and take the time</span>
 				<br />
 
-				<span onclick="$('numbersLetters').toggle('block')" style="cursor: pointer;">> numbers & letters</span>
+				<span id="numbersLettersLabel" style="cursor: pointer;">> numbers & letters</span>
 				<div id="numbersLetters">
 					<div class="digits">
 						<button class="pattern" value="digit/0">0</button>
@@ -136,7 +112,7 @@
 					</div>
 				</div>
 
-				<span onclick="$('gliderGuns').toggle('flex')" style="cursor: pointer;">> glider guns</span>
+				<span id="gliderGunsLabel" style="cursor: pointer;">> glider guns</span>
 				<div id="gliderGuns">
 					<button class="pattern" value="glidergun/period-14">period 14</button>
 					<button class="pattern" value="glidergun/period-20">period 20</button>
@@ -158,7 +134,7 @@
 					<button class="pattern" value="glidergun/period-690">period 690</button>
 				</div>
 
-				<span onclick="$('corderShips').toggle('flex')" style="cursor: pointer;">> corder ships</span>
+				<span id="corderShipsLabel" style="cursor: pointer;">> corder ships</span>
 				<div id="corderShips">
 					<button class="pattern" value="2-engine-cordership">2-engine</button>
 					<button class="pattern" value="3-engine-cordership">3-engine</button>

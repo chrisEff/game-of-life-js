@@ -2,8 +2,9 @@
 
 import Game from './Game.js'
 import Grid from './Grid.js'
+import LocalStorageHelper from './util/LocalStorageHelper.js'
 
-const $ = id => document.getElementById(id)
+export const $ = id => document.getElementById(id)
 
 const isJSON = string => {
 	try {
@@ -15,6 +16,18 @@ const isJSON = string => {
 }
 
 document.addEventListener('DOMContentLoaded', event => {
+	const ls = new LocalStorageHelper()
+	const displayStates = ls.getJson('displayStates') || {}
+
+	Object.entries(displayStates).forEach(([id, state]) => {
+		$(id).style.display = state
+	})
+
+	HTMLElement.prototype.toggle = function (defaultDisplay = 'initial') {
+		this.style.display = ['', 'none'].includes(this.style.display) ? defaultDisplay : 'none'
+		ls.setObjectProperty('displayStates', this.id, this.style.display)
+	}
+
 	const grid = new Grid()
 
 	const game = new Game(
@@ -73,6 +86,10 @@ document.addEventListener('DOMContentLoaded', event => {
 	$('gridHeight').onchange = event => game.setHeight(event.target.value)
 	$('cellSize').onchange = event => game.setCellSize(event.target.value)
 	$('intervalTime').onchange = event => game.changeIntervalTime(event.target.value)
+
+	$('numbersLettersLabel').onclick = () => $('numbersLetters').toggle('block')
+	$('gliderGunsLabel').onclick = () => $('gliderGuns').toggle('flex')
+	$('corderShipsLabel').onclick = () => $('corderShips').toggle('flex')
 
 	$('import').onclick = () => {
 		const data = $('importExport').value
