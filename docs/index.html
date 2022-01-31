@@ -6,6 +6,30 @@
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="stylesheet" href="style.css" type="text/css" />
 		<script type="module" src="main.js"></script>
+		<script>
+			const $ = (id) => document.getElementById(id)
+
+			HTMLElement.prototype.toggle = function (defaultDisplay = 'block') {
+				console.log('this.style.display:', this.style.display )
+				this.style.display = ['', 'none'].includes(this.style.display) ? defaultDisplay : 'none'
+
+				let displayStates = localStorage.getItem('displayStates')
+				displayStates = displayStates ? JSON.parse(displayStates) : {}
+
+				displayStates[this.id] = this.style.display
+
+				localStorage.setItem('displayStates', JSON.stringify(displayStates))
+			}
+
+			document.addEventListener('DOMContentLoaded', () => {
+				let displayStates = localStorage.getItem('displayStates')
+				displayStates = displayStates ? JSON.parse(displayStates) : {}
+
+				Object.entries(displayStates).forEach(([id, state]) => {
+					$(id).style.display = state
+				})
+			})
+		</script>
 	</head>
 	<body>
 		<form name="settings" action="javascript:void(0);">
@@ -58,27 +82,91 @@
 				<span>and take the time</span>
 				<br />
 
-				<span>load pattern:</span>
-				<div class="digits">
-					<button class="pattern" value="digit-0">0</button>
-					<button class="pattern" value="digit-1">1</button>
-					<button class="pattern" value="digit-2">2</button>
-					<button class="pattern" value="digit-3">3</button>
-					<button class="pattern" value="digit-4">4</button>
+				<span onclick="$('numbersLetters').toggle('block')" style="cursor: pointer;">> numbers & letters</span>
+				<div id="numbersLetters">
+					<div class="digits">
+						<button class="pattern" value="digit/0">0</button>
+						<button class="pattern" value="digit/1">1</button>
+						<button class="pattern" value="digit/2">2</button>
+						<button class="pattern" value="digit/3">3</button>
+						<button class="pattern" value="digit/4">4</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="digit/5">5</button>
+						<button class="pattern" value="digit/6">6</button>
+						<button class="pattern" value="digit/7">7</button>
+						<button class="pattern" value="digit/8">8</button>
+						<button class="pattern" value="digit/9">9</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/A">A</button>
+						<button class="pattern" value="letter/B">B</button>
+						<button class="pattern" value="letter/C">C</button>
+						<button class="pattern" value="letter/D">D</button>
+						<button class="pattern" value="letter/E">E</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/F">F</button>
+						<button class="pattern" value="letter/G">G</button>
+						<button class="pattern" value="letter/H">H</button>
+						<button class="pattern" value="letter/I">I</button>
+						<button class="pattern" value="letter/J">J</button>
+						<button class="pattern" value="letter/K">K</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/L">L</button>
+						<button class="pattern" value="letter/M">M</button>
+						<button class="pattern" value="letter/N">N</button>
+						<button class="pattern" value="letter/O">O</button>
+						<button class="pattern" value="letter/P">P</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/Q">Q</button>
+						<button class="pattern" value="letter/R">R</button>
+						<button class="pattern" value="letter/S">S</button>
+						<button class="pattern" value="letter/T">T</button>
+						<button class="pattern" value="letter/U">U</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/V">V</button>
+						<button class="pattern" value="letter/W">W</button>
+						<button class="pattern" value="letter/X">X</button>
+						<button class="pattern" value="letter/Y">Y</button>
+						<button class="pattern" value="letter/Z">Z</button>
+					</div>
 				</div>
-				<div class="digits">
-					<button class="pattern" value="digit-5">5</button>
-					<button class="pattern" value="digit-6">6</button>
-					<button class="pattern" value="digit-7">7</button>
-					<button class="pattern" value="digit-8">8</button>
-					<button class="pattern" value="digit-9">9</button>
+
+				<span onclick="$('gliderGuns').toggle('flex')" style="cursor: pointer;">> glider guns</span>
+				<div id="gliderGuns">
+					<button class="pattern" value="glidergun/period-14">period 14</button>
+					<button class="pattern" value="glidergun/period-20">period 20</button>
+					<button class="pattern" value="glidergun/period-22">period 22</button>
+					<button class="pattern" value="glidergun/period-24">period 24</button>
+					<button class="pattern" value="glidergun/period-28">period 28</button>
+					<button class="pattern" value="glidergun/period-30-gosper">period 30 (gosper)</button>
+					<button class="pattern" value="glidergun/period-33">period 33</button>
+					<button class="pattern" value="glidergun/period-36">period 36</button>
+					<button class="pattern" value="glidergun/period-44">period 44</button>
+					<button class="pattern" value="glidergun/period-48">period 48</button>
+					<button class="pattern" value="glidergun/period-50">period 50</button>
+					<button class="pattern" value="glidergun/period-60">period 60</button>
+					<button class="pattern" value="glidergun/period-90">period 90</button>
+					<button class="pattern" value="glidergun/period-92">period 92</button>
+					<button class="pattern" value="glidergun/period-144">period 144</button>
+					<button class="pattern" value="glidergun/period-156-8-barrel">period-156 (8-barrel)</button>
+					<button class="pattern" value="glidergun/period-256">period 256</button>
+					<button class="pattern" value="glidergun/period-690">period 690</button>
+				</div>
+
+				<span onclick="$('corderShips').toggle('flex')" style="cursor: pointer;">> corder ships</span>
+				<div id="corderShips">
+					<button class="pattern" value="2-engine-cordership">2-engine</button>
+					<button class="pattern" value="3-engine-cordership">3-engine</button>
+					<button class="pattern" value="4-engine-cordership">4-engine</button>
+					<button class="pattern" value="5-engine-cordership">5-engine</button>
 				</div>
 
 				<button class="pattern">101</button>
-				<button class="pattern">2-engine-cordership</button>
-				<button class="pattern">3-engine-cordership</button>
-				<button class="pattern">4-engine-cordership</button>
-				<button class="pattern">5-engine-cordership</button>
 				<button class="pattern">acorn</button>
 				<button class="pattern">big-glider</button>
 				<button class="pattern">buckaroo</button>
@@ -92,13 +180,9 @@
 				<button class="pattern">new-gun</button>
 				<button class="pattern">new-gun-2</button>
 				<button class="pattern">pentadecathlon-synthesis</button>
-				<button class="pattern">period-50-glidergun</button>
-				<button class="pattern">period-90-glidergun</button>
-				<button class="pattern">period-92-glidergun</button>
-				<button class="pattern">period-256-glidergun</button>
-				<button class="pattern">period-690-glidergun</button>
 				<button class="pattern">pufferfish-synthesis</button>
 				<button class="pattern">pulsar</button>
+				<button class="pattern">ring-of-fire</button>
 				<button class="pattern">space-rake</button>
 				<button class="pattern">turtle</button>
 				<button class="pattern">vacuum-gun</button>

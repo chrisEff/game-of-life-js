@@ -32,6 +32,14 @@ button {
 	flex-grow: 1;
 }
 
+#gliderGuns,
+#corderShips {
+	display: none;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-left: 10px;
+}
+
 .arrowButton {
 	width: 22px;
 }
