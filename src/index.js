@@ -3,17 +3,9 @@
 import Game from './Game.js'
 import Grid from './Grid.js'
 import LocalStorageHelper from './util/LocalStorageHelper.js'
+import isJSON from './util/isJSON'
 
 export const $ = id => document.getElementById(id)
-
-const isJSON = string => {
-	try {
-		JSON.parse(string)
-		return true
-	} catch (e) {
-		return false
-	}
-}
 
 document.addEventListener('DOMContentLoaded', event => {
 	const ls = new LocalStorageHelper()

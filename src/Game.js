@@ -1,4 +1,4 @@
-import autoBind from './autoBind.js'
+import autoBind from './util/autoBind.js'
 
 const $ = id => document.getElementById(id)
 
