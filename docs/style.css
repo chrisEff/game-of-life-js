@@ -63,6 +63,10 @@ button {
 	width: 45px;
 }
 
+#version {
+	margin-top: 20px;
+}
+
 #importExport {
 	height: 250px;
 	width: calc(100% - 10px);

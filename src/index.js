@@ -4,6 +4,7 @@ import Game from './Game.js'
 import Grid from './Grid.js'
 import LocalStorageHelper from './util/LocalStorageHelper.js'
 import isJSON from './util/isJSON'
+import packageInfo from '../package.json'
 
 export const $ = id => document.getElementById(id)
 
@@ -19,6 +20,8 @@ document.addEventListener('DOMContentLoaded', event => {
 		this.style.display = ['', 'none'].includes(this.style.display) ? defaultDisplay : 'none'
 		ls.setObjectProperty('displayStates', this.id, this.style.display)
 	}
+
+	$('version').innerHTML = 'v' + packageInfo.version
 
 	const grid = new Grid()
 
