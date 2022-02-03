@@ -3,6 +3,16 @@
 	"version": "1.0.0",
 	"description": "Conway's Game of Life in Javascript",
 	"main": "src/index.js",
+	"author": "Christian Frenzl",
+	"license": "MIT",
+	"homepage": "https://github.com/chrisEff/game-of-life-js#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/chrisEff/game-of-life-js.git"
+	},
+	"bugs": {
+		"url": "https://github.com/chrisEff/game-of-life-js/issues"
+	},
 	"scripts": {
 		"prepare": "husky install",
 		"build": "webpack --mode=production",
@@ -10,16 +20,6 @@
 		"cm": "git-cz",
 		"test": "mocha"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/chrisEff/game-of-life-js.git"
-	},
-	"author": "Christian Frenzl",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/chrisEff/game-of-life-js/issues"
-	},
-	"homepage": "https://github.com/chrisEff/game-of-life-js#readme",
 	"devDependencies": {
 		"@chriseff/eslint-config": "^3.0.2",
 		"@commitlint/cli": "^16.1.0",
