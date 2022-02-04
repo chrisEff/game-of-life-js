@@ -3,5 +3,3 @@
 
 yarn pretty-quick --staged
 yarn lint-staged
-yarn build
-git add docs/main.js
