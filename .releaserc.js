@@ -39,6 +39,12 @@ module.exports = {
 		],
 		'@semantic-release/changelog',
 		['@semantic-release/npm', { npmPublish: false }],
+		[
+			'@semantic-release/exec',
+			{
+				publishCmd: 'yarn build',
+			},
+		],
 		'@semantic-release/git',
 		'@semantic-release/github',
 	],

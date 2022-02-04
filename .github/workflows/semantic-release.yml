@@ -24,9 +24,6 @@ jobs:
       - name: install dependencies
         run: yarn
 
-      - name: build
-        run: yarn build
-
       - name: execute semantic-release
         run: yarn semantic-release
         env:
