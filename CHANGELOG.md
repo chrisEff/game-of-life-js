@@ -1,3 +1,9 @@
+## 1.2.0 (2022-02-12)
+
+### Features
+
+- major performance improvement by using draw paths 89eb0a5
+
 ### 1.1.2 (2022-02-04)
 
 ### Bug Fixes
