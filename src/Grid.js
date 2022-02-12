@@ -44,12 +44,23 @@ export default class Grid {
 
 	// prettier-ignore
 	doStep() {
-		return this.cellArrayFlat
-			.filter(cell => {
-				return cell.alive
-					? (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3)
-					: cell.livingNeighborCount === 3
+		const result = {
+			toggleOn: [],
+			toggleOff: [],
+		}
+
+		this.cellArrayFlat
+			.forEach(cell => {
+				if (cell.alive) {
+					if (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3) {
+						result.toggleOff.push(cell)
+					}
+				} else if (cell.livingNeighborCount === 3) {
+					result.toggleOn.push(cell)
+				}
 			})
+
+		return result
 	}
 
 	importGrid(data, offsetX = 0, offsetY = 0) {

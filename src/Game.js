@@ -83,10 +83,24 @@ export default class Game {
 
 	doStep() {
 		const cells = this.grid.doStep()
-		cells.forEach(cell => {
+
+		this.context2D.beginPath()
+		this.context2D.fillStyle = '#FFFFFF'
+		cells.toggleOff.forEach(cell => {
 			cell.toggle()
-			this.drawCell(cell)
+			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 		})
+		this.context2D.fill()
+		this.context2D.closePath()
+
+		this.context2D.beginPath()
+		this.context2D.fillStyle = '#000000'
+		cells.toggleOn.forEach(cell => {
+			cell.toggle()
+			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
+		})
+		this.context2D.fill()
+		this.context2D.closePath()
 	}
 
 	drawFullFrame() {
