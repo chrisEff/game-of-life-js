@@ -1,3 +1,9 @@
+### 1.1.2 (2022-02-04)
+
+### Bug Fixes
+
+- build must happen after version bump, but before release creation to have the correct version everywhere 0ee9c1d
+
 ### 1.1.1 (2022-02-04)
 
 ### Build System and Dependencies
