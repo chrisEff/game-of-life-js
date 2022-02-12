@@ -18,6 +18,10 @@ export default class Game {
 		this.grid = grid
 		this.canvas = canvas
 		this.context2D = canvas.getContext('2d')
+
+		this.hiddenCanvas = document.createElement('canvas')
+		this.hiddenContext = this.hiddenCanvas.getContext('2d')
+
 		this.width = width
 		this.height = height
 		this.intervalTime = intervalTime
@@ -41,6 +45,8 @@ export default class Game {
 	init() {
 		this.canvas.setAttribute('height', this.height * (this.cellSize + 1))
 		this.canvas.setAttribute('width', this.width * (this.cellSize + 1))
+		this.hiddenCanvas.setAttribute('height', this.height * (this.cellSize + 1))
+		this.hiddenCanvas.setAttribute('width', this.width * (this.cellSize + 1))
 		this.grid.init(this.width, this.height, this.cellSize)
 		this.drawGuides()
 	}
@@ -84,34 +90,35 @@ export default class Game {
 	doStep() {
 		const cells = this.grid.doStep()
 
-		this.context2D.beginPath()
-		this.context2D.fillStyle = '#FFFFFF'
+		this.hiddenContext.beginPath()
+		this.hiddenContext.fillStyle = '#FFFFFF'
 		cells.toggleOff.forEach(cell => {
 			cell.toggle()
-			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
+			this.hiddenContext.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 		})
-		this.context2D.fill()
-		this.context2D.closePath()
+		this.hiddenContext.fill()
+		this.hiddenContext.closePath()
 
-		this.context2D.beginPath()
-		this.context2D.fillStyle = '#000000'
+		this.hiddenContext.beginPath()
+		this.hiddenContext.fillStyle = '#000000'
 		cells.toggleOn.forEach(cell => {
 			cell.toggle()
-			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
+			this.hiddenContext.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 		})
-		this.context2D.fill()
-		this.context2D.closePath()
+		this.hiddenContext.fill()
+		this.hiddenContext.closePath()
+
+		this.context2D.drawImage(this.hiddenCanvas, 0, 0)
 	}
 
 	drawFullFrame() {
 		const cells = this.grid.cellArrayFlat
-		cells.forEach(this.drawCell)
+		cells.forEach(cell => this.drawCell(cell, this.context2D))
 	}
 
-	drawCell(cell) {
-		cell.alive
-			? this.context2D.fillRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
-			: this.context2D.clearRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
+	drawCell(cell, context) {
+		context.fillStyle = cell.alive ? '#000000' : '#FFFFFF'
+		context.fillRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
 	}
 
 	/**
