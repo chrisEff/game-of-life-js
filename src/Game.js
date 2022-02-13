@@ -4,6 +4,13 @@ const $ = id => document.getElementById(id)
 
 /**
  * @property {Grid} grid
+ * @property {HTMLCanvasElement} canvas
+ * @property {CanvasRenderingContext2D} context2D
+ * @property {int} width
+ * @property {int} height
+ * @property {int} intervalTime
+ * @property {number} interval
+ * @property {int} cellSize
  */
 export default class Game {
 	/**
@@ -108,6 +115,9 @@ export default class Game {
 		cells.forEach(this.drawCell)
 	}
 
+	/**
+	 * @param {Cell} cell
+	 */
 	drawCell(cell) {
 		cell.alive
 			? this.context2D.fillRect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
@@ -162,6 +172,13 @@ export default class Game {
 		this.drawFullFrame()
 	}
 
+	/**
+	 * @param {string} name
+	 * @param {boolean} reset
+	 * @param {int} offsetX
+	 * @param {int} offsetY
+	 * @returns {Promise<void>}
+	 */
 	async loadPattern(name, reset = false, offsetX = 0, offsetY = 0) {
 		if (reset) {
 			this.reset()

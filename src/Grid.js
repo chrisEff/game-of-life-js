@@ -2,18 +2,32 @@
 import autoBind from './util/autoBind.js'
 import Cell from './Cell.js'
 
+/**
+ * @property {Cell[][]} cellArray
+ * @property {Cell[]} cellArrayFlat
+ */
 export default class Grid {
 	constructor() {
-		/** @var {Cell[][]} */ this.cellArray = []
-		/** @var {Cell[]} */ this.cellArrayFlat = []
+		this.cellArray = []
+		this.cellArrayFlat = []
 
 		autoBind(this)
 	}
 
+	/**
+	 * @param {int} y
+	 * @param {int} x
+	 * @returns {Cell}
+	 */
 	get(y, x) {
 		return this.cellArray[y][x]
 	}
 
+	/**
+	 * @param {int} width
+	 * @param {int} height
+	 * @param {int} cellSize
+	 */
 	init(width, height, cellSize) {
 		this.cellArray = []
 		this.cellArrayFlat = []
@@ -63,6 +77,11 @@ export default class Grid {
 		return result
 	}
 
+	/**
+	 * @param {int[][]} data
+	 * @param {int} offsetX
+	 * @param {int} offsetY
+	 */
 	importGrid(data, offsetX = 0, offsetY = 0) {
 		if (offsetX === -1) {
 			offsetX = Math.max(0, Math.floor((this.cellArray[0].length - data[0].length) / 2))
@@ -79,6 +98,10 @@ export default class Grid {
 		}
 	}
 
+	/**
+	 * @param {boolean} crop
+	 * @returns {(number)[][]}
+	 */
 	exportGrid(crop = false) {
 		const result = this.cellArray.map(row => row.map(cell => (cell.alive ? 1 : 0)))
 
@@ -99,10 +122,18 @@ export default class Grid {
 		return result
 	}
 
+	/**
+	 * @param {string} value
+	 * @param {int} offsetX
+	 * @param {int} offsetY
+	 */
 	importJson(value, offsetX = 0, offsetY = 0) {
 		this.importGrid(JSON.parse(value), offsetX, offsetY)
 	}
 
+	/**
+	 * @returns {string}
+	 */
 	// prettier-ignore
 	exportJson() {
 		return JSON.stringify(this.exportGrid(true))
@@ -111,6 +142,11 @@ export default class Grid {
 			.replace(']]', ']\n]')
 	}
 
+	/**
+	 * @param {string} input
+	 * @param {int} offsetX
+	 * @param {int} offsetY
+	 */
 	importRLE(input, offsetX = 0, offsetY = 0) {
 		let width = 0
 		let result = []
@@ -157,6 +193,9 @@ export default class Grid {
 		this.importGrid(result, offsetX, offsetY)
 	}
 
+	/**
+	 * @returns {string}
+	 */
 	exportRLE() {
 		let result = ''
 		let emptyRowCount = -1

@@ -1,5 +1,14 @@
 'use strict'
 
+/**
+ * @property {Grid} grid
+ * @property {int} x
+ * @property {int} y
+ * @property {int} xPos
+ * @property {int} yPos
+ * @property {boolean} alive
+ * @property {int} livingNeighborCount
+ */
 export default class Cell {
 	/**
 	 * @param {int} x
@@ -42,6 +51,9 @@ export default class Cell {
 		})
 	}
 
+	/**
+	 * @param {boolean} alive
+	 */
 	setAlive(alive) {
 		if (this.alive === alive) {
 			return
