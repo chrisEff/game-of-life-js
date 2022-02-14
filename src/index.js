@@ -1,5 +1,3 @@
-'use strict'
-
 import Game from './Game.js'
 import Grid from './Grid.js'
 import LocalStorageHelper from './util/LocalStorageHelper.js'

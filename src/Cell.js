@@ -1,5 +1,3 @@
-'use strict'
-
 /**
  * @property {Grid} grid
  * @property {int} x

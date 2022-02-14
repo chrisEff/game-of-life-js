@@ -1,4 +1,3 @@
-'use strict'
 import autoBind from './util/autoBind.js'
 import Cell from './Cell.js'
 
