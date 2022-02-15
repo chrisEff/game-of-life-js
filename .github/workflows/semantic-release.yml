@@ -32,6 +32,6 @@ jobs:
       - name: deploy to GitHub Pages
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-          yarn gh-pages -f -d docs -u "github-actions-bot <support+actions@github.com>"
+          yarn gh-pages -f -d public -u "github-actions-bot <support+actions@github.com>"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

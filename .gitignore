@@ -1,5 +1,5 @@
 .DS_Store
 /.idea/
-/docs/main.js
+/public/main.js
 node_modules/
 package-lock.json
