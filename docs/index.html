@@ -31,9 +31,9 @@
 
 				<span>
 					<label for="gridWidth">grid:</label>
-					<input id="gridWidth" type="number" min="4" max="10000" />
+					<input id="gridWidth" type="number" min="4" max="10000" title="width" />
 					<label for="gridHeight">x</label>
-					<input id="gridHeight" type="number" min="4" max="10000" />
+					<input id="gridHeight" type="number" min="4" max="10000" title="height" />
 				</span>
 				<br />
 
@@ -45,12 +45,12 @@
 
 				<span>
 					<label for="intervalTime">interval:</label>
-					<span><input id="intervalTime" type="number" min="1" max="500" value="1" /> ms</span>
+					<span title="Set to 0 to use requestAnimationFrame instead of interval."><input id="intervalTime" type="number" min="0" max="500" value="1" /> ms</span>
 				</span>
 				<br />
 
 				<label for="benchmarkSteps">Benchmark:</label>
-				<span>
+				<span title="Result will be logged to console.">
 					<button id="runBenchmark">run</button>
 					<input id="benchmarkSteps" type="number" min="1" value="1000" />
 					steps

@@ -9,6 +9,7 @@ const $ = id => document.getElementById(id)
  * @property {int} intervalTime
  * @property {number} interval
  * @property {int} cellSize
+ * @property {boolean} running
  */
 export default class Game {
 	/**
@@ -28,6 +29,7 @@ export default class Game {
 		this.intervalTime = intervalTime
 		this.interval = null
 		this.cellSize = cellSize
+		this.running = false
 
 		this.context2D.fillStyle = '#000000'
 
@@ -74,14 +76,19 @@ export default class Game {
 	start = () => {
 		$('start').style.display = 'none'
 		$('stop').style.display = 'initial'
-		this.interval = window.setInterval(this.doStep, this.intervalTime)
+		this.running = true
+		if (this.intervalTime === 0) {
+			window.requestAnimationFrame(this.doStep)
+		} else {
+			this.interval = window.setInterval(this.doStep, this.intervalTime)
+		}
 	}
 
 	stop = () => {
 		$('start').style.display = 'initial'
 		$('stop').style.display = 'none'
-		window.clearInterval(this.interval)
-		delete this.interval
+		this.running = false
+		this.interval && window.clearInterval(this.interval)
 	}
 
 	doStep = () => {
@@ -104,6 +111,10 @@ export default class Game {
 		})
 		this.context2D.fill()
 		this.context2D.closePath()
+
+		if (this.running && this.intervalTime === 0) {
+			window.requestAnimationFrame(this.doStep)
+		}
 	}
 
 	drawFullFrame = () => {
