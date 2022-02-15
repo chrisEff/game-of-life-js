@@ -31,15 +31,41 @@ export default class Grid {
 		for (let y = 0; y < height; y++) {
 			const row = []
 			for (let x = 0; x < width; x++) {
-				const cell = new Cell(x, y, this, cellSize)
+				const cell = new Cell(x, y, cellSize)
 				row.push(cell)
 				this.cellArrayFlat.push(cell)
 			}
 			this.cellArray.push(row)
 		}
 
-		// second loop is necessary, cause neighbors can only be fetched AFTER all cells were created
-		this.cellArrayFlat.forEach(cell => cell.initNeighbors())
+		// Another loop is necessary, cause neighbors can only be determined AFTER all cells were created.
+		for (let y = 0; y < height; y++) {
+			for (let x = 0; x < width; x++) {
+				this.cellArray[y][x].setNeighbors(this.getNeighbors(x, y))
+			}
+		}
+	}
+
+	// prettier-ignore
+	getNeighbors(x, y) {
+		const neighbors = [];
+		[
+			{ x: x - 1, y: y - 1 },
+			{ x: x - 1, y: y },
+			{ x: x - 1, y: y + 1 },
+			{ x: x,     y: y - 1 },
+			{ x: x,     y: y + 1 },
+			{ x: x + 1, y: y - 1 },
+			{ x: x + 1, y: y },
+			{ x: x + 1, y: y + 1 },
+		].forEach(coords => {
+			try {
+				const neighbor = this.cellArray[coords.y][coords.x]
+				if (neighbor) neighbors.push(neighbor)
+			} catch (ignore) {}
+		})
+
+		return neighbors
 	}
 
 	reset = () => {
