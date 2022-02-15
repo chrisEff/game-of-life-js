@@ -135,9 +135,10 @@ export default class Game {
 	 * @param {int|string} intervalTime
 	 */
 	changeIntervalTime = intervalTime => {
-		this.stop()
+		const wasRunning = this.running
+		wasRunning && this.stop()
 		window.localStorage.intervalTime = this.intervalTime = parseInt(intervalTime)
-		this.start()
+		wasRunning && this.start()
 	}
 
 	/**
