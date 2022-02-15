@@ -1,3 +1,29 @@
+## 1.3.0 (2022-02-15)
+
+### Features
+
+- if interval time is zero, use requestAnimationFrame instead bdf32f3
+
+### Bug Fixes
+
+- don't start game after changing interval time if it wasn't running before 9ea4126
+
+### Performance Improvements
+
+- reduce complexity of Cell class by determining neighbors outside (slightly improves performance) 514c939
+
+### Documentation
+
+- typehint ALL the things b887b84
+
+### Build System and Dependencies
+
+- update dependencies e3c3ee5
+
+### Code Refactoring
+
+- convert class methods to arrow functions, remove autoBind b6e10ef
+
 ## 1.2.0 (2022-02-12)
 
 ### Features
