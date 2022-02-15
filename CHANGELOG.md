@@ -1,3 +1,9 @@
+### 1.3.1 (2022-02-15)
+
+### Build System and Dependencies
+
+- rename docs folder to public 6cd07ee
+
 ## 1.3.0 (2022-02-15)
 
 ### Features
