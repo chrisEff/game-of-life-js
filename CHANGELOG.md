@@ -1,3 +1,9 @@
+### 1.3.2 (2022-02-20)
+
+### Build System and Dependencies
+
+- update dependencies 149c79c
+
 ### 1.3.1 (2022-02-15)
 
 ### Build System and Dependencies
