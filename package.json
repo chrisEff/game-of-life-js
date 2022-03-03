@@ -35,7 +35,7 @@
 		"@types/mocha": "^9.1.0",
 		"chai": "^4.3.6",
 		"commitizen": "^4.2.4",
-		"eslint-config-prettier": "^8.4.0",
+		"eslint-config-prettier": "^8.5.0",
 		"gh-pages": "^3.2.3",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.4",
