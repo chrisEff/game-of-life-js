@@ -1,7 +1,7 @@
 import Game from './Game.js'
 import Grid from './Grid.js'
 import LocalStorageHelper from './util/LocalStorageHelper.js'
-import isJSON from './util/isJSON'
+import isJSON from './util/isJSON.js'
 import packageInfo from '../package.json'
 
 export const $ = id => document.getElementById(id)
