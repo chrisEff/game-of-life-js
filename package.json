@@ -39,6 +39,7 @@
 		"chai": "^4.3.6",
 		"commitizen": "^4.2.5",
 		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-unicorn": "^43.0.2",
 		"gh-pages": "^4.0.0",
 		"husky": "^8.0.1",
 		"lint-staged": "^13.0.3",
