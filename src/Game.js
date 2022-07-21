@@ -1,4 +1,4 @@
-const $ = id => document.getElementById(id)
+export const $ = selector => document.querySelector(selector)
 
 /**
  * @property {Grid} grid
@@ -74,8 +74,8 @@ export default class Game {
 	}
 
 	start = () => {
-		$('start').style.display = 'none'
-		$('stop').style.display = 'initial'
+		$('#start').style.display = 'none'
+		$('#stop').style.display = 'initial'
 		this.running = true
 		if (this.intervalTime === 0) {
 			window.requestAnimationFrame(this.doStep)
@@ -85,8 +85,8 @@ export default class Game {
 	}
 
 	stop = () => {
-		$('start').style.display = 'initial'
-		$('stop').style.display = 'none'
+		$('#start').style.display = 'initial'
+		$('#stop').style.display = 'none'
 		this.running = false
 		this.interval && window.clearInterval(this.interval)
 	}
@@ -137,7 +137,7 @@ export default class Game {
 	changeIntervalTime = intervalTime => {
 		const wasRunning = this.running
 		wasRunning && this.stop()
-		window.localStorage.intervalTime = this.intervalTime = parseInt(intervalTime)
+		window.localStorage.intervalTime = this.intervalTime = Number.parseInt(intervalTime)
 		wasRunning && this.start()
 	}
 
@@ -145,7 +145,7 @@ export default class Game {
 	 * @param {int|string} newWidth
 	 */
 	setWidth = newWidth => {
-		newWidth = parseInt(newWidth)
+		newWidth = Number.parseInt(newWidth)
 		window.localStorage.gridWidth = newWidth
 		const exported = this.grid.exportGrid()
 		this.width = newWidth
@@ -158,7 +158,7 @@ export default class Game {
 	 * @param {int|string} newHeight
 	 */
 	setHeight = newHeight => {
-		newHeight = parseInt(newHeight)
+		newHeight = Number.parseInt(newHeight)
 		window.localStorage.gridHeight = newHeight
 		const exported = this.grid.exportGrid()
 		this.height = newHeight
@@ -171,7 +171,7 @@ export default class Game {
 	 * @param {int|string} newCellSize
 	 */
 	setCellSize = newCellSize => {
-		newCellSize = parseInt(newCellSize)
+		newCellSize = Number.parseInt(newCellSize)
 		window.localStorage.cellSize = newCellSize
 		const exported = this.grid.exportGrid()
 		this.cellSize = newCellSize

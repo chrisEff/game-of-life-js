@@ -131,7 +131,7 @@ export default class Grid {
 			// Remove empty rows at the end...
 			while (result.length) {
 				const lastRow = result.pop()
-				if (lastRow.filter(v => v === 1).length > 0) {
+				if (lastRow.includes(1)) {
 					// ...until we find the first non-empty one.
 					result.push(lastRow)
 					break
@@ -187,7 +187,7 @@ export default class Grid {
 					const char = chars.shift()
 					if (char === 'b' || char === 'o') {
 						if (num === '') num = 1
-						for (let i = 0; i < parseInt(num); i++) {
+						for (let i = 0; i < Number.parseInt(num); i++) {
 							row.push(char === 'o' ? 1 : 0)
 						}
 						num = ''
@@ -198,7 +198,7 @@ export default class Grid {
 				result.push(row)
 
 				if (num !== '') {
-					for (let i = 1; i < parseInt(num); i++) {
+					for (let i = 1; i < Number.parseInt(num); i++) {
 						result.push([0])
 					}
 				}
@@ -268,13 +268,13 @@ export default class Grid {
 	shiftUp = () => {
 		const exported = this.exportGrid()
 		exported.shift()
-		exported.push(new Array(this.cellArray[0].length).fill(0))
+		exported.push(Array.from({ length: this.cellArray[0].length }).fill(0))
 		this.importGrid(exported)
 	}
 
 	shiftDown = () => {
 		const exported = this.exportGrid()
-		exported.unshift(new Array(this.cellArray[0].length).fill(0))
+		exported.unshift(Array.from({ length: this.cellArray[0].length }).fill(0))
 		this.importGrid(exported)
 	}
 
