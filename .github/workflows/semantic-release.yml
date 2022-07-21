@@ -25,7 +25,7 @@ jobs:
         run: yarn
 
       - name: execute semantic-release
-        run: yarn semantic-release
+        run: HUSKY=0 yarn semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
