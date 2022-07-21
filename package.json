@@ -21,7 +21,6 @@
 		"build": "webpack --mode=production",
 		"s": "yarn start",
 		"start": "webpack serve --mode=development",
-		"cm": "git-cz",
 		"t": "yarn test",
 		"test": "mocha"
 	},
