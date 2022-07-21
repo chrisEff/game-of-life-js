@@ -42,7 +42,8 @@ describe('Grid', () => {
 			])
 
 			let cells = grid.doStep()
-			cells.forEach(cell => cell.toggle())
+			cells.toggleOff.forEach(cell => cell.toggle())
+			cells.toggleOn.forEach(cell => cell.toggle())
 
 			chai.assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 0, 0, 0],
@@ -53,7 +54,8 @@ describe('Grid', () => {
 			])
 
 			cells = grid.doStep()
-			cells.forEach(cell => cell.toggle())
+			cells.toggleOff.forEach(cell => cell.toggle())
+			cells.toggleOn.forEach(cell => cell.toggle())
 
 			chai.assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 1, 0, 0],
