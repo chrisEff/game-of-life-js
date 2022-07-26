@@ -1,3 +1,10 @@
+## 1.4.0 (2022-07-26)
+
+
+### Features
+
+* new "misc" folder for other patterns 977e7ed
+
 ## 1.3.3 (2022-07-21)
 
 
