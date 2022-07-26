@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', event => {
 	$('#numbersLettersLabel').onclick = () => $('#numbersLetters').toggle('block')
 	$('#gliderGunsLabel').onclick = () => $('#gliderGuns').toggle('flex')
 	$('#corderShipsLabel').onclick = () => $('#corderShips').toggle('flex')
+	$('#miscLabel').onclick = () => $('#misc').toggle('flex')
 
 	$('#import').onclick = () => {
 		const data = $('#importExport').value

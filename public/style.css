@@ -34,7 +34,8 @@ button {
 
 #numbersLetters,
 #gliderGuns,
-#corderShips {
+#corderShips,
+#misc {
 	display: none;
 	flex-direction: column;
 	justify-content: flex-end;
