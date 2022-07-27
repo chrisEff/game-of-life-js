@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', event => {
 
 	// prettier-ignore
 	const keymap = {
-		s:          () => game.interval ? game.stop() : game.start(),
+		s:          () => game.running ? game.stop() : game.start(),
 		t:          $('#step').onclick      = game.doStep,
 		r:          $('#reset').onclick     = game.reset,
 		h:          $('#hflip').onclick     = () => { grid.hflip(); game.drawFullFrame() },
