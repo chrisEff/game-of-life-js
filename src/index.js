@@ -91,6 +91,10 @@ document.addEventListener('DOMContentLoaded', event => {
 		const offsetX = document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value)
 		const offsetY = document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value)
 
+		if ($('#resetBeforeLoad').checked) {
+			game.reset()
+		}
+
 		if (isJSON(data)) {
 			grid.importJson(data, offsetX, offsetY)
 		} else {
