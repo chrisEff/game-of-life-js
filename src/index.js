@@ -88,8 +88,8 @@ document.addEventListener('DOMContentLoaded', event => {
 
 	$('#import').onclick = () => {
 		const data = $('#importExport').value
-		const offsetX = Number.parseInt($('#offsetX').value)
-		const offsetY = Number.parseInt($('#offsetY').value)
+		const offsetX = document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value)
+		const offsetY = document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value)
 
 		if (isJSON(data)) {
 			grid.importJson(data, offsetX, offsetY)
