@@ -1,3 +1,17 @@
+## 1.5.0 (2022-08-01)
+
+
+### Features
+
+* moar patternz 8d90650
+
+
+### Bug Fixes
+
+* importing to center did not work 04c8f9b
+* reset checkbox did not work when using manual import ee689dc
+* starting game by pressing "s" didn't work anymore b4b0093
+
 ## 1.4.0 (2022-07-26)
 
 
