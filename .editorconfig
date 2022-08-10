@@ -1,0 +1,12 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = tab
+insert_final_newline = true
+
+ij_javascript_use_semicolon_after_statement = false
+ij_javascript_force_semicolon_style = false
+ij_javascript_use_double_quotes = false
+ij_javascript_force_quote_style = false
