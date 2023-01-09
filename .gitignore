@@ -3,3 +3,11 @@
 /public/main.js
 node_modules/
 package-lock.json
+
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -56,5 +56,6 @@
 		"env": [
 			"mocha"
 		]
-	}
+	},
+	"packageManager": "yarn@3.3.1"
 }
