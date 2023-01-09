@@ -1,3 +1,10 @@
+## 1.5.2 (2023-01-09)
+
+
+### Build System and Dependencies
+
+* update dependencies 19161d4
+
 ## 1.5.1 (2023-01-09)
 
 
