@@ -21,6 +21,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: print node version
+        run: node -v
+
       - name: install dependencies
         run: yarn
 
