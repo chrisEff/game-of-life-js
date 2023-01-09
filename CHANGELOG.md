@@ -1,3 +1,10 @@
+## 1.5.1 (2023-01-09)
+
+
+### Build System and Dependencies
+
+* migrate to yarn 3 6b469e8
+
 ## 1.5.0 (2022-08-01)
 
 
