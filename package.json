@@ -28,7 +28,7 @@
 		"@babel/core": "^7.20.12",
 		"@babel/eslint-parser": "^7.19.1",
 		"@chriseff/eslint-config": "^3.0.4",
-		"@commitlint/cli": "^17.4.1",
+		"@commitlint/cli": "^17.4.4",
 		"@commitlint/config-conventional": "^17.4.0",
 		"@commitlint/cz-commitlint": "^17.4.1",
 		"@semantic-release/changelog": "^6.0.2",
