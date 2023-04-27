@@ -1,3 +1,5 @@
+.idea
+.yarn
 /public/index.html
 /public/main.js
 CHANGELOG.md
