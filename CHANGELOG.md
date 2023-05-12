@@ -1,3 +1,10 @@
+## 1.5.4 (2023-05-12)
+
+
+### Build System and Dependencies
+
+* bump dependencies + node + yarn 628de8e
+
 ## 1.5.3 (2023-04-30)
 
 
