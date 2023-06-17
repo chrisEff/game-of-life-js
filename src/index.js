@@ -68,12 +68,14 @@ document.addEventListener('DOMContentLoaded', event => {
 
 	// prettier-ignore
 	Array.from($$('.pattern')).forEach(
-		el => el.onclick = event => game.loadPattern(
-			event.target.value || event.target.innerHTML,
-			$('#resetBeforeLoad').checked,
-			document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value),
-			document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value),
-		),
+		el => {
+			el.onclick = event => game.loadPattern(
+				event.target.value || event.target.innerHTML,
+				$('#resetBeforeLoad').checked,
+				document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value),
+				document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value)
+			)
+		},
 	)
 
 	$('#gridWidth').onchange = event => game.setWidth(event.target.value)

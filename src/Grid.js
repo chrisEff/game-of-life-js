@@ -51,12 +51,12 @@ export default class Grid {
 		const neighbors = [];
 		[
 			{ x: x - 1, y: y - 1 },
-			{ x: x - 1, y: y },
+			{ x: x - 1, y },
 			{ x: x - 1, y: y + 1 },
-			{ x: x,     y: y - 1 },
-			{ x: x,     y: y + 1 },
+			{ x,        y: y - 1 },
+			{ x,        y: y + 1 },
 			{ x: x + 1, y: y - 1 },
-			{ x: x + 1, y: y },
+			{ x: x + 1, y },
 			{ x: x + 1, y: y + 1 },
 		].forEach(coords => {
 			try {
