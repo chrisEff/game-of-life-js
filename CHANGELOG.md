@@ -1,3 +1,10 @@
+## 1.5.6 (2023-06-18)
+
+
+### Performance Improvements
+
+* use `for ... of` instead of `.foreEach()` (way faster) d1e2846
+
 ## 1.5.5 (2023-06-17)
 
 
