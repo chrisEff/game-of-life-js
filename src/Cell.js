@@ -36,8 +36,15 @@ export default class Cell {
 
 	toggle() {
 		this.alive = !this.alive
-		this.alive
-			? this.neighbors.forEach(neighbor => neighbor.livingNeighborCount++)
-			: this.neighbors.forEach(neighbor => neighbor.livingNeighborCount--)
+
+		if (this.alive) {
+			for (const neighbor of this.neighbors) {
+				neighbor.livingNeighborCount++
+			}
+		} else {
+			for (const neighbor of this.neighbors) {
+				neighbor.livingNeighborCount--
+			}
+		}
 	}
 }

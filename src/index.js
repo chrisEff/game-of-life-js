@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', event => {
 	const ls = new LocalStorageHelper()
 	const displayStates = ls.getJson('displayStates') || {}
 
-	Object.entries(displayStates).forEach(([id, state]) => {
+	for (const [id, state] of Object.entries(displayStates)) {
 		$('#' + id).style.display = state
-	})
+	}
 
 	HTMLElement.prototype.toggle = function (defaultDisplay = 'initial') {
 		this.style.display = ['', 'none'].includes(this.style.display) ? defaultDisplay : 'none'
@@ -67,16 +67,14 @@ document.addEventListener('DOMContentLoaded', event => {
 	}
 
 	// prettier-ignore
-	Array.from($$('.pattern')).forEach(
-		el => {
+	for (const el of Array.from($$('.pattern'))) {
 			el.onclick = event => game.loadPattern(
 				event.target.value || event.target.innerHTML,
 				$('#resetBeforeLoad').checked,
 				document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value),
 				document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value)
 			)
-		},
-	)
+		}
 
 	$('#gridWidth').onchange = event => game.setWidth(event.target.value)
 	$('#gridHeight').onchange = event => game.setHeight(event.target.value)

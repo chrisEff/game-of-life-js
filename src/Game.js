@@ -96,19 +96,19 @@ export default class Game {
 
 		this.context2D.beginPath()
 		this.context2D.fillStyle = '#FFFFFF'
-		cells.toggleOff.forEach(cell => {
+		for (const cell of cells.toggleOff) {
 			cell.toggle()
 			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
-		})
+		}
 		this.context2D.fill()
 		this.context2D.closePath()
 
 		this.context2D.beginPath()
 		this.context2D.fillStyle = '#000000'
-		cells.toggleOn.forEach(cell => {
+		for (const cell of cells.toggleOn) {
 			cell.toggle()
 			this.context2D.rect(cell.xPos, cell.yPos, this.cellSize, this.cellSize)
-		})
+		}
 		this.context2D.fill()
 		this.context2D.closePath()
 
@@ -119,7 +119,9 @@ export default class Game {
 
 	drawFullFrame = () => {
 		const cells = this.grid.cellArrayFlat
-		cells.forEach(this.drawCell)
+		for (const cell of cells) {
+			this.drawCell(cell)
+		}
 	}
 
 	/**

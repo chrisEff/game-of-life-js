@@ -9,6 +9,7 @@ module.exports = {
 	rules: {
 		'prettier/prettier': 'error',
 		'unicorn/no-lonely-if': 'error',
+		'unicorn/no-array-for-each': 'error',
 		'unicorn/no-nested-ternary': 'error',
 		'unicorn/no-new-array': 'error',
 		'unicorn/no-unused-properties': 'error',

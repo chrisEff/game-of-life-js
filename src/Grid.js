@@ -49,7 +49,7 @@ export default class Grid {
 	// prettier-ignore
 	getNeighbors(x, y) {
 		const neighbors = [];
-		[
+		for (const coords of [
 			{ x: x - 1, y: y - 1 },
 			{ x: x - 1, y },
 			{ x: x - 1, y: y + 1 },
@@ -58,24 +58,24 @@ export default class Grid {
 			{ x: x + 1, y: y - 1 },
 			{ x: x + 1, y },
 			{ x: x + 1, y: y + 1 },
-		].forEach(coords => {
+		]) {
 			try {
 				const neighbor = this.cellArray[coords.y][coords.x]
 				if (neighbor) neighbors.push(neighbor)
 			} catch (ignore) {}
-		})
+		}
 
 		return neighbors
 	}
 
 	reset = () => {
-		this.cellArrayFlat.forEach(cell => cell.setAlive(false))
+		for (const cell of this.cellArrayFlat) cell.setAlive(false)
 	}
 
 	randomize = () => {
-		this.cellArrayFlat.forEach(cell => {
+		for (const cell of this.cellArrayFlat) {
 			cell.setAlive(Boolean(Math.round(Math.random())))
-		})
+		}
 	}
 
 	// prettier-ignore
@@ -85,8 +85,7 @@ export default class Grid {
 			toggleOff: [],
 		}
 
-		this.cellArrayFlat
-			.forEach(cell => {
+		for (const cell of this.cellArrayFlat) {
 				if (cell.alive) {
 					if (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3) {
 						result.toggleOff.push(cell)
@@ -94,7 +93,7 @@ export default class Grid {
 				} else if (cell.livingNeighborCount === 3) {
 					result.toggleOn.push(cell)
 				}
-			})
+			}
 
 		return result
 	}
@@ -172,39 +171,38 @@ export default class Grid {
 	importRLE = (input, offsetX = 0, offsetY = 0) => {
 		let width = 0
 		let result = []
-		input
+		for (const line of input
 			.split('\n')
 			.filter(line => !line.startsWith('#'))
 			.join('')
 			.replace(/\n/g, '')
-			.split('$')
-			.forEach(line => {
-				const chars = line.split('')
-				let num = ''
-				const row = []
+			.split('$')) {
+			const chars = line.split('')
+			let num = ''
+			const row = []
 
-				while (chars.length) {
-					const char = chars.shift()
-					if (char === 'b' || char === 'o') {
-						if (num === '') num = 1
-						for (let i = 0; i < Number.parseInt(num); i++) {
-							row.push(char === 'o' ? 1 : 0)
-						}
-						num = ''
-					} else {
-						num += char
+			while (chars.length) {
+				const char = chars.shift()
+				if (char === 'b' || char === 'o') {
+					if (num === '') num = 1
+					for (let i = 0; i < Number.parseInt(num); i++) {
+						row.push(char === 'o' ? 1 : 0)
 					}
+					num = ''
+				} else {
+					num += char
 				}
-				result.push(row)
+			}
+			result.push(row)
 
-				if (num !== '') {
-					for (let i = 1; i < Number.parseInt(num); i++) {
-						result.push([0])
-					}
+			if (num !== '') {
+				for (let i = 1; i < Number.parseInt(num); i++) {
+					result.push([0])
 				}
+			}
 
-				width = Math.max(width, row.length)
-			})
+			width = Math.max(width, row.length)
+		}
 
 		result = result.map(l => {
 			const oldLength = l.length
@@ -223,10 +221,10 @@ export default class Grid {
 		let emptyRowCount = -1
 
 		const data = this.exportGrid(true)
-		data.forEach(row => {
+		for (const row of data) {
 			if (row.filter(cell => cell).length < 1) {
 				emptyRowCount++
-				return
+				continue
 			} else {
 				if (emptyRowCount > 0) {
 					result += `${emptyRowCount + 1}$`
@@ -238,7 +236,7 @@ export default class Grid {
 
 			let count = 1
 			let lastState = null
-			row.forEach(cell => {
+			for (const cell of row) {
 				if (cell === lastState) {
 					count++
 				} else {
@@ -248,16 +246,16 @@ export default class Grid {
 					}
 					lastState = cell
 				}
-			})
+			}
 			if (lastState) result += `${count}o`
-		})
+		}
 
 		return result
 	}
 
 	hflip = () => {
 		const exported = this.exportGrid()
-		exported.forEach(e => e.reverse())
+		for (const e of exported) e.reverse()
 		this.importGrid(exported)
 	}
 
@@ -280,16 +278,16 @@ export default class Grid {
 
 	shiftLeft = () => {
 		const exported = this.exportGrid()
-		exported.forEach(row => {
+		for (const row of exported) {
 			row.shift()
 			row.push(0)
-		})
+		}
 		this.importGrid(exported)
 	}
 
 	shiftRight = () => {
 		const exported = this.exportGrid()
-		exported.forEach(row => row.unshift(0))
+		for (const row of exported) row.unshift(0)
 		this.importGrid(exported)
 	}
 
