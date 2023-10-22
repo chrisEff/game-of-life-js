@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', event => {
 		Number.parseInt(window.localStorage.gridWidth) || 128,
 		Number.parseInt(window.localStorage.gridHeight) || 128,
 		Number.parseInt(window.localStorage.intervalTime) || 1,
-		Number.parseInt(window.localStorage.cellSize) || 4
+		Number.parseInt(window.localStorage.cellSize) || 4,
 	)
 	game.init()
 

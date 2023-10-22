@@ -36,7 +36,7 @@ export default class Game {
 		canvas.onclick = event => {
 			const cell = this.grid.get(
 				Math.floor(event.offsetY / (this.cellSize + 1)),
-				Math.floor(event.offsetX / (this.cellSize + 1))
+				Math.floor(event.offsetX / (this.cellSize + 1)),
 			)
 			cell.setAlive(!cell.alive)
 			this.drawCell(cell)
