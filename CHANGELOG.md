@@ -1,3 +1,10 @@
+## 1.5.7 (2023-10-22)
+
+
+### Build System and Dependencies
+
+* update dependencies + node + yarn b4ed31c
+
 ## 1.5.6 (2023-06-18)
 
 
