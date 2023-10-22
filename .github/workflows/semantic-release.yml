@@ -36,6 +36,9 @@ jobs:
       - name: install dependencies
         run: yarn
 
+      - name: run tests
+        run: yarn test
+
       - name: execute semantic-release
         run: HUSKY=0 yarn semantic-release
         env:
