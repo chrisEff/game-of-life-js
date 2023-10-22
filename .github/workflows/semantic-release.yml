@@ -39,6 +39,13 @@ jobs:
       - name: run tests
         run: yarn test
 
+      # Build command will be run again by semantic-release after the version has been bumped, so that the new version
+      # can be included in the main.js file.
+      # But in case semantic decides to skip the release, we already have to build the main.js file here, so that it
+      # isn't missing in the GH Pages deployment.
+      - name: build
+        run: yarn build
+
       - name: execute semantic-release
         run: HUSKY=0 yarn semantic-release
         env:
