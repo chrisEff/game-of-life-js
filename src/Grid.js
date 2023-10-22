@@ -48,7 +48,7 @@ export default class Grid {
 
 	// prettier-ignore
 	getNeighbors(x, y) {
-		const neighbors = [];
+		const neighbors = []
 		for (const coords of [
 			{ x: x - 1, y: y - 1 },
 			{ x: x - 1, y },
@@ -78,7 +78,6 @@ export default class Grid {
 		}
 	}
 
-	// prettier-ignore
 	doStep = () => {
 		const result = {
 			toggleOn: [],
@@ -86,14 +85,14 @@ export default class Grid {
 		}
 
 		for (const cell of this.cellArrayFlat) {
-				if (cell.alive) {
-					if (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3) {
-						result.toggleOff.push(cell)
-					}
-				} else if (cell.livingNeighborCount === 3) {
-					result.toggleOn.push(cell)
+			if (cell.alive) {
+				if (cell.livingNeighborCount < 2 || cell.livingNeighborCount > 3) {
+					result.toggleOff.push(cell)
 				}
+			} else if (cell.livingNeighborCount === 3) {
+				result.toggleOn.push(cell)
 			}
+		}
 
 		return result
 	}
