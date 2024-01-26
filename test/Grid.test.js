@@ -1,4 +1,4 @@
-import chai from 'chai'
+import { assert } from 'chai'
 import Grid from '../src/Grid.js'
 
 describe('Grid', () => {
@@ -20,7 +20,7 @@ describe('Grid', () => {
 		it('should set all cells to "dead"', () => {
 			grid.importGrid(sampleData)
 			grid.reset()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 0],
 				[0, 0, 0],
 				[0, 0, 0],
@@ -45,7 +45,7 @@ describe('Grid', () => {
 			for (const cell of cells.toggleOff) cell.toggle()
 			for (const cell of cells.toggleOn) cell.toggle()
 
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 0, 0, 0],
 				[0, 1, 1, 1, 0],
 				[0, 1, 0, 1, 0],
@@ -57,7 +57,7 @@ describe('Grid', () => {
 			for (const cell of cells.toggleOff) cell.toggle()
 			for (const cell of cells.toggleOn) cell.toggle()
 
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 1, 0, 0],
 				[0, 1, 0, 1, 0],
 				[1, 0, 0, 0, 1],
@@ -70,14 +70,14 @@ describe('Grid', () => {
 	describe('importRLE', () => {
 		it('should import data in RLE format', () => {
 			grid.importRLE('1o$1o$2b1o')
-			chai.assert.deepStrictEqual(grid.exportGrid(), sampleData)
+			assert.deepStrictEqual(grid.exportGrid(), sampleData)
 		})
 	})
 
 	describe('exportRLE', () => {
 		it('should export the grid in RLE format', () => {
 			grid.importGrid(sampleData)
-			chai.assert.deepStrictEqual(grid.exportRLE(), '1o$1o$2b1o')
+			assert.deepStrictEqual(grid.exportRLE(), '1o$1o$2b1o')
 		})
 	})
 
@@ -85,7 +85,7 @@ describe('Grid', () => {
 		it('should flip the grid horizontally', () => {
 			grid.importGrid(sampleData)
 			grid.hflip()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 1],
 				[0, 0, 1],
 				[1, 0, 0],
@@ -97,7 +97,7 @@ describe('Grid', () => {
 		it('should flip the grid vertically', () => {
 			grid.importGrid(sampleData)
 			grid.vflip()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 1],
 				[1, 0, 0],
 				[1, 0, 0],
@@ -109,7 +109,7 @@ describe('Grid', () => {
 		it('should shift the grid up by 1 row', () => {
 			grid.importGrid(sampleData)
 			grid.shiftUp()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[1, 0, 0],
 				[0, 0, 1],
 				[0, 0, 0],
@@ -121,7 +121,7 @@ describe('Grid', () => {
 		it('should shift the grid down by 1 row', () => {
 			grid.importGrid(sampleData)
 			grid.shiftDown()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 0],
 				[1, 0, 0],
 				[1, 0, 0],
@@ -133,7 +133,7 @@ describe('Grid', () => {
 		it('should shift the grid left by 1 column', () => {
 			grid.importGrid(sampleData)
 			grid.shiftLeft()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 0, 0],
 				[0, 0, 0],
 				[0, 1, 0],
@@ -145,7 +145,7 @@ describe('Grid', () => {
 		it('should shift the grid right by 1 column', () => {
 			grid.importGrid(sampleData)
 			grid.shiftRight()
-			chai.assert.deepStrictEqual(grid.exportGrid(), [
+			assert.deepStrictEqual(grid.exportGrid(), [
 				[0, 1, 0],
 				[0, 1, 0],
 				[0, 0, 0],
