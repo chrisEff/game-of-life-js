@@ -1,3 +1,17 @@
+## 1.5.8 (2024-01-26)
+
+
+### Build System and Dependencies
+
+* update dependencies ae90b76
+* upgrade to node 20 a1e467e
+* upgrade to yarn 4 a6b16c8
+
+
+### Code Refactoring
+
+* remove DOM logic from Game class 7ea8a9b
+
 ## 1.5.7 (2023-10-22)
 
 
