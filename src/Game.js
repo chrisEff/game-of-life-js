@@ -1,5 +1,3 @@
-export const $ = selector => document.querySelector(selector)
-
 /**
  * @property {Grid} grid
  * @property {HTMLCanvasElement} canvas
@@ -74,8 +72,6 @@ export default class Game {
 	}
 
 	start = () => {
-		$('#start').style.display = 'none'
-		$('#stop').style.display = 'initial'
 		this.running = true
 		if (this.intervalTime === 0) {
 			window.requestAnimationFrame(this.doStep)
@@ -85,8 +81,6 @@ export default class Game {
 	}
 
 	stop = () => {
-		$('#start').style.display = 'initial'
-		$('#stop').style.display = 'none'
 		this.running = false
 		this.interval && window.clearInterval(this.interval)
 	}

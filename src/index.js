@@ -4,8 +4,8 @@ import LocalStorageHelper from './util/LocalStorageHelper.js'
 import isJSON from './util/isJSON.js'
 import packageInfo from '../package.json'
 
-export const $ = selector => document.querySelector(selector)
-export const $$ = selector => document.querySelectorAll(selector)
+const $ = selector => document.querySelector(selector)
+const $$ = selector => document.querySelectorAll(selector)
 
 document.addEventListener('DOMContentLoaded', event => {
 	const ls = new LocalStorageHelper()
@@ -39,9 +39,21 @@ document.addEventListener('DOMContentLoaded', event => {
 	$('#cellSize').value = game.cellSize
 	$('#intervalTime').value = game.intervalTime
 
+	const startGame = () => {
+		$('#start').style.display = 'none'
+		$('#stop').style.display = 'initial'
+		game.start()
+	}
+
+	const stopGame = () => {
+		$('#start').style.display = 'initial'
+		$('#stop').style.display = 'none'
+		game.stop()
+	}
+
 	// prettier-ignore
 	const keymap = {
-		s:          () => game.running ? game.stop() : game.start(),
+		s:          () => game.running ? stopGame() : startGame(),
 		t:          $('#step').onclick      = game.doStep,
 		r:          $('#reset').onclick     = game.reset,
 		h:          $('#hflip').onclick     = () => { grid.hflip(); game.drawFullFrame() },
@@ -54,8 +66,8 @@ document.addEventListener('DOMContentLoaded', event => {
 		ArrowRight: $('#right').onclick     = () => { grid.shiftRight(); game.drawFullFrame() },
 	}
 
-	$('#start').onclick = game.start
-	$('#stop').onclick = game.stop
+	$('#start').onclick = startGame
+	$('#stop').onclick = stopGame
 
 	$('#runBenchmark').onclick = () => {
 		const steps = $('#benchmarkSteps').value
