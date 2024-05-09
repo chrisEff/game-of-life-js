@@ -62,7 +62,11 @@ export default class Grid {
 			try {
 				const neighbor = this.cellArray[coords.y][coords.x]
 				if (neighbor) neighbors.push(neighbor)
-			} catch (ignore) {}
+			} catch (e) {
+				if (!(e instanceof TypeError)) {
+					throw e
+				}
+			}
 		}
 
 		return neighbors

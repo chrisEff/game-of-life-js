@@ -3,6 +3,7 @@ export default string => {
 		JSON.parse(string)
 		return true
 	} catch (e) {
+		console.log('isJSON caught:', e)
 		return false
 	}
 }

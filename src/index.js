@@ -7,7 +7,7 @@ import packageInfo from '../package.json'
 const $ = selector => document.querySelector(selector)
 const $$ = selector => document.querySelectorAll(selector)
 
-document.addEventListener('DOMContentLoaded', event => {
+document.addEventListener('DOMContentLoaded', () => {
 	const ls = new LocalStorageHelper()
 	const displayStates = ls.getJson('displayStates') || {}
 
