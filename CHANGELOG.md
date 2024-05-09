@@ -1,3 +1,12 @@
+## 1.5.9 (2024-05-09)
+
+
+### Build System and Dependencies
+
+* bump dependencies 52c55e4
+* bump node to 20.11.0 93219d2
+* bump yarn to 4.2.2 b6ff3c4
+
 ## 1.5.8 (2024-01-26)
 
 
