@@ -1,6 +1,6 @@
 {
 	"name": "game-of-life-js",
-	"version": "1.5.9",
+	"version": "1.5.10",
 	"description": "Conway's Game of Life in Javascript",
 	"main": "src/index.js",
 	"type": "module",

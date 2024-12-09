@@ -1,3 +1,11 @@
+## 1.5.10 (2024-12-09)
+
+### Build System and Dependencies
+
+* bump dependencies efde35e
+* bump node to v22 e778323
+* force usage of conventional-changelog-conventionalcommits v8 because of a bug in v7 da5e21c
+
 ## 1.5.9 (2024-05-09)
 
 
