@@ -20,6 +20,7 @@ export default [
 			unicorn: pluginUnicorn,
 		},
 		rules: {
+			curly: 'error',
 			'unicorn/no-lonely-if': 'error',
 			'unicorn/no-array-for-each': 'error',
 			'unicorn/no-nested-ternary': 'error',

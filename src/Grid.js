@@ -61,7 +61,7 @@ export default class Grid {
 		]) {
 			try {
 				const neighbor = this.cellArray[coords.y][coords.x]
-				if (neighbor) neighbors.push(neighbor)
+				if (neighbor) {neighbors.push(neighbor)}
 			} catch (e) {
 				if (!(e instanceof TypeError)) {
 					throw e
@@ -73,7 +73,9 @@ export default class Grid {
 	}
 
 	reset = () => {
-		for (const cell of this.cellArrayFlat) cell.setAlive(false)
+		for (const cell of this.cellArrayFlat) {
+			cell.setAlive(false)
+		}
 	}
 
 	randomize = () => {
@@ -187,7 +189,9 @@ export default class Grid {
 			while (chars.length) {
 				const char = chars.shift()
 				if (char === 'b' || char === 'o') {
-					if (num === '') num = 1
+					if (num === '') {
+						num = 1
+					}
 					for (let i = 0; i < Number.parseInt(num); i++) {
 						row.push(char === 'o' ? 1 : 0)
 					}
@@ -250,7 +254,9 @@ export default class Grid {
 					lastState = cell
 				}
 			}
-			if (lastState) result += `${count}o`
+			if (lastState) {
+				result += `${count}o`
+			}
 		}
 
 		return result
@@ -258,7 +264,9 @@ export default class Grid {
 
 	hflip = () => {
 		const exported = this.exportGrid()
-		for (const e of exported) e.reverse()
+		for (const e of exported) {
+			e.reverse()
+		}
 		this.importGrid(exported)
 	}
 
@@ -290,7 +298,9 @@ export default class Grid {
 
 	shiftRight = () => {
 		const exported = this.exportGrid()
-		for (const row of exported) row.unshift(0)
+		for (const row of exported) {
+			row.unshift(0)
+		}
 		this.importGrid(exported)
 	}
 
