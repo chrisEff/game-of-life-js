@@ -226,6 +226,7 @@ export default class Grid {
 	exportRLE = () => {
 		let result = ''
 		let emptyRowCount = -1
+		let currentLineLength = 0
 
 		const data = this.exportGrid(true)
 		for (const row of data) {
@@ -235,8 +236,10 @@ export default class Grid {
 			} else {
 				if (emptyRowCount > 0) {
 					result += `${emptyRowCount + 1}$`
+					currentLineLength += `${emptyRowCount + 1}$`.length
 				} else if (emptyRowCount === 0) {
 					result += '$'
+					currentLineLength += 1
 				}
 				emptyRowCount = 0
 			}
@@ -248,9 +251,17 @@ export default class Grid {
 					count++
 				} else {
 					if (lastState !== null) {
-						result += `${count}${lastState ? 'o' : 'b'}`
-						count = 1
+						const segment = `${count > 1 ? count : ''}${lastState ? 'o' : 'b'}`
+						result += segment
+						currentLineLength += segment.length
+
+						// Add a newline if the current line exceeds 120 characters
+						if (currentLineLength >= 120) {
+							result += '\n'
+							currentLineLength = 0
+						}
 					}
+					count = 1
 					lastState = cell
 				}
 			}
