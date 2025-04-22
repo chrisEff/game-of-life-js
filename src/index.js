@@ -80,13 +80,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// prettier-ignore
 	for (const el of Array.from($$('.pattern'))) {
-			el.onclick = event => game.loadPattern(
+		el.onclick = event => {
+			event.target.blur()
+			return game.loadPattern(
 				event.target.value || event.target.innerHTML,
 				$('#resetBeforeLoad').checked,
 				document.forms.settings.offsetXcenter.value ? -1 : Number.parseInt($('#offsetX').value),
 				document.forms.settings.offsetYcenter.value ? -1 : Number.parseInt($('#offsetY').value)
 			)
 		}
+	}
 
 	$('#gridWidth').onchange = event => game.setWidth(event.target.value)
 	$('#gridHeight').onchange = event => game.setHeight(event.target.value)
