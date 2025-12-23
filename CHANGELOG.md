@@ -1,3 +1,20 @@
+## 1.6.0 (2025-12-23)
+
+### Features
+
+* **exportRLE:** omit obsolete 1s + add a newline every ~120 chars c771f23
+* more glider guns 9d5e056
+
+### Bug Fixes
+
+* **exportRLE:** omit obsolete 1 for last cell d0b1057
+* unfocus pattern buttons after click c891637
+
+### Build System and Dependencies
+
+* bump dependencies 5641188
+* bump node to v24 96e8c70
+
 ## 1.5.10 (2024-12-09)
 
 ### Build System and Dependencies
