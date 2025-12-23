@@ -266,7 +266,7 @@ export default class Grid {
 				}
 			}
 			if (lastState) {
-				result += `${count}o`
+				result += `${count > 1 ? count : ''}o`
 			}
 		}
 
