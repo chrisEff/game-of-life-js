@@ -85,7 +85,7 @@ describe('Grid', () => {
 	describe('exportRLE', () => {
 		it('should export the grid in RLE format', () => {
 			grid.importGrid(sampleData)
-			assert.deepStrictEqual(grid.exportRLE(), '1o$1o$2b1o')
+			assert.deepStrictEqual(grid.exportRLE(), 'o$o$2bo')
 		})
 	})
 
