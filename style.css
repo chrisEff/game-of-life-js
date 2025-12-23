@@ -1,0 +1,74 @@
+#controls {
+	display: flex;
+	flex-direction: column;
+	width: 160px;
+}
+
+#controls #arrows {
+	text-align: center;
+}
+
+#main {
+	position: absolute;
+	top: 10px;
+	left: 180px;
+}
+
+#canvas {
+	border: 1px solid silver;
+}
+
+button {
+	margin: 2px;
+	padding-inline: 0;
+}
+
+.digits {
+	display: flex;
+	flex-direction: row;
+}
+
+.digits button {
+	flex-grow: 1;
+}
+
+#numbersLetters,
+#gliderGuns,
+#corderShips,
+#misc {
+	display: none;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-left: 10px;
+}
+
+.arrowButton {
+	width: 22px;
+}
+
+#start {
+	color: limegreen;
+}
+
+#stop {
+	color: red;
+}
+
+#gridWidth,
+#gridHeight,
+#cellSize,
+#intervalTime,
+#offsetX,
+#offsetY,
+#benchmarkSteps {
+	width: 45px;
+}
+
+#version {
+	margin-top: 20px;
+}
+
+#importExport {
+	height: 250px;
+	width: 1000px;
+}

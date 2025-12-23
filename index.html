@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Game of Life</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="icon" href="favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="style.css" type="text/css" />
+		<script type="module" src="main.js"></script>
+	</head>
+	<body>
+		<form name="settings" action="javascript:void(0);">
+			<div id="controls">
+				<button id="start">Start</button>
+				<button id="stop" style="display: none">Stop</button>
+				<button id="step">sTep</button>
+				<button id="reset">Reset</button>
+				<button id="hflip">H-flip</button>
+				<button id="vflip">V-Flip</button>
+				<button id="rotate">rOtate</button>
+				<button id="randomize">rAndomize</button>
+				<br />
+
+				<div id="arrows">
+					<button id="up" class="arrowButton">↑</button>
+					<br />
+					<button id="left" class="arrowButton">←</button>
+					<button id="down" class="arrowButton">↓</button>
+					<button id="right" class="arrowButton">→</button>
+				</div>
+				<br />
+
+				<span>
+					<label for="gridWidth">grid:</label>
+					<input id="gridWidth" type="number" min="4" max="10000" title="width" />
+					<label for="gridHeight">x</label>
+					<input id="gridHeight" type="number" min="4" max="10000" title="height" />
+				</span>
+				<br />
+
+				<span>
+					<label for="cellSize">cell size:</label>
+					<span><input id="cellSize" type="number" min="1" max="100" /> px</span>
+				</span>
+				<br />
+
+				<span>
+					<label for="intervalTime">interval:</label>
+					<span title="Set to 0 to use requestAnimationFrame instead of interval."><input id="intervalTime" type="number" min="0" max="500" value="1" /> ms</span>
+				</span>
+				<br />
+
+				<label for="benchmarkSteps">Benchmark:</label>
+				<span title="Result will be logged to console.">
+					<button id="runBenchmark">run</button>
+					<input id="benchmarkSteps" type="number" min="1" value="1000" />
+					steps
+				</span>
+				<span>and take the time</span>
+				<br />
+
+				<span id="numbersLettersLabel" style="cursor: pointer;">> numbers & letters</span>
+				<div id="numbersLetters">
+					<div class="digits">
+						<button class="pattern" value="digit/0">0</button>
+						<button class="pattern" value="digit/1">1</button>
+						<button class="pattern" value="digit/2">2</button>
+						<button class="pattern" value="digit/3">3</button>
+						<button class="pattern" value="digit/4">4</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="digit/5">5</button>
+						<button class="pattern" value="digit/6">6</button>
+						<button class="pattern" value="digit/7">7</button>
+						<button class="pattern" value="digit/8">8</button>
+						<button class="pattern" value="digit/9">9</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/A">A</button>
+						<button class="pattern" value="letter/B">B</button>
+						<button class="pattern" value="letter/C">C</button>
+						<button class="pattern" value="letter/D">D</button>
+						<button class="pattern" value="letter/E">E</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/F">F</button>
+						<button class="pattern" value="letter/G">G</button>
+						<button class="pattern" value="letter/H">H</button>
+						<button class="pattern" value="letter/I">I</button>
+						<button class="pattern" value="letter/J">J</button>
+						<button class="pattern" value="letter/K">K</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/L">L</button>
+						<button class="pattern" value="letter/M">M</button>
+						<button class="pattern" value="letter/N">N</button>
+						<button class="pattern" value="letter/O">O</button>
+						<button class="pattern" value="letter/P">P</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/Q">Q</button>
+						<button class="pattern" value="letter/R">R</button>
+						<button class="pattern" value="letter/S">S</button>
+						<button class="pattern" value="letter/T">T</button>
+						<button class="pattern" value="letter/U">U</button>
+					</div>
+					<div class="digits">
+						<button class="pattern" value="letter/V">V</button>
+						<button class="pattern" value="letter/W">W</button>
+						<button class="pattern" value="letter/X">X</button>
+						<button class="pattern" value="letter/Y">Y</button>
+						<button class="pattern" value="letter/Z">Z</button>
+					</div>
+				</div>
+
+				<span id="gliderGunsLabel" style="cursor: pointer;">> glider guns</span>
+				<div id="gliderGuns">
+					<button class="pattern" value="glidergun/period-14">period 14</button>
+					<button class="pattern" value="glidergun/period-15">period 15</button>
+					<button class="pattern" value="glidergun/period-16">period 16</button>
+					<button class="pattern" value="glidergun/period-18">period 18</button>
+					<button class="pattern" value="glidergun/period-20">period 20</button>
+					<button class="pattern" value="glidergun/period-22">period 22</button>
+					<button class="pattern" value="glidergun/period-24">period 24</button>
+					<button class="pattern" value="glidergun/period-25">period 25</button>
+					<button class="pattern" value="glidergun/period-28">period 28</button>
+					<button class="pattern" value="glidergun/period-30-gosper">period 30 (gosper)</button>
+					<button class="pattern" value="glidergun/period-33">period 33</button>
+					<button class="pattern" value="glidergun/period-36">period 36</button>
+					<button class="pattern" value="glidergun/period-40">period 40</button>
+					<button class="pattern" value="glidergun/period-44">period 44</button>
+					<button class="pattern" value="glidergun/period-48">period 48</button>
+					<button class="pattern" value="glidergun/period-50">period 50</button>
+					<button class="pattern" value="glidergun/period-60">period 60</button>
+					<button class="pattern" value="glidergun/period-70">period 70</button>
+					<button class="pattern" value="glidergun/period-80">period 80</button>
+					<button class="pattern" value="glidergun/period-90">period 90</button>
+					<button class="pattern" value="glidergun/period-92">period 92</button>
+					<button class="pattern" value="glidergun/period-100">period 100</button>
+					<button class="pattern" value="glidergun/period-120">period 120</button>
+					<button class="pattern" value="glidergun/period-144">period 144</button>
+					<button class="pattern" value="glidergun/period-156-8-barrel">period-156 (8-barrel)</button>
+					<button class="pattern" value="glidergun/period-200">period 200</button>
+					<button class="pattern" value="glidergun/period-256">period 256</button>
+					<button class="pattern" value="glidergun/period-300">period 300</button>
+					<button class="pattern" value="glidergun/period-690">period 690</button>
+				</div>
+
+				<span id="corderShipsLabel" style="cursor: pointer;">> corder ships</span>
+				<div id="corderShips">
+					<button class="pattern" value="cordership/2-engine">2-engine</button>
+					<button class="pattern" value="cordership/3-engine">3-engine</button>
+					<button class="pattern" value="cordership/4-engine">4-engine</button>
+					<button class="pattern" value="cordership/5-engine">5-engine</button>
+					<button class="pattern" value="cordership/6-engine">6-engine</button>
+					<button class="pattern" value="cordership/7-engine">7-engine</button>
+					<button class="pattern" value="cordership/8-engine">8-engine</button>
+					<button class="pattern" value="cordership/10-engine">10-engine</button>
+				</div>
+
+				<span id="miscLabel" style="cursor: pointer;">> misc</span>
+				<div id="misc">
+					<button class="pattern" value="misc/101">101</button>
+					<button class="pattern" value="misc/acorn">acorn</button>
+					<button class="pattern" value="misc/airforce">airforce</button>
+					<button class="pattern" value="misc/big-glider">big-glider</button>
+					<button class="pattern" value="misc/brain">brain</button>
+					<button class="pattern" value="misc/brick-layer">brick-layer</button>
+					<button class="pattern" value="misc/buckaroo">buckaroo</button>
+					<button class="pattern" value="misc/canada-goose">canada-goose</button>
+					<button class="pattern" value="misc/canada-grey">canada-grey</button>
+					<button class="pattern" value="misc/copperhead">copperhead</button>
+					<button class="pattern" value="misc/crown">crown</button>
+					<button class="pattern" value="misc/fireship">fireship</button>
+					<button class="pattern" value="misc/glider-train">glider-train</button>
+					<button class="pattern" value="misc/hammerhead">hammerhead</button>
+					<button class="pattern" value="misc/lobster">lobster</button>
+					<button class="pattern" value="misc/new-gun">new-gun</button>
+					<button class="pattern" value="misc/new-gun-2">new-gun-2</button>
+					<button class="pattern" value="misc/noahs-ark">noahs-ark</button>
+					<button class="pattern" value="misc/pentadecathlon-synthesis">pentadecathlon-synthesis</button>
+					<button class="pattern" value="misc/pufferfish-synthesis">pufferfish-synthesis</button>
+					<button class="pattern" value="misc/pulsar">pulsar</button>
+					<button class="pattern" value="misc/ring-of-fire">ring-of-fire</button>
+					<button class="pattern" value="misc/space-rake">space-rake</button>
+					<button class="pattern" value="misc/spider">spider</button>
+					<button class="pattern" value="misc/turtle">turtle</button>
+					<button class="pattern" value="misc/vacuum-gun">vacuum-gun</button>
+				</div>
+				<br />
+
+				<span>
+					<input type="checkbox" id="resetBeforeLoad" />
+					<label for="resetBeforeLoad">reset</label>
+				</span>
+				<br />
+
+				<span>
+					<label for="offsetXcenter0" onclick="document.getElementById('offsetXcenter0').checked = true">
+						<label for="offsetX">x:</label>
+						<input type="radio" name="offsetXcenter" id="offsetXcenter0" value="" checked /><input type="number" id="offsetX" value="0"/>
+					</label>
+					<input type="radio" name="offsetXcenter" id="offsetXcenter1" value="true" /><label for="offsetXcenter1">center</label>
+				</span>
+				<span>
+					<label for="offsetYcenter0" onclick="document.getElementById('offsetYcenter0').checked = true">
+						<label for="offsetY">y:</label>
+						<input type="radio" name="offsetYcenter" id="offsetYcenter0" value="" checked /><input type="number" id="offsetY" value="0"/>
+					</label>
+					<input type="radio" name="offsetYcenter" id="offsetYcenter1" value="true" /><label for="offsetYcenter1">center</label>
+				</span>
+
+				<span id="version"></span>
+			</div>
+			<br />
+
+			<div id="main">
+				<canvas id="canvas"></canvas>
+
+				<br /><br />
+				<button id="import">import</button>
+				<button id="exportJSON">export JSON</button>
+				<button id="exportRLE">export RLE</button>
+				<br />
+				<textarea id="importExport"></textarea>
+			</div>
+		</form>
+	</body>
+</html>
