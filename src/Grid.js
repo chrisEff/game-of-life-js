@@ -8,6 +8,8 @@ export default class Grid {
 	constructor() {
 		this.cellArray = []
 		this.cellArrayFlat = []
+		this.height = 0
+		this.width = 0
 	}
 
 	/**
@@ -27,6 +29,8 @@ export default class Grid {
 	init = (width, height, cellSize) => {
 		this.cellArray = []
 		this.cellArrayFlat = []
+		this.width = width
+		this.height = height
 
 		for (let y = 0; y < height; y++) {
 			const row = []
@@ -59,13 +63,12 @@ export default class Grid {
 			{ x: x + 1, y },
 			{ x: x + 1, y: y + 1 },
 		]) {
-			try {
-				const neighbor = this.cellArray[coords.y][coords.x]
-				if (neighbor) {neighbors.push(neighbor)}
-			} catch (e) {
-				if (!(e instanceof TypeError)) {
-					throw e
-				}
+			if (coords.y < 0 || coords.y >= this.height || coords.x < 0 || coords.x >= this.width) {
+				continue
+			}
+			const neighbor = this.cellArray[coords.y][coords.x]
+			if (neighbor) {
+				neighbors.push(neighbor)
 			}
 		}
 
@@ -110,13 +113,13 @@ export default class Grid {
 	 */
 	importGrid = (data, offsetX = 0, offsetY = 0) => {
 		if (offsetX === -1) {
-			offsetX = Math.max(0, Math.floor((this.cellArray[0].length - data[0].length) / 2))
+			offsetX = Math.max(0, Math.floor((this.width - data[0].length) / 2))
 		}
 		if (offsetY === -1) {
-			offsetY = Math.max(0, Math.floor((this.cellArray.length - data.length) / 2))
+			offsetY = Math.max(0, Math.floor((this.height - data.length) / 2))
 		}
-		const height = Math.min(data.length + offsetY, this.cellArray.length)
-		const width = Math.min(data[0].length + offsetX, this.cellArray[0].length)
+		const height = Math.min(data.length + offsetY, this.height)
+		const width = Math.min(data[0].length + offsetX, this.width)
 		for (let y = offsetY; y < height; y++) {
 			for (let x = offsetX; x < width; x++) {
 				this.cellArray[y][x].setAlive(Boolean(data[y - offsetY][x - offsetX]))
@@ -288,13 +291,13 @@ export default class Grid {
 	shiftUp = () => {
 		const exported = this.exportGrid()
 		exported.shift()
-		exported.push(Array.from({ length: this.cellArray[0].length }).fill(0))
+		exported.push(Array.from({ length: this.width }).fill(0))
 		this.importGrid(exported)
 	}
 
 	shiftDown = () => {
 		const exported = this.exportGrid()
-		exported.unshift(Array.from({ length: this.cellArray[0].length }).fill(0))
+		exported.unshift(Array.from({ length: this.width }).fill(0))
 		this.importGrid(exported)
 	}
 
