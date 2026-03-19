@@ -1,3 +1,13 @@
+## 1.6.1 (2026-03-19)
+
+### Bug Fixes
+
+* **Grid:** add width/height tracking and improve boundary handling 78a3a54
+
+### User Interface
+
+* separate labels for width + height inputs 6c49551
+
 ## 1.6.0 (2025-12-23)
 
 ### Features
