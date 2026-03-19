@@ -55,7 +55,10 @@ button {
 }
 
 #gridWidth,
-#gridHeight,
+#gridHeight {
+	width: 55px;
+}
+
 #cellSize,
 #intervalTime,
 #offsetX,
