@@ -9,6 +9,8 @@ export default {
 					{ breaking: true, release: 'major' },
 					{ type: 'feat', release: 'minor' },
 					{ type: 'fix', release: 'patch' },
+					{ type: 'ui', release: 'patch' },
+					{ type: 'ux', release: 'patch' },
 					{ type: 'perf', release: 'patch' },
 					{ type: 'build', release: 'patch' },
 					{ type: 'revert', release: 'patch' },
@@ -28,6 +30,9 @@ export default {
 					types: [
 						{ type: 'feat', section: 'Features' },
 						{ type: 'fix', section: 'Bug Fixes' },
+						{ type: 'ui', section: 'User Interface' },
+						{ type: 'ux', section: 'User Experience' },
+						{ type: 'dev', section: 'Developer Experience' },
 						{ type: 'docs', section: 'Documentation' },
 						{ type: 'perf', section: 'Performance Improvements' },
 						{ type: 'build', section: 'Build System and Dependencies' },
